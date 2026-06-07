@@ -1,6 +1,6 @@
 export interface GenerateDeckInput {
   reportFile: File;
-  templateFile: File;
+  templateFile: File | null;
   instruction: string;
 }
 
@@ -11,12 +11,26 @@ export interface GenerateDeckResult {
   qa?: string;
 }
 
+export interface DefaultTemplateResult {
+  templateId: string;
+  sourceFileName: string;
+  counts: {
+    slides: number;
+    layouts: number;
+    masters: number;
+    media: number;
+  };
+  roles: Record<string, number>;
+}
+
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
 
 export async function generateDeck(input: GenerateDeckInput): Promise<GenerateDeckResult> {
   const formData = new FormData();
   formData.append("report", input.reportFile);
-  formData.append("template", input.templateFile);
+  if (input.templateFile) {
+    formData.append("template", input.templateFile);
+  }
   formData.append("instruction", input.instruction);
 
   const response = await fetch(`${apiBaseUrl}/api/decks/generate`, {
@@ -41,4 +55,32 @@ export async function generateDeck(input: GenerateDeckInput): Promise<GenerateDe
     summary: result.summary,
     qa: result.qa
   };
+}
+
+export async function getDefaultTemplate(): Promise<DefaultTemplateResult> {
+  const response = await fetch(`${apiBaseUrl}/api/templates/default`);
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || `读取默认模板失败：${response.status}`);
+  }
+
+  return (await response.json()) as DefaultTemplateResult;
+}
+
+export async function saveDefaultTemplate(templateFile: File): Promise<DefaultTemplateResult> {
+  const formData = new FormData();
+  formData.append("template", templateFile);
+
+  const response = await fetch(`${apiBaseUrl}/api/templates/default`, {
+    method: "POST",
+    body: formData
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || `保存默认模板失败：${response.status}`);
+  }
+
+  return (await response.json()) as DefaultTemplateResult;
 }

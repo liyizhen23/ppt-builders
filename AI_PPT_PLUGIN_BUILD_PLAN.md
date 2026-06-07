@@ -867,6 +867,14 @@ frontend/
 - 能识别每页图片框和文本框。
 - 能保存字体、字号、颜色和页面角色。
 
+当前实现状态：
+
+- 已实现通用 PPTX Open XML 解析模块，不只适用于清华模板。
+- 已生成 `templates/tsinghua-2025-general-2/template-profile.json`。
+- 清华模板解析结果：29 个示例页、401 个 slide layout、8 个 slide master、52 个媒体资源。
+- 已提供 `GET /api/templates/default`、`POST /api/templates/default` 和 `POST /api/templates/analyze`。
+- 不上传模板时默认使用清华模板；用户可通过插件按钮保存新的默认模板。
+
 ### 阶段 3：报告解析和 evidence index
 
 目标：生成和修改内容均可追踪来源。

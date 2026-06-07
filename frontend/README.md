@@ -33,6 +33,14 @@ The task pane posts report/template files to:
 POST /api/decks/generate
 ```
 
+The template file is optional. If the user does not choose one, the backend uses the saved default template, falling back to the bundled Tsinghua template.
+
+The task pane can save a selected template as the future default through:
+
+```text
+POST /api/templates/default
+```
+
 Expected JSON response:
 
 ```json

@@ -1,35 +1,48 @@
-import { FormEvent, useMemo, useState } from "react";
-import { generateDeck, GenerateDeckResult } from "./api/decks";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  DefaultTemplateResult,
+  generateDeck,
+  GenerateDeckResult,
+  getDefaultTemplate,
+  saveDefaultTemplate
+} from "./api/decks";
 import { insertSlidesFromBase64, isPowerPointHost } from "./office/powerpoint";
 
-type Status = "idle" | "generating" | "ready" | "inserting" | "inserted" | "error";
+type Status = "idle" | "generating" | "ready" | "inserting" | "inserted" | "saving" | "error";
 
 export function App() {
   const [reportFile, setReportFile] = useState<File | null>(null);
   const [templateFile, setTemplateFile] = useState<File | null>(null);
+  const [defaultTemplate, setDefaultTemplate] = useState<DefaultTemplateResult | null>(null);
   const [instruction, setInstruction] = useState("");
   const [result, setResult] = useState<GenerateDeckResult | null>(null);
   const [status, setStatus] = useState<Status>("idle");
-  const [message, setMessage] = useState("等待上传报告和模板。");
+  const [message, setMessage] = useState("等待上传报告。未选择模板时会使用默认模板。");
 
-  const canGenerate = useMemo(
-    () => reportFile !== null && templateFile !== null && status !== "generating",
-    [reportFile, templateFile, status]
-  );
+  useEffect(() => {
+    getDefaultTemplate()
+      .then((template) => setDefaultTemplate(template))
+      .catch((error) => {
+        setStatus("error");
+        setMessage(error instanceof Error ? error.message : "读取默认模板失败。");
+      });
+  }, []);
 
-  const canInsert = result?.pptxBase64 && status !== "inserting";
+  const canGenerate = useMemo(() => reportFile !== null && status !== "generating", [reportFile, status]);
+  const canSaveDefault = templateFile !== null && status !== "saving";
+  const canInsert = Boolean(result?.pptxBase64) && status !== "inserting";
 
   const handleGenerate = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!reportFile || !templateFile) {
+    if (!reportFile) {
       setStatus("error");
-      setMessage("请先选择报告文件和 PPT 模板。");
+      setMessage("请先选择报告文件。");
       return;
     }
 
     setStatus("generating");
-    setMessage("正在提交生成任务。");
+    setMessage(templateFile ? "正在使用上传模板生成测试 PPT。" : "正在使用默认模板生成测试 PPT。");
     setResult(null);
 
     try {
@@ -44,6 +57,27 @@ export function App() {
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "生成失败。");
+    }
+  };
+
+  const handleSaveDefaultTemplate = async () => {
+    if (!templateFile) {
+      setStatus("error");
+      setMessage("请先选择一个 PPT 模板。");
+      return;
+    }
+
+    setStatus("saving");
+    setMessage("正在解析并保存默认模板。");
+
+    try {
+      const saved = await saveDefaultTemplate(templateFile);
+      setDefaultTemplate(saved);
+      setStatus("idle");
+      setMessage(`默认模板已保存：${saved.sourceFileName}`);
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : "保存默认模板失败。");
     }
   };
 
@@ -95,19 +129,36 @@ export function App() {
 
         <FileField
           id="template"
-          label="PPT 模板"
-          hint="第一阶段使用清华模板验证"
+          label="PPT 模板（可选）"
+          hint={defaultTemplate ? `不选择则使用默认模板：${defaultTemplate.sourceFileName}` : "不选择则使用清华默认模板"}
           accept=".pptx"
           file={templateFile}
           onChange={setTemplateFile}
         />
+
+        <div className="templateActions">
+          <button className="secondaryButton" type="button" onClick={handleSaveDefaultTemplate} disabled={!canSaveDefault}>
+            设为默认模板
+          </button>
+        </div>
+
+        {defaultTemplate ? (
+          <div className="templateSummary">
+            <strong>当前默认模板</strong>
+            <span>{defaultTemplate.sourceFileName}</span>
+            <small>
+              {defaultTemplate.counts.slides} slides / {defaultTemplate.counts.layouts} layouts /{" "}
+              {defaultTemplate.counts.masters} masters / {defaultTemplate.counts.media} media
+            </small>
+          </div>
+        ) : null}
 
         <label className="field">
           <span>生成要求</span>
           <textarea
             value={instruction}
             onChange={(event) => setInstruction(event.target.value)}
-            placeholder="例如：生成 8 页课程汇报，风格保持清华模板。"
+            placeholder="例如：按照报告中的 POI 感知方法生成一页 PPT。"
             rows={4}
           />
         </label>
@@ -168,6 +219,8 @@ function statusLabel(status: Status) {
       return "插入中";
     case "inserted":
       return "已完成";
+    case "saving":
+      return "保存中";
     case "error":
       return "错误";
     default:

@@ -179,3 +179,23 @@ h2 {
   color: #465564;
   line-height: 1.5;
 }
+
+.templateActions {
+  margin: -4px 0 14px;
+}
+
+.templateSummary {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 14px;
+  padding: 10px;
+  border: 1px solid #dde6ef;
+  border-radius: 6px;
+  background: #f8fbfd;
+}
+
+.templateSummary span,
+.templateSummary small {
+  color: #465564;
+  overflow-wrap: anywhere;
+}

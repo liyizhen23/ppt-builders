@@ -97,6 +97,18 @@ h2 {
   background: #ffffff;
 }
 
+.compactPanel {
+  padding: 12px 14px;
+}
+
+.compactPanel h2 {
+  margin-bottom: 6px;
+}
+
+.compactPanel .message {
+  margin-bottom: 0;
+}
+
 .field {
   display: grid;
   gap: 7px;

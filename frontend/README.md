@@ -27,6 +27,12 @@ Office add-ins normally require HTTPS for sideloading. If the dev server is plai
 
 ## API Contract Reserved For Phase 2
 
+The task pane calls the backend through relative `/api/...` paths during local development. Vite proxies those requests to:
+
+```text
+http://127.0.0.1:3000
+```
+
 The task pane posts report/template files to:
 
 ```text
@@ -53,3 +59,9 @@ Expected JSON response:
 ```
 
 The insert button calls PowerPoint's `insertSlidesFromBase64` with `keepSourceFormatting`.
+
+AI API keys are not used in frontend code. The task pane can only read non-secret AI status from:
+
+```text
+GET /api/settings/ai
+```

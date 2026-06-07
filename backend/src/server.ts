@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import multipart from "@fastify/multipart";
 import { createRequire } from "node:module";
 import { z } from "zod";
+import { getPublicAiSettings } from "./config/aiConfig.js";
 import {
   analyzeTemplateBuffer,
   getDefaultTemplate,
@@ -40,8 +41,13 @@ await app.register(multipart, {
 app.get("/health", async () => {
   return {
     ok: true,
-    service: "ai-ppt-plugin-backend"
+    service: "ai-ppt-plugin-backend",
+    ai: getPublicAiSettings()
   };
+});
+
+app.get("/api/settings/ai", async () => {
+  return getPublicAiSettings();
 });
 
 app.get("/api/templates/default", async () => {

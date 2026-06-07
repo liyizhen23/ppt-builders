@@ -22,6 +22,44 @@ npm install
 npm run dev
 ```
 
+## AI API Configuration
+
+The AI API key is never stored in source code and must not be committed to GitHub.
+
+Create a local env file:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `backend/.env`:
+
+```text
+AI_PROVIDER=openai
+AI_API_KEY=your_api_key_here
+AI_BASE_URL=https://api.openai.com/v1
+AI_MODEL=gpt-4.1-mini
+```
+
+The frontend never receives `AI_API_KEY`. It calls the backend only, and the backend is responsible for future AI requests.
+
+Public AI settings endpoint:
+
+```text
+GET /api/settings/ai
+```
+
+Response example:
+
+```json
+{
+  "provider": "openai",
+  "configured": true,
+  "baseUrlHost": "api.openai.com",
+  "model": "gpt-4.1-mini"
+}
+```
+
 Default server:
 
 ```text

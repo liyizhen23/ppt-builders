@@ -6,6 +6,7 @@ import {
   getDefaultTemplate,
   saveDefaultTemplate
 } from "./api/decks";
+import { AiSettingsResult, getAiSettings } from "./api/settings";
 import { insertSlidesFromBase64, isPowerPointHost } from "./office/powerpoint";
 
 type Status = "idle" | "generating" | "ready" | "inserting" | "inserted" | "saving" | "error";
@@ -14,6 +15,7 @@ export function App() {
   const [reportFile, setReportFile] = useState<File | null>(null);
   const [templateFile, setTemplateFile] = useState<File | null>(null);
   const [defaultTemplate, setDefaultTemplate] = useState<DefaultTemplateResult | null>(null);
+  const [aiSettings, setAiSettings] = useState<AiSettingsResult | null>(null);
   const [instruction, setInstruction] = useState("");
   const [result, setResult] = useState<GenerateDeckResult | null>(null);
   const [status, setStatus] = useState<Status>("idle");
@@ -26,6 +28,9 @@ export function App() {
         setStatus("error");
         setMessage(error instanceof Error ? error.message : "读取默认模板失败。");
       });
+    getAiSettings()
+      .then((settings) => setAiSettings(settings))
+      .catch(() => setAiSettings(null));
   }, []);
 
   const canGenerate = useMemo(() => reportFile !== null && status !== "generating", [reportFile, status]);
@@ -116,6 +121,15 @@ export function App() {
         </div>
         <span className={`statusPill status-${status}`}>{statusLabel(status)}</span>
       </header>
+
+      <section className="panel compactPanel">
+        <h2>AI API</h2>
+        <p className="message">
+          {aiSettings
+            ? `${aiSettings.configured ? "已配置" : "未配置"}：${aiSettings.provider} / ${aiSettings.model} / ${aiSettings.baseUrlHost}`
+            : "未读取到 AI API 设置。"}
+        </p>
+      </section>
 
       <form className="panel" onSubmit={handleGenerate}>
         <FileField

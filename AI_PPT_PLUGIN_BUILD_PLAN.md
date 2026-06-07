@@ -29,6 +29,14 @@
 
 推荐采用 **PowerPoint Office Add-in + 后端 API + Python Worker + PPTX 模板/渲染引擎**。
 
+API key 管理原则：
+
+- 用户的 AI API key 只允许放在本地 `backend/.env`。
+- GitHub 只提交 `backend/.env.example`，不能提交真实 `.env`。
+- 前端永远不直接调用 AI 服务，也不接触 API key。
+- 前端只调用本地后端 `/api/...`，由后端在未来的 AI 编排阶段读取环境变量并调用模型服务。
+- 后端可通过 `GET /api/settings/ai` 暴露非敏感状态，例如是否已配置、模型名和 API host，但不能返回完整 key。
+
 ```text
 PowerPoint Add-in
   |

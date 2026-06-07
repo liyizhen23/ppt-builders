@@ -327,6 +327,11 @@ function summarizeDefaultTemplate(record: Awaited<ReturnType<typeof getDefaultTe
       acc[slide.role] = (acc[slide.role] ?? 0) + 1;
       return acc;
     }, {}),
+    capabilities: {
+      replaceableSlots: record.profile.capabilities.replaceableSlots.length,
+      recommendedSlides: record.profile.capabilities.recommendedSlides,
+      styleTokens: record.profile.capabilities.styleTokens
+    },
     profile: record.profile
   };
 }

@@ -1,7 +1,7 @@
 {
   "templateId": "清华大学2025年度演示文稿系列模板2-通用主题",
   "sourceFileName": "清华大学2025年度演示文稿系列模板2-通用主题.pptx",
-  "generatedAt": "2026-06-07T15:02:16.471Z",
+  "generatedAt": "2026-06-07T16:05:39.442Z",
   "counts": {
     "slides": 29,
     "layouts": 401,
@@ -28949,6 +28949,4257 @@
       "A5A5A5",
       "FFC000",
       "4472C4"
+    ]
+  },
+  "capabilities": {
+    "roleIndex": {
+      "cover": [
+        1,
+        3,
+        28,
+        29
+      ],
+      "agenda": [
+        4,
+        5
+      ],
+      "section_divider": [],
+      "content_text": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "content_image": [
+        2,
+        6,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "content_chart": [],
+      "comparison": [],
+      "summary": [],
+      "closing": [
+        27
+      ],
+      "unknown": []
+    },
+    "recommendedSlides": {
+      "cover": [
+        28,
+        29,
+        3,
+        1
+      ],
+      "agenda": [
+        5,
+        4
+      ],
+      "section_divider": [],
+      "content_text": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "content_image": [
+        6,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        18
+      ],
+      "content_chart": [],
+      "comparison": [],
+      "summary": [],
+      "closing": [
+        27
+      ],
+      "unknown": []
+    },
+    "replaceableSlots": [
+      {
+        "slideIndex": 1,
+        "shapeId": "21",
+        "shapeName": "文本框 20",
+        "slotType": "title",
+        "bbox": {
+          "x": 967740,
+          "y": 3573124,
+          "cx": 6488654,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题描述添加标题描述添加标题描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 1,
+        "shapeId": "22",
+        "shapeName": "文本框 21",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 930132,
+          "y": 3987222,
+          "cx": 6522940,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "清华大学演示文稿模板",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 1,
+        "shapeId": "23",
+        "shapeName": "矩形 22",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 967740,
+          "y": 5168775,
+          "cx": 6718935,
+          "cy": 418191
+        },
+        "placeholderType": null,
+        "sampleText": "汇报人： XXX 日期： XX 年 XX 月",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 1,
+        "shapeId": "33",
+        "shapeName": "图片 32",
+        "slotType": "image",
+        "bbox": {
+          "x": 9996857,
+          "y": 3546998,
+          "cx": 1840032,
+          "cy": 711763
+        },
+        "placeholderType": null,
+        "confidence": 0.466
+      },
+      {
+        "slideIndex": 2,
+        "shapeId": "21",
+        "shapeName": "文本框 20",
+        "slotType": "title",
+        "bbox": {
+          "x": 586608,
+          "y": 4199769,
+          "cx": 6488654,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题描述添加 标题描述添加标题 描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 2,
+        "shapeId": "24",
+        "shapeName": "文本框 23",
+        "slotType": "title",
+        "bbox": {
+          "x": 559160,
+          "y": 4601341,
+          "cx": 6340197,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "清华大学演示文稿模板",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 2,
+        "shapeId": "25",
+        "shapeName": "矩形 24",
+        "slotType": "caption",
+        "bbox": {
+          "x": 586608,
+          "y": 5795420,
+          "cx": 6718935,
+          "cy": 418191
+        },
+        "placeholderType": null,
+        "sampleText": "汇报人： XXX 日期： XX 年 XX 月",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 2,
+        "shapeId": "13",
+        "shapeName": "图片 12",
+        "slotType": "image",
+        "bbox": {
+          "x": -1200,
+          "y": 1,
+          "cx": 12192000,
+          "cy": 3846972
+        },
+        "placeholderType": null,
+        "confidence": 0.8
+      },
+      {
+        "slideIndex": 2,
+        "shapeId": "18",
+        "shapeName": "图片 17",
+        "slotType": "image",
+        "bbox": {
+          "x": 10049247,
+          "y": 4157509,
+          "cx": 1764257,
+          "cy": 682452
+        },
+        "placeholderType": null,
+        "confidence": 0.464
+      },
+      {
+        "slideIndex": 3,
+        "shapeId": "45",
+        "shapeName": "文本框 44",
+        "slotType": "title",
+        "bbox": {
+          "x": 5568552,
+          "y": 2171517,
+          "cx": 6623447,
+          "cy": 769441
+        },
+        "placeholderType": null,
+        "sampleText": "清华大学演示文稿模板",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 3,
+        "shapeId": "46",
+        "shapeName": "文本框 45",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 5885210,
+          "y": 2954669,
+          "cx": 5880132,
+          "cy": 548483
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题描述添加标题描述添加标题描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 3,
+        "shapeId": "43",
+        "shapeName": "文本框 42",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 7561162,
+          "y": 4225164,
+          "cx": 1725786,
+          "cy": 338554
+        },
+        "placeholderType": null,
+        "sampleText": "汇报人： XXX",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 3,
+        "shapeId": "44",
+        "shapeName": "文本框 43",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 9764228,
+          "y": 4225164,
+          "cx": 1984375,
+          "cy": 338554
+        },
+        "placeholderType": null,
+        "sampleText": "日期： XX 年 XX 月",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 3,
+        "shapeId": "29",
+        "shapeName": "图片 28",
+        "slotType": "image",
+        "bbox": {
+          "x": 9892354,
+          "y": 266980,
+          "cx": 1840032,
+          "cy": 711763
+        },
+        "placeholderType": null,
+        "confidence": 0.466
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "11",
+        "shapeName": "文本框 10",
+        "slotType": "title",
+        "bbox": {
+          "x": 768346,
+          "y": 1337809,
+          "cx": 1877437,
+          "cy": 1107996
+        },
+        "placeholderType": null,
+        "sampleText": "目录",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "12",
+        "shapeName": "文本框 11",
+        "slotType": "title",
+        "bbox": {
+          "x": 6270319,
+          "y": 1972681,
+          "cx": 2481192,
+          "cy": 584775
+        },
+        "placeholderType": null,
+        "sampleText": "CONTENTS",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "14",
+        "shapeName": "文本框 13",
+        "slotType": "title",
+        "bbox": {
+          "x": 1359470,
+          "y": 2886569,
+          "cx": 3217547,
+          "cy": 2246769
+        },
+        "placeholderType": null,
+        "sampleText": "请添加章节标题 请添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "15",
+        "shapeName": "文本框 14",
+        "slotType": "title",
+        "bbox": {
+          "x": 5875980,
+          "y": 2886569,
+          "cx": 3217547,
+          "cy": 2246769
+        },
+        "placeholderType": null,
+        "sampleText": "请添加章节标题 请添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "16",
+        "shapeName": "文本框 15",
+        "slotType": "body",
+        "bbox": {
+          "x": 1913576,
+          "y": 3887768,
+          "cx": 3552276,
+          "cy": 329321
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节 描述 添加章节 描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "18",
+        "shapeName": "文本框 17",
+        "slotType": "body",
+        "bbox": {
+          "x": 6415092,
+          "y": 3887768,
+          "cx": 3499470,
+          "cy": 329321
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "17",
+        "shapeName": "文本框 16",
+        "slotType": "body",
+        "bbox": {
+          "x": 1913575,
+          "y": 4949526,
+          "cx": 3480357,
+          "cy": 329321
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 4,
+        "shapeId": "19",
+        "shapeName": "文本框 18",
+        "slotType": "body",
+        "bbox": {
+          "x": 6415092,
+          "y": 4949526,
+          "cx": 3499470,
+          "cy": 329321
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "15",
+        "shapeName": "TextBox 14",
+        "slotType": "title",
+        "bbox": {
+          "x": 6734965,
+          "y": 574168,
+          "cx": 1603360,
+          "cy": 923330
+        },
+        "placeholderType": null,
+        "sampleText": "目录",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "6",
+        "shapeName": "小李PPT22",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770730,
+          "y": 1759500,
+          "cx": 2533334,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "14",
+        "shapeName": "제목 3",
+        "slotType": "title",
+        "bbox": {
+          "x": 6943103,
+          "y": 1930967,
+          "cx": 852849,
+          "cy": 492443
+        },
+        "placeholderType": null,
+        "sampleText": "01-",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "7",
+        "shapeName": "小李PPT23",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770730,
+          "y": 2267359,
+          "cx": 3036990,
+          "cy": 323165
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节 描述",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "20",
+        "shapeName": "文本框 19",
+        "slotType": "title",
+        "bbox": {
+          "x": -3088046,
+          "y": 2767281,
+          "cx": 6858001,
+          "cy": 1323439
+        },
+        "placeholderType": null,
+        "sampleText": "CONTENTS",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "22",
+        "shapeName": "小李PPT22",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770730,
+          "y": 2840230,
+          "cx": 2533334,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "24",
+        "shapeName": "제목 3",
+        "slotType": "title",
+        "bbox": {
+          "x": 6943103,
+          "y": 2981217,
+          "cx": 852849,
+          "cy": 492443
+        },
+        "placeholderType": null,
+        "sampleText": "02-",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "23",
+        "shapeName": "小李PPT23",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770729,
+          "y": 3348089,
+          "cx": 3036991,
+          "cy": 323165
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "26",
+        "shapeName": "小李PPT22",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770730,
+          "y": 3896007,
+          "cx": 2533334,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "28",
+        "shapeName": "제목 3",
+        "slotType": "title",
+        "bbox": {
+          "x": 6943103,
+          "y": 4016674,
+          "cx": 852849,
+          "cy": 492443
+        },
+        "placeholderType": null,
+        "sampleText": "03-",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "27",
+        "shapeName": "小李PPT23",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770730,
+          "y": 4403866,
+          "cx": 3036990,
+          "cy": 323165
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "30",
+        "shapeName": "小李PPT22",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770730,
+          "y": 4954394,
+          "cx": 2533334,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "32",
+        "shapeName": "제목 3",
+        "slotType": "title",
+        "bbox": {
+          "x": 6943103,
+          "y": 5085221,
+          "cx": 852849,
+          "cy": 492443
+        },
+        "placeholderType": null,
+        "sampleText": "04-",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "31",
+        "shapeName": "小李PPT23",
+        "slotType": "title",
+        "bbox": {
+          "x": 7770730,
+          "y": 5462253,
+          "cx": 3036990,
+          "cy": 323165
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 5,
+        "shapeId": "2",
+        "shapeName": "图片 1",
+        "slotType": "image",
+        "bbox": {
+          "x": 1687888,
+          "y": -1,
+          "cx": 3860407,
+          "cy": 5746047
+        },
+        "placeholderType": null,
+        "confidence": 0.715
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "52",
+        "shapeName": "文本框 51",
+        "slotType": "title",
+        "bbox": {
+          "x": 2804006,
+          "y": 1969511,
+          "cx": 2031325,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "47",
+        "shapeName": "菱形 46",
+        "slotType": "body",
+        "bbox": {
+          "x": 1974319,
+          "y": 2092586,
+          "cx": 596900,
+          "cy": 596900
+        },
+        "placeholderType": null,
+        "sampleText": "1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "53",
+        "shapeName": "文本框 52",
+        "slotType": "body",
+        "bbox": {
+          "x": 2824961,
+          "y": 2451662,
+          "cx": 2646878,
+          "cy": 310341
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "54",
+        "shapeName": "文本框 53",
+        "slotType": "title",
+        "bbox": {
+          "x": 2804006,
+          "y": 3008053,
+          "cx": 2031325,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "49",
+        "shapeName": "菱形 48",
+        "slotType": "body",
+        "bbox": {
+          "x": 1974319,
+          "y": 3129237,
+          "cx": 596900,
+          "cy": 596900
+        },
+        "placeholderType": null,
+        "sampleText": "2",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "55",
+        "shapeName": "文本框 54",
+        "slotType": "body",
+        "bbox": {
+          "x": 2824961,
+          "y": 3490204,
+          "cx": 2646878,
+          "cy": 310341
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "56",
+        "shapeName": "文本框 55",
+        "slotType": "title",
+        "bbox": {
+          "x": 2804006,
+          "y": 4066800,
+          "cx": 2031325,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "50",
+        "shapeName": "菱形 49",
+        "slotType": "body",
+        "bbox": {
+          "x": 1974319,
+          "y": 4197692,
+          "cx": 596900,
+          "cy": 596900
+        },
+        "placeholderType": null,
+        "sampleText": "3",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "76",
+        "shapeName": "文本框 75",
+        "slotType": "title",
+        "bbox": {
+          "x": 9430715,
+          "y": 4365267,
+          "cx": 1207135,
+          "cy": 521970
+        },
+        "placeholderType": null,
+        "sampleText": "2025",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "57",
+        "shapeName": "文本框 56",
+        "slotType": "body",
+        "bbox": {
+          "x": 2824961,
+          "y": 4548951,
+          "cx": 2646878,
+          "cy": 310341
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "58",
+        "shapeName": "文本框 57",
+        "slotType": "title",
+        "bbox": {
+          "x": 2804006,
+          "y": 5145554,
+          "cx": 2031325,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "51",
+        "shapeName": "菱形 50",
+        "slotType": "body",
+        "bbox": {
+          "x": 1974319,
+          "y": 5250245,
+          "cx": 596900,
+          "cy": 596900
+        },
+        "placeholderType": null,
+        "sampleText": "4",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "59",
+        "shapeName": "文本框 58",
+        "slotType": "caption",
+        "bbox": {
+          "x": 2824961,
+          "y": 5627705,
+          "cx": 2646878,
+          "cy": 310341
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 6,
+        "shapeId": "73",
+        "shapeName": "图片 72",
+        "slotType": "image",
+        "bbox": {
+          "x": 7808983,
+          "y": -1,
+          "cx": 3682017,
+          "cy": 5258285
+        },
+        "placeholderType": null,
+        "confidence": 0.682
+      },
+      {
+        "slideIndex": 7,
+        "shapeId": "31",
+        "shapeName": "文本框 30",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 1456609,
+          "cx": 2203261,
+          "cy": 1631216
+        },
+        "placeholderType": null,
+        "sampleText": "01",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 7,
+        "shapeId": "26",
+        "shapeName": "小李PPT13",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 3104339,
+          "cx": 4267588,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节 标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 7,
+        "shapeId": "27",
+        "shapeName": "文本框 26",
+        "slotType": "body",
+        "bbox": {
+          "x": 588431,
+          "y": 4639544,
+          "cx": 4076164,
+          "cy": 1023742
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述添加章节描述添加章节描述添加 章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节 描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 8,
+        "shapeId": "23",
+        "shapeName": "文本框 22",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 1456609,
+          "cx": 2203261,
+          "cy": 1631216
+        },
+        "placeholderType": null,
+        "sampleText": "02",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 8,
+        "shapeId": "22",
+        "shapeName": "小李PPT13",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 3104339,
+          "cx": 4267588,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节 标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 8,
+        "shapeId": "27",
+        "shapeName": "文本框 26",
+        "slotType": "body",
+        "bbox": {
+          "x": 588431,
+          "y": 4639544,
+          "cx": 4076164,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 9,
+        "shapeId": "31",
+        "shapeName": "文本框 30",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 1456609,
+          "cx": 2203261,
+          "cy": 1631216
+        },
+        "placeholderType": null,
+        "sampleText": "03",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 9,
+        "shapeId": "26",
+        "shapeName": "小李PPT13",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 3104339,
+          "cx": 4267588,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节 标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 9,
+        "shapeId": "27",
+        "shapeName": "文本框 26",
+        "slotType": "body",
+        "bbox": {
+          "x": 588431,
+          "y": 4639544,
+          "cx": 4076164,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 10,
+        "shapeId": "31",
+        "shapeName": "文本框 30",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 1456609,
+          "cx": 2203261,
+          "cy": 1631216
+        },
+        "placeholderType": null,
+        "sampleText": "04",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 10,
+        "shapeId": "26",
+        "shapeName": "小李PPT13",
+        "slotType": "title",
+        "bbox": {
+          "x": 588430,
+          "y": 3104339,
+          "cx": 4267588,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "添加 章节 标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 10,
+        "shapeId": "27",
+        "shapeName": "文本框 26",
+        "slotType": "body",
+        "bbox": {
+          "x": 588431,
+          "y": 4639544,
+          "cx": 4076164,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "21",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "19",
+        "shapeName": "文本框 18",
+        "slotType": "body",
+        "bbox": {
+          "x": 707047,
+          "y": 1274579,
+          "cx": 5739782,
+          "cy": 625171
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文 内容添加 正文内容，添加正文 内容添加 正文内容，添加正文 内容添加 正文内容，添加正文 内容 添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "23",
+        "shapeName": "文本框 22",
+        "slotType": "title",
+        "bbox": {
+          "x": 1998521,
+          "y": 2501821,
+          "cx": 3929971,
+          "cy": 1523494
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题 ： 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文 内容 ，添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "24",
+        "shapeName": "菱形 23",
+        "slotType": "body",
+        "bbox": {
+          "x": 1048539,
+          "y": 2632521,
+          "cx": 768112,
+          "cy": 757295
+        },
+        "placeholderType": null,
+        "sampleText": "1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "27",
+        "shapeName": "文本框 26",
+        "slotType": "title",
+        "bbox": {
+          "x": 1998521,
+          "y": 4285466,
+          "cx": 3993979,
+          "cy": 1523494
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题 ： 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文 内容 ，添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "28",
+        "shapeName": "菱形 27",
+        "slotType": "body",
+        "bbox": {
+          "x": 1048538,
+          "y": 4361302,
+          "cx": 768113,
+          "cy": 757296
+        },
+        "placeholderType": null,
+        "sampleText": "2",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "33",
+        "shapeName": "文本框 32",
+        "slotType": "caption",
+        "bbox": {
+          "x": 7579906,
+          "y": 5823871,
+          "cx": 2954655,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "输入图片 名称输入图片 名称",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "4",
+        "shapeName": "图片 3",
+        "slotType": "image",
+        "bbox": {
+          "x": 6865661,
+          "y": 1207008,
+          "cx": 4383147,
+          "cy": 5156524
+        },
+        "placeholderType": null,
+        "confidence": 0.72
+      },
+      {
+        "slideIndex": 11,
+        "shapeId": "25",
+        "shapeName": "图片 24",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "49",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "105",
+        "shapeName": "文本框 104",
+        "slotType": "body",
+        "bbox": {
+          "x": 4971364,
+          "y": 1573843,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "108",
+        "shapeName": "文本框 107",
+        "slotType": "body",
+        "bbox": {
+          "x": 6614812,
+          "y": 1573843,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 2",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "111",
+        "shapeName": "文本框 110",
+        "slotType": "body",
+        "bbox": {
+          "x": 8258260,
+          "y": 1573843,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 3",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "114",
+        "shapeName": "文本框 113",
+        "slotType": "body",
+        "bbox": {
+          "x": 9901710,
+          "y": 1573843,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 4",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "104",
+        "shapeName": "文本框 103",
+        "slotType": "body",
+        "bbox": {
+          "x": 4986354,
+          "y": 1971560,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "100%",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "107",
+        "shapeName": "文本框 106",
+        "slotType": "body",
+        "bbox": {
+          "x": 6629802,
+          "y": 1971560,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "90%",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "110",
+        "shapeName": "文本框 109",
+        "slotType": "body",
+        "bbox": {
+          "x": 8273250,
+          "y": 1971560,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "80%",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "113",
+        "shapeName": "文本框 112",
+        "slotType": "body",
+        "bbox": {
+          "x": 9916700,
+          "y": 1971560,
+          "cx": 1305690,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "60%",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "121",
+        "shapeName": "文本框 120",
+        "slotType": "title",
+        "bbox": {
+          "x": 7107103,
+          "y": 2873484,
+          "cx": 3944728,
+          "cy": 1523494
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题 ： 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "120",
+        "shapeName": "椭圆 119",
+        "slotType": "body",
+        "bbox": {
+          "x": 6162679,
+          "y": 2940338,
+          "cx": 772985,
+          "cy": 772985
+        },
+        "placeholderType": null,
+        "sampleText": "01",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "29",
+        "shapeName": "文本框 28",
+        "slotType": "title",
+        "bbox": {
+          "x": 7107103,
+          "y": 4596832,
+          "cx": 3944728,
+          "cy": 1523494
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题 ： 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "28",
+        "shapeName": "椭圆 27",
+        "slotType": "body",
+        "bbox": {
+          "x": 6162679,
+          "y": 4663686,
+          "cx": 772985,
+          "cy": 772985
+        },
+        "placeholderType": null,
+        "sampleText": "02",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "25",
+        "shapeName": "文本框 24",
+        "slotType": "caption",
+        "bbox": {
+          "x": 1711059,
+          "y": 5790599,
+          "cx": 2954655,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "输入图片 名称输入图片 名称",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "3",
+        "shapeName": "图片 2",
+        "slotType": "image",
+        "bbox": {
+          "x": 837454,
+          "y": 1161472,
+          "cx": 4718958,
+          "cy": 5183927
+        },
+        "placeholderType": null,
+        "confidence": 0.743
+      },
+      {
+        "slideIndex": 12,
+        "shapeId": "51",
+        "shapeName": "图片 50",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "29",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "19",
+        "shapeName": "矩形 18",
+        "slotType": "body",
+        "bbox": {
+          "x": 4991195,
+          "y": 1299842,
+          "cx": 917927,
+          "cy": 781685
+        },
+        "placeholderType": null,
+        "sampleText": "关键词",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "20",
+        "shapeName": "TextBox 76",
+        "slotType": "title",
+        "bbox": {
+          "x": 6039519,
+          "y": 1331881,
+          "cx": 3411220,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "24",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 6078640,
+          "y": 1793992,
+          "cx": 4953793,
+          "cy": 1622425
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文 内容，添加 正文内容，添加正文内容添加正文内容，添加正文 内容。 添加正文内容添加正文内容，添加正文内容，添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "26",
+        "shapeName": "文本框 25",
+        "slotType": "title",
+        "bbox": {
+          "x": 987187,
+          "y": 2758539,
+          "cx": 1094133,
+          "cy": 707886
+        },
+        "placeholderType": null,
+        "sampleText": "01",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "23",
+        "shapeName": "矩形 22",
+        "slotType": "body",
+        "bbox": {
+          "x": 6058702,
+          "y": 3997172,
+          "cx": 901175,
+          "cy": 781685
+        },
+        "placeholderType": null,
+        "sampleText": "关键词",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "21",
+        "shapeName": "TextBox 76",
+        "slotType": "title",
+        "bbox": {
+          "x": 2540365,
+          "y": 4010593,
+          "cx": 3411220,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "31",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 1015038,
+          "y": 4475999,
+          "cx": 4963658,
+          "cy": 1622425
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容，添加正文内容，添加正文内容添加正文内容，添加正文内容。 添加正文内容添加正文内容，添加正文内容，添加正文内容，添加正文内容添加正文内容，添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "28",
+        "shapeName": "文本框 27",
+        "slotType": "title",
+        "bbox": {
+          "x": 7122365,
+          "y": 5463918,
+          "cx": 1094133,
+          "cy": 707886
+        },
+        "placeholderType": null,
+        "sampleText": "02",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "2",
+        "shapeName": "图片 1",
+        "slotType": "image",
+        "bbox": {
+          "x": 7521395,
+          "y": 3996344,
+          "cx": 3472293,
+          "cy": 2068524
+        },
+        "placeholderType": null,
+        "confidence": 0.536
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "18",
+        "shapeName": "图片 17",
+        "slotType": "image",
+        "bbox": {
+          "x": 1362741,
+          "y": 1299843,
+          "cx": 3466268,
+          "cy": 2072906
+        },
+        "placeholderType": null,
+        "confidence": 0.536
+      },
+      {
+        "slideIndex": 13,
+        "shapeId": "30",
+        "shapeName": "图片 29",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "34",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "50",
+        "shapeName": "文本框 49",
+        "slotType": "body",
+        "bbox": {
+          "x": 8362932,
+          "y": 4163161,
+          "cx": 2503549,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "49",
+        "shapeName": "文本框 48",
+        "slotType": "body",
+        "bbox": {
+          "x": 4816610,
+          "y": 4163162,
+          "cx": 2509229,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "52",
+        "shapeName": "文本框 51",
+        "slotType": "body",
+        "bbox": {
+          "x": 1301752,
+          "y": 4167577,
+          "cx": 2515344,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "40",
+        "shapeName": "矩形 39",
+        "slotType": "caption",
+        "bbox": {
+          "x": 8029339,
+          "y": 5579445,
+          "cx": 3209152,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "请 在此添加关键词",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "45",
+        "shapeName": "矩形 44",
+        "slotType": "caption",
+        "bbox": {
+          "x": 4476178,
+          "y": 5579445,
+          "cx": 3209152,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "请在此添加关键词",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "75",
+        "shapeName": "矩形 74",
+        "slotType": "caption",
+        "bbox": {
+          "x": 964390,
+          "y": 5583874,
+          "cx": 3209152,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "请在此添加关键词",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "9",
+        "shapeName": "图片 8",
+        "slotType": "image",
+        "bbox": {
+          "x": 4532611,
+          "y": 1566582,
+          "cx": 3108859,
+          "cy": 1916206
+        },
+        "placeholderType": null,
+        "confidence": 0.521
+      },
+      {
+        "slideIndex": 14,
+        "shapeId": "36",
+        "shapeName": "图片 35",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "53",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "73",
+        "shapeName": "任意形状 72",
+        "slotType": "caption",
+        "bbox": {
+          "x": 2097713,
+          "y": 1218737,
+          "cx": 830046,
+          "cy": 830046
+        },
+        "placeholderType": null,
+        "sampleText": "时间",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "60",
+        "shapeName": "任意形状 72",
+        "slotType": "caption",
+        "bbox": {
+          "x": 5668140,
+          "y": 1218737,
+          "cx": 830046,
+          "cy": 830046
+        },
+        "placeholderType": null,
+        "sampleText": "时间",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "61",
+        "shapeName": "任意形状 72",
+        "slotType": "caption",
+        "bbox": {
+          "x": 9222033,
+          "y": 1218737,
+          "cx": 830046,
+          "cy": 830046
+        },
+        "placeholderType": null,
+        "sampleText": "时间",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "41",
+        "shapeName": "圆角矩形 40",
+        "slotType": "title",
+        "bbox": {
+          "x": 5121887,
+          "y": 3756826,
+          "cx": 1922552,
+          "cy": 311468
+        },
+        "placeholderType": null,
+        "sampleText": "添加 小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "45",
+        "shapeName": "圆角矩形 44",
+        "slotType": "title",
+        "bbox": {
+          "x": 8675780,
+          "y": 3756826,
+          "cx": 1922552,
+          "cy": 311468
+        },
+        "placeholderType": null,
+        "sampleText": "添加 小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "28",
+        "shapeName": "圆角矩形 27",
+        "slotType": "title",
+        "bbox": {
+          "x": 1473571,
+          "y": 3798771,
+          "cx": 1922552,
+          "cy": 311468
+        },
+        "placeholderType": null,
+        "sampleText": "添加 小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "40",
+        "shapeName": "文本框 39",
+        "slotType": "body",
+        "bbox": {
+          "x": 1248725,
+          "y": 4214549,
+          "cx": 2506529,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文 内容添加 正文 内容； 添加正文内容添加正文内容添加正文 内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "62",
+        "shapeName": "文本框 61",
+        "slotType": "body",
+        "bbox": {
+          "x": 4831518,
+          "y": 4214549,
+          "cx": 2506529,
+          "cy": 1346907
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容； 添加正文内容添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "63",
+        "shapeName": "文本框 62",
+        "slotType": "body",
+        "bbox": {
+          "x": 8385419,
+          "y": 4214549,
+          "cx": 2506529,
+          "cy": 1346907
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容； 添加正文内容添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "9",
+        "shapeName": "图片 8",
+        "slotType": "image",
+        "bbox": {
+          "x": 923974,
+          "y": 2354137,
+          "cx": 3184599,
+          "cy": 998290
+        },
+        "placeholderType": null,
+        "confidence": 0.488
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "3",
+        "shapeName": "图片 2",
+        "slotType": "image",
+        "bbox": {
+          "x": 4491334,
+          "y": 2354137,
+          "cx": 3185463,
+          "cy": 998290
+        },
+        "placeholderType": null,
+        "confidence": 0.488
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "7",
+        "shapeName": "图片 6",
+        "slotType": "image",
+        "bbox": {
+          "x": 8044325,
+          "y": 2354138,
+          "cx": 3185465,
+          "cy": 998290
+        },
+        "placeholderType": null,
+        "confidence": 0.488
+      },
+      {
+        "slideIndex": 15,
+        "shapeId": "55",
+        "shapeName": "图片 54",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "57",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题 文字 （图文排版 ）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "5",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 5294345,
+          "y": 2040466,
+          "cx": 2672080,
+          "cy": 491490
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "46",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 8340306,
+          "y": 2040466,
+          "cx": 2672080,
+          "cy": 491490
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "6",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 1565577,
+          "y": 2213302,
+          "cx": 3335341,
+          "cy": 3103780
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文 内容添加 正文内容，添加正文 内容。 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "9",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 5625548,
+          "y": 2473539,
+          "cx": 1997765,
+          "cy": 702945
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文 内容添加 正文 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "47",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 8647043,
+          "y": 2473539,
+          "cx": 2017644,
+          "cy": 702945
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "49",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 8340306,
+          "y": 4387056,
+          "cx": 2672080,
+          "cy": 491490
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "52",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 5294345,
+          "y": 4387056,
+          "cx": 2672080,
+          "cy": 491490
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "50",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 8647043,
+          "y": 4820129,
+          "cx": 2017644,
+          "cy": 702945
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "53",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 5625548,
+          "y": 4820129,
+          "cx": 1997765,
+          "cy": 702945
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 16,
+        "shapeId": "61",
+        "shapeName": "图片 60",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 17,
+        "shapeId": "50",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 17,
+        "shapeId": "63",
+        "shapeName": "文本框 62",
+        "slotType": "body",
+        "bbox": {
+          "x": 8922213,
+          "y": 5079865,
+          "cx": 1806044,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 17,
+        "shapeId": "22",
+        "shapeName": "文本框 21",
+        "slotType": "body",
+        "bbox": {
+          "x": 1347243,
+          "y": 5079866,
+          "cx": 1789368,
+          "cy": 1023742
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文 内容添加 正文 内容 添加正文 内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 17,
+        "shapeId": "61",
+        "shapeName": "文本框 60",
+        "slotType": "body",
+        "bbox": {
+          "x": 3868301,
+          "y": 5079866,
+          "cx": 1788225,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 17,
+        "shapeId": "62",
+        "shapeName": "文本框 61",
+        "slotType": "body",
+        "bbox": {
+          "x": 6398308,
+          "y": 5079866,
+          "cx": 1788768,
+          "cy": 1061829
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 17,
+        "shapeId": "52",
+        "shapeName": "图片 51",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "41",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（文字排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "38",
+        "shapeName": "文本框 37",
+        "slotType": "title",
+        "bbox": {
+          "x": 1613449,
+          "y": 1473238,
+          "cx": 1470274,
+          "cy": 646331
+        },
+        "placeholderType": null,
+        "sampleText": "100%",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "57",
+        "shapeName": "文本框 56",
+        "slotType": "body",
+        "bbox": {
+          "x": 4199223,
+          "y": 1545993,
+          "cx": 1297150,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "99",
+        "shapeName": "文本框 98",
+        "slotType": "body",
+        "bbox": {
+          "x": 5996008,
+          "y": 1545993,
+          "cx": 1297150,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 2",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "93",
+        "shapeName": "文本框 92",
+        "slotType": "body",
+        "bbox": {
+          "x": 7792793,
+          "y": 1545993,
+          "cx": 1297150,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 3",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "94",
+        "shapeName": "文本框 93",
+        "slotType": "body",
+        "bbox": {
+          "x": 9589578,
+          "y": 1545993,
+          "cx": 1297150,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 4",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "87",
+        "shapeName": "文本框 86",
+        "slotType": "title",
+        "bbox": {
+          "x": 1634396,
+          "y": 3164790,
+          "cx": 3674099,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "104",
+        "shapeName": "文本框 103",
+        "slotType": "title",
+        "bbox": {
+          "x": 6830640,
+          "y": 3164790,
+          "cx": 3674099,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "98",
+        "shapeName": "文本框 97",
+        "slotType": "body",
+        "bbox": {
+          "x": 1416402,
+          "y": 3766140,
+          "cx": 4034308,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文 内容 添加正文内容 。 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "109",
+        "shapeName": "文本框 108",
+        "slotType": "body",
+        "bbox": {
+          "x": 6604100,
+          "y": 3766140,
+          "cx": 4042854,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "92",
+        "shapeName": "圆角矩形 91",
+        "slotType": "caption",
+        "bbox": {
+          "x": 1372446,
+          "y": 5335813,
+          "cx": 1239071,
+          "cy": 389743
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "64",
+        "shapeName": "圆角矩形 63",
+        "slotType": "caption",
+        "bbox": {
+          "x": 2856805,
+          "y": 5335813,
+          "cx": 1239071,
+          "cy": 389743
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 2",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "97",
+        "shapeName": "圆角矩形 96",
+        "slotType": "caption",
+        "bbox": {
+          "x": 4363492,
+          "y": 5335813,
+          "cx": 1239071,
+          "cy": 389743
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "105",
+        "shapeName": "圆角矩形 104",
+        "slotType": "caption",
+        "bbox": {
+          "x": 6568690,
+          "y": 5335813,
+          "cx": 1239071,
+          "cy": 389743
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "106",
+        "shapeName": "圆角矩形 105",
+        "slotType": "caption",
+        "bbox": {
+          "x": 8053049,
+          "y": 5335813,
+          "cx": 1239071,
+          "cy": 389743
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 2",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "108",
+        "shapeName": "圆角矩形 107",
+        "slotType": "caption",
+        "bbox": {
+          "x": 9559736,
+          "y": 5335813,
+          "cx": 1239071,
+          "cy": 389743
+        },
+        "placeholderType": null,
+        "sampleText": "关键词 1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "8",
+        "shapeName": "图片 7",
+        "slotType": "image",
+        "bbox": {
+          "x": 1020642,
+          "y": 1282529,
+          "cx": 2655889,
+          "cy": 987674
+        },
+        "placeholderType": null,
+        "confidence": 0.481
+      },
+      {
+        "slideIndex": 18,
+        "shapeId": "43",
+        "shapeName": "图片 42",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "27",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "42",
+        "shapeName": "文本框 41",
+        "slotType": "title",
+        "bbox": {
+          "x": 961833,
+          "y": 1653735,
+          "cx": 1723549,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "43",
+        "shapeName": "文本框 42",
+        "slotType": "body",
+        "bbox": {
+          "x": 968761,
+          "y": 2212208,
+          "cx": 3376831,
+          "cy": 700576
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文 内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "15",
+        "shapeName": "文本框 14",
+        "slotType": "title",
+        "bbox": {
+          "x": 718981,
+          "y": 4374886,
+          "cx": 2268570,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "01. 添加 小标题 ：",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "23",
+        "shapeName": "文本框 22",
+        "slotType": "title",
+        "bbox": {
+          "x": 6583290,
+          "y": 4374887,
+          "cx": 2191626,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "02. 添加 小标题：",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "17",
+        "shapeName": "文本框 16",
+        "slotType": "body",
+        "bbox": {
+          "x": 883575,
+          "y": 5155683,
+          "cx": 4812074,
+          "cy": 700576
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文 内容，添加 正文内容添加正文 内容，添加 正文内容添加正文 内容，添加 正文 内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "33",
+        "shapeName": "文本框 32",
+        "slotType": "body",
+        "bbox": {
+          "x": 6773541,
+          "y": 5155683,
+          "cx": 4854774,
+          "cy": 700576
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "22",
+        "shapeName": "图片 21",
+        "slotType": "image",
+        "bbox": {
+          "x": 716769,
+          "y": 1236280,
+          "cx": 10759458,
+          "cy": 2713341
+        },
+        "placeholderType": null,
+        "confidence": 0.799
+      },
+      {
+        "slideIndex": 19,
+        "shapeId": "30",
+        "shapeName": "图片 29",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "104",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "134",
+        "shapeName": "文本框 133",
+        "slotType": "body",
+        "bbox": {
+          "x": 8983411,
+          "y": 1366523,
+          "cx": 2198109,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文 内容 添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "120",
+        "shapeName": "文本框 119",
+        "slotType": "body",
+        "bbox": {
+          "x": 3606178,
+          "y": 1379507,
+          "cx": 2188643,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文 内容 添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "52",
+        "shapeName": "任意形状 51",
+        "slotType": "body",
+        "bbox": {
+          "x": 3573270,
+          "y": 2958908,
+          "cx": 2321125,
+          "cy": 506214
+        },
+        "placeholderType": null,
+        "sampleText": "添加图片描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "76",
+        "shapeName": "任意形状 75",
+        "slotType": "body",
+        "bbox": {
+          "x": 8927669,
+          "y": 2958908,
+          "cx": 2329372,
+          "cy": 509713
+        },
+        "placeholderType": null,
+        "sampleText": "添加图片描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "49",
+        "shapeName": "任意形状 48",
+        "slotType": "body",
+        "bbox": {
+          "x": 888078,
+          "y": 3821014,
+          "cx": 2319785,
+          "cy": 512302
+        },
+        "placeholderType": null,
+        "sampleText": "添加 图片 描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "55",
+        "shapeName": "任意形状 54",
+        "slotType": "body",
+        "bbox": {
+          "x": 6279852,
+          "y": 3825408,
+          "cx": 2325413,
+          "cy": 509745
+        },
+        "placeholderType": null,
+        "sampleText": "添加图片描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "35",
+        "shapeName": "文本框 34",
+        "slotType": "body",
+        "bbox": {
+          "x": 998145,
+          "y": 4516028,
+          "cx": 2232071,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文 内容 添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "127",
+        "shapeName": "文本框 126",
+        "slotType": "body",
+        "bbox": {
+          "x": 6385005,
+          "y": 4516028,
+          "cx": 2222280,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容添加正文 内容 添加正文内容添加正文内容添加正文内容",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "8",
+        "shapeName": "图片 7",
+        "slotType": "image",
+        "bbox": {
+          "x": 886991,
+          "y": 1408650,
+          "cx": 2320873,
+          "cy": 2636835
+        },
+        "placeholderType": null,
+        "confidence": 0.523
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "108",
+        "shapeName": "图片 107",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "3",
+        "shapeName": "图片 2",
+        "slotType": "image",
+        "bbox": {
+          "x": 3573271,
+          "y": 3250536,
+          "cx": 2321125,
+          "cy": 2635849
+        },
+        "placeholderType": null,
+        "confidence": 0.523
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "5",
+        "shapeName": "图片 4",
+        "slotType": "image",
+        "bbox": {
+          "x": 6284247,
+          "y": 1412656,
+          "cx": 2320872,
+          "cy": 2634278
+        },
+        "placeholderType": null,
+        "confidence": 0.523
+      },
+      {
+        "slideIndex": 20,
+        "shapeId": "7",
+        "shapeName": "图片 6",
+        "slotType": "image",
+        "bbox": {
+          "x": 8927669,
+          "y": 3250536,
+          "cx": 2329372,
+          "cy": 2629060
+        },
+        "placeholderType": null,
+        "confidence": 0.523
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "30",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "15",
+        "shapeName": "矩形 14",
+        "slotType": "body",
+        "bbox": {
+          "x": 6626640,
+          "y": 1633275,
+          "cx": 3984660,
+          "cy": 565444
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "57",
+        "shapeName": "矩形 56",
+        "slotType": "body",
+        "bbox": {
+          "x": 6626640,
+          "y": 2498962,
+          "cx": 3984660,
+          "cy": 565444
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "58",
+        "shapeName": "矩形 57",
+        "slotType": "body",
+        "bbox": {
+          "x": 1925736,
+          "y": 4258087,
+          "cx": 4071032,
+          "cy": 565444
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "61",
+        "shapeName": "矩形 60",
+        "slotType": "body",
+        "bbox": {
+          "x": 1925736,
+          "y": 5123774,
+          "cx": 3996604,
+          "cy": 565444
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "16",
+        "shapeName": "图片 15",
+        "slotType": "image",
+        "bbox": {
+          "x": 1293447,
+          "y": 1519643,
+          "cx": 4340744,
+          "cy": 1658528
+        },
+        "placeholderType": null,
+        "confidence": 0.536
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "32",
+        "shapeName": "图片 31",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 21,
+        "shapeId": "20",
+        "shapeName": "图片 19",
+        "slotType": "image",
+        "bbox": {
+          "x": 6456512,
+          "y": 4126099,
+          "cx": 4340745,
+          "cy": 1683024
+        },
+        "placeholderType": null,
+        "confidence": 0.537
+      },
+      {
+        "slideIndex": 22,
+        "shapeId": "22",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 22,
+        "shapeId": "19",
+        "shapeName": "文本框 18",
+        "slotType": "body",
+        "bbox": {
+          "x": 801747,
+          "y": 1367598,
+          "cx": 5705393,
+          "cy": 700576
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文 内容 ，添加正文内容添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 22,
+        "shapeId": "29",
+        "shapeName": "文本框 28",
+        "slotType": "body",
+        "bbox": {
+          "x": 1144453,
+          "y": 3077001,
+          "cx": 4758595,
+          "cy": 1477328
+        },
+        "placeholderType": null,
+        "sampleText": "添加文字小结添加文字 小结，添加文字小结添加文字小结 ， 添加文字小结添加文字小结 ， 添加文字小结添加文字 小结。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 22,
+        "shapeId": "33",
+        "shapeName": "图片 32",
+        "slotType": "image",
+        "bbox": {
+          "x": 10196835,
+          "y": 65219,
+          "cx": 1536288,
+          "cy": 707091
+        },
+        "placeholderType": null,
+        "confidence": 0.463
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "76",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字 （文字排版 ）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "21",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 8118913,
+          "y": 1418554,
+          "cx": 1969770,
+          "cy": 720090
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "17",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 1282594,
+          "y": 1472429,
+          "cx": 2212966,
+          "cy": 720090
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "72",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 8246509,
+          "y": 2098188,
+          "cx": 2572044,
+          "cy": 1385570
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文 内容， 添加正文 内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "26",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 1386027,
+          "y": 2128231,
+          "cx": 2518144,
+          "cy": 952767
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "71",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 1278930,
+          "y": 3917265,
+          "cx": 2330971,
+          "cy": 720090
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "73",
+        "shapeName": "Title",
+        "slotType": "title",
+        "bbox": {
+          "x": 8115486,
+          "y": 3917265,
+          "cx": 1969770,
+          "cy": 720090
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "70",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 1409394,
+          "y": 4594013,
+          "cx": 2494777,
+          "cy": 1121410
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文 内容，添加 正文 内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "74",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 8264232,
+          "y": 4594013,
+          "cx": 2554321,
+          "cy": 1385570
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 23,
+        "shapeId": "78",
+        "shapeName": "图片 77",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "37",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "6",
+        "shapeName": "文本框 5",
+        "slotType": "title",
+        "bbox": {
+          "x": 877855,
+          "y": 2548851,
+          "cx": 1094133,
+          "cy": 707886
+        },
+        "placeholderType": null,
+        "sampleText": "01",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "9",
+        "shapeName": "文本框 8",
+        "slotType": "title",
+        "bbox": {
+          "x": 4496324,
+          "y": 2548851,
+          "cx": 1094133,
+          "cy": 707886
+        },
+        "placeholderType": null,
+        "sampleText": "02",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "13",
+        "shapeName": "文本框 12",
+        "slotType": "title",
+        "bbox": {
+          "x": 8101258,
+          "y": 2548851,
+          "cx": 1094133,
+          "cy": 707886
+        },
+        "placeholderType": null,
+        "sampleText": "03",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "26",
+        "shapeName": "矩形 25",
+        "slotType": "body",
+        "bbox": {
+          "x": 870235,
+          "y": 2861792,
+          "cx": 3307988,
+          "cy": 466011
+        },
+        "placeholderType": null,
+        "sampleText": "请添加图片 描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "8",
+        "shapeName": "矩形 7",
+        "slotType": "body",
+        "bbox": {
+          "x": 4489220,
+          "y": 2861792,
+          "cx": 3263875,
+          "cy": 466011
+        },
+        "placeholderType": null,
+        "sampleText": "请添加图片 描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "11",
+        "shapeName": "矩形 10",
+        "slotType": "body",
+        "bbox": {
+          "x": 8090549,
+          "y": 2861792,
+          "cx": 3294255,
+          "cy": 458011
+        },
+        "placeholderType": null,
+        "sampleText": "请添加图片 描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "57",
+        "shapeName": "文本框 56",
+        "slotType": "body",
+        "bbox": {
+          "x": 4886973,
+          "y": 3898420,
+          "cx": 2473755,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "2025.4——2025.7",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "56",
+        "shapeName": "文本框 55",
+        "slotType": "body",
+        "bbox": {
+          "x": 1285498,
+          "y": 3899654,
+          "cx": 2473755,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "2025.1——2025.3",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "58",
+        "shapeName": "文本框 57",
+        "slotType": "body",
+        "bbox": {
+          "x": 8419392,
+          "y": 3905261,
+          "cx": 2632452,
+          "cy": 400110
+        },
+        "placeholderType": null,
+        "sampleText": "2025.9——2025.12",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "23",
+        "shapeName": "文本框 22",
+        "slotType": "body",
+        "bbox": {
+          "x": 1180479,
+          "y": 4422800,
+          "cx": 2604718,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文 内容； 添加正文内容添加正文内容，添加正文内容添加正文 内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "60",
+        "shapeName": "文本框 59",
+        "slotType": "body",
+        "bbox": {
+          "x": 4790970,
+          "y": 4422800,
+          "cx": 2609297,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容；添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "67",
+        "shapeName": "文本框 66",
+        "slotType": "body",
+        "bbox": {
+          "x": 8401461,
+          "y": 4422800,
+          "cx": 2603243,
+          "cy": 1384995
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容；添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "2",
+        "shapeName": "图片 1",
+        "slotType": "image",
+        "bbox": {
+          "x": 8090549,
+          "y": 1288111,
+          "cx": 3294255,
+          "cy": 1593662
+        },
+        "placeholderType": null,
+        "confidence": 0.513
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "7",
+        "shapeName": "图片 6",
+        "slotType": "image",
+        "bbox": {
+          "x": 4494609,
+          "y": 1293350,
+          "cx": 3258486,
+          "cy": 1571625
+        },
+        "placeholderType": null,
+        "confidence": 0.511
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "3",
+        "shapeName": "图片 2",
+        "slotType": "image",
+        "bbox": {
+          "x": 866529,
+          "y": 1282752,
+          "cx": 3311694,
+          "cy": 1579040
+        },
+        "placeholderType": null,
+        "confidence": 0.513
+      },
+      {
+        "slideIndex": 24,
+        "shapeId": "52",
+        "shapeName": "图片 51",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "27",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字 （文字排版 ）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "18",
+        "shapeName": "圆角矩形 17",
+        "slotType": "title",
+        "bbox": {
+          "x": 1427541,
+          "y": 1609747,
+          "cx": 1689652,
+          "cy": 463288
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "72",
+        "shapeName": "圆角矩形 71",
+        "slotType": "title",
+        "bbox": {
+          "x": 8903361,
+          "y": 1609747,
+          "cx": 1699591,
+          "cy": 463288
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "24",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 7378287,
+          "y": 2203272,
+          "cx": 3261179,
+          "cy": 1584989
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容； 添加正文内容添加正文内容，添加正文内容添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "63",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 1432806,
+          "y": 2209456,
+          "cx": 3160464,
+          "cy": 1584989
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容 ； 添加 正文内容添加正文内容，添加正文内容添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "32",
+        "shapeName": "任意多边形: 形状 27",
+        "slotType": "title",
+        "bbox": {
+          "x": 5230772,
+          "y": 2922834,
+          "cx": 1600835,
+          "cy": 1600835
+        },
+        "placeholderType": null,
+        "sampleText": "输入 标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "76",
+        "shapeName": "圆角矩形 75",
+        "slotType": "title",
+        "bbox": {
+          "x": 8903361,
+          "y": 3854353,
+          "cx": 1689652,
+          "cy": 463288
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "68",
+        "shapeName": "圆角矩形 67",
+        "slotType": "title",
+        "bbox": {
+          "x": 1427541,
+          "y": 3884170,
+          "cx": 1709530,
+          "cy": 463288
+        },
+        "placeholderType": null,
+        "sampleText": "输入小标题",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "25",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 7378287,
+          "y": 4484403,
+          "cx": 3261179,
+          "cy": 1584989
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容； 添加正文内容添加正文内容，添加正文内容添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "22",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 1432805,
+          "y": 4490587,
+          "cx": 3200675,
+          "cy": 1584989
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容添加正文内容； 添加正文内容添加正文内容，添加正文内容添加正文内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 25,
+        "shapeId": "29",
+        "shapeName": "图片 28",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "43",
+        "shapeName": "小李PPT1",
+        "slotType": "title",
+        "bbox": {
+          "x": 363836,
+          "y": 244861,
+          "cx": 4493538,
+          "cy": 523220
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题文字（图文排版）",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "22",
+        "shapeName": "文本框 21",
+        "slotType": "title",
+        "bbox": {
+          "x": 7588899,
+          "y": 1507340,
+          "cx": 2931160,
+          "cy": 1126462
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题描述添加标 题描述添加 标题描述",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "30",
+        "shapeName": "文本框 29",
+        "slotType": "title",
+        "bbox": {
+          "x": 1712760,
+          "y": 2027898,
+          "cx": 2071942,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "9",
+        "shapeName": "文本框 8",
+        "slotType": "title",
+        "bbox": {
+          "x": 4831279,
+          "y": 2027898,
+          "cx": 2092880,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "添加小标题",
+        "confidence": 0.9
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "23",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 7606134,
+          "y": 2702727,
+          "cx": 2815660,
+          "cy": 2679065
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文 内容添加 正文 内容，添加 正文 内容添加 正文 内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "64",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 4662187,
+          "y": 2751411,
+          "cx": 2113221,
+          "cy": 1714663
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文内容；添加正文内容添加正文内容，添加正文内容。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "31",
+        "shapeName": "Text1",
+        "slotType": "body",
+        "bbox": {
+          "x": 1558529,
+          "y": 2757562,
+          "cx": 2113221,
+          "cy": 1714663
+        },
+        "placeholderType": null,
+        "sampleText": "添加正文内容添加正文内容，添加正文 内容； 添加正文内容添加正文内容，添加正文 内容 。",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "19",
+        "shapeName": "文本框 18",
+        "slotType": "caption",
+        "bbox": {
+          "x": 1188981,
+          "y": 4489367,
+          "cx": 1626235,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "时间轴 1",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "35",
+        "shapeName": "文本框 34",
+        "slotType": "caption",
+        "bbox": {
+          "x": 3217876,
+          "y": 4489367,
+          "cx": 1626235,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "时间轴 2",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "36",
+        "shapeName": "文本框 35",
+        "slotType": "caption",
+        "bbox": {
+          "x": 5162509,
+          "y": 4489367,
+          "cx": 1626235,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "时间轴 3",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 26,
+        "shapeId": "45",
+        "shapeName": "图片 44",
+        "slotType": "image",
+        "bbox": {
+          "x": 10254253,
+          "y": 165275,
+          "cx": 1478870,
+          "cy": 572058
+        },
+        "placeholderType": null,
+        "confidence": 0.46
+      },
+      {
+        "slideIndex": 27,
+        "shapeId": "10",
+        "shapeName": "文本框 9",
+        "slotType": "title",
+        "bbox": {
+          "x": 950648,
+          "y": 3563992,
+          "cx": 6488654,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题描述添加标题描述添加标题描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 27,
+        "shapeId": "11",
+        "shapeName": "文本框 10",
+        "slotType": "title",
+        "bbox": {
+          "x": 892720,
+          "y": 3965564,
+          "cx": 6340197,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "谢谢，敬请批评指正！",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 27,
+        "shapeId": "12",
+        "shapeName": "矩形 11",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 950648,
+          "y": 5159643,
+          "cx": 6718935,
+          "cy": 461665
+        },
+        "placeholderType": null,
+        "sampleText": "汇报人： XXX 日期： XX 年 XX 月",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 27,
+        "shapeId": "33",
+        "shapeName": "图片 32",
+        "slotType": "image",
+        "bbox": {
+          "x": 9996857,
+          "y": 3546998,
+          "cx": 1840032,
+          "cy": 711763
+        },
+        "placeholderType": null,
+        "confidence": 0.466
+      },
+      {
+        "slideIndex": 28,
+        "shapeId": "10",
+        "shapeName": "文本框 9",
+        "slotType": "title",
+        "bbox": {
+          "x": 508784,
+          "y": 4169289,
+          "cx": 6488654,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "添加标题描述添加标题描述添加标题描述",
+        "confidence": 0.75
+      },
+      {
+        "slideIndex": 28,
+        "shapeId": "11",
+        "shapeName": "文本框 10",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 490612,
+          "y": 4570861,
+          "cx": 6522940,
+          "cy": 830997
+        },
+        "placeholderType": null,
+        "sampleText": "谢谢， 敬请批评指正！",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 28,
+        "shapeId": "25",
+        "shapeName": "矩形 24",
+        "slotType": "caption",
+        "bbox": {
+          "x": 509694,
+          "y": 5795420,
+          "cx": 6718935,
+          "cy": 418191
+        },
+        "placeholderType": null,
+        "sampleText": "汇报人： XXX 日期： XX 年 XX 月",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 28,
+        "shapeId": "13",
+        "shapeName": "图片 12",
+        "slotType": "image",
+        "bbox": {
+          "x": -1200,
+          "y": 1,
+          "cx": 12192000,
+          "cy": 3846972
+        },
+        "placeholderType": null,
+        "confidence": 0.8
+      },
+      {
+        "slideIndex": 28,
+        "shapeId": "18",
+        "shapeName": "图片 17",
+        "slotType": "image",
+        "bbox": {
+          "x": 10049247,
+          "y": 4157509,
+          "cx": 1764257,
+          "cy": 682452
+        },
+        "placeholderType": null,
+        "confidence": 0.464
+      },
+      {
+        "slideIndex": 29,
+        "shapeId": "19",
+        "shapeName": "文本框 18",
+        "slotType": "title",
+        "bbox": {
+          "x": 5562665,
+          "y": 1624376,
+          "cx": 6132202,
+          "cy": 2077492
+        },
+        "placeholderType": null,
+        "sampleText": "谢谢！ 敬请批评指正。",
+        "confidence": 0.7
+      },
+      {
+        "slideIndex": 29,
+        "shapeId": "17",
+        "shapeName": "文本框 16",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 7103964,
+          "y": 4400129,
+          "cx": 1725786,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "汇报人： XXX",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 29,
+        "shapeId": "18",
+        "shapeName": "文本框 17",
+        "slotType": "subtitle",
+        "bbox": {
+          "x": 9332856,
+          "y": 4400129,
+          "cx": 1984375,
+          "cy": 369332
+        },
+        "placeholderType": null,
+        "sampleText": "日期： XX 年 XX 月",
+        "confidence": 0.55
+      },
+      {
+        "slideIndex": 29,
+        "shapeId": "29",
+        "shapeName": "图片 28",
+        "slotType": "image",
+        "bbox": {
+          "x": 9892354,
+          "y": 266980,
+          "cx": 1840032,
+          "cy": 711763
+        },
+        "placeholderType": null,
+        "confidence": 0.466
+      },
+      {
+        "slideIndex": 29,
+        "shapeId": "23",
+        "shapeName": "图片 22",
+        "slotType": "image",
+        "bbox": {
+          "x": 9892354,
+          "y": 266980,
+          "cx": 1840032,
+          "cy": 711763
+        },
+        "placeholderType": null,
+        "confidence": 0.466
+      }
+    ],
+    "styleTokens": {
+      "title": {
+        "fontFace": "微软雅黑",
+        "fontSize": 66,
+        "color": "441351",
+        "sampleSlideIndex": 4,
+        "sampleShapeId": "11"
+      },
+      "subtitle": {
+        "fontFace": "微软雅黑",
+        "fontSize": 18,
+        "color": "FFFFFF",
+        "sampleSlideIndex": 29,
+        "sampleShapeId": "17"
+      },
+      "body": {
+        "fontFace": "微软雅黑",
+        "fontSize": 20,
+        "color": "912C8D",
+        "sampleSlideIndex": 22,
+        "sampleShapeId": "29"
+      },
+      "caption": {
+        "fontFace": "微软雅黑",
+        "fontSize": 16,
+        "color": null,
+        "sampleSlideIndex": 6,
+        "sampleShapeId": "59"
+      },
+      "palette": [
+        "000000",
+        "FFFFFF",
+        "3C3652",
+        "912C8D",
+        "7561D6",
+        "68A4C6",
+        "6A69B6",
+        "5199EA",
+        "5B84D8",
+        "467886",
+        "96607D",
+        "110000",
+        "105000",
+        "103000",
+        "109000",
+        "102000",
+        "100000",
+        "120000",
+        "170000",
+        "150000",
+        "130000",
+        "44546A",
+        "E7E6E6",
+        "6637E9",
+        "00B0F0",
+        "47BAFF",
+        "5B9BD5",
+        "70AD47",
+        "0563C1",
+        "954F72",
+        "ED7D31",
+        "A5A5A5",
+        "FFC000",
+        "4472C4"
+      ],
+      "fonts": [
+        "等线 Light",
+        "游ゴシック Light",
+        "맑은 고딕",
+        "新細明體",
+        "Times New Roman",
+        "Angsana New",
+        "Nyala",
+        "Vrinda",
+        "Shruti",
+        "MoolBoran",
+        "Tunga",
+        "Raavi",
+        "Euphemia",
+        "Plantagenet Cherokee",
+        "Microsoft Yi Baiti",
+        "Microsoft Himalaya",
+        "MV Boli",
+        "Mangal",
+        "Gautami",
+        "Latha",
+        "Estrangelo Edessa",
+        "Kalinga",
+        "Kartika",
+        "DokChampa",
+        "Iskoola Pota",
+        "Mongolian Baiti",
+        "Microsoft Uighur",
+        "Sylfaen",
+        "Arial",
+        "Leelawadee UI",
+        "Microsoft JhengHei",
+        "Javanese Text",
+        "Segoe UI",
+        "Myanmar Text",
+        "Ebrima",
+        "Nirmala UI",
+        "Phagspa",
+        "Microsoft Tai Le",
+        "Microsoft New Tai Lue",
+        "等线"
+      ]
+    },
+    "slideSummaries": [
+      {
+        "slideIndex": 1,
+        "role": "cover",
+        "title": "添加标题描述添加标题描述添加标题描述",
+        "textSlotCount": 3,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 4,
+        "score": 0.61
+      },
+      {
+        "slideIndex": 2,
+        "role": "content_image",
+        "title": "添加标题描述添加 标题描述添加标题 描述",
+        "textSlotCount": 3,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 5,
+        "score": 0.73
+      },
+      {
+        "slideIndex": 3,
+        "role": "cover",
+        "title": "汇报人： XXX",
+        "textSlotCount": 4,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 5,
+        "score": 0.69
+      },
+      {
+        "slideIndex": 4,
+        "role": "agenda",
+        "title": "目录",
+        "textSlotCount": 8,
+        "imageSlotCount": 0,
+        "replaceableSlotCount": 8,
+        "score": 0.89
+      },
+      {
+        "slideIndex": 5,
+        "role": "agenda",
+        "title": "目录",
+        "textSlotCount": 14,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 15,
+        "score": 1
+      },
+      {
+        "slideIndex": 6,
+        "role": "content_image",
+        "title": "1",
+        "textSlotCount": 13,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 14,
+        "score": 1
+      },
+      {
+        "slideIndex": 7,
+        "role": "content_text",
+        "title": "添加章节 标题",
+        "textSlotCount": 3,
+        "imageSlotCount": 0,
+        "replaceableSlotCount": 3,
+        "score": 0.49
+      },
+      {
+        "slideIndex": 8,
+        "role": "content_text",
+        "title": "添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述添加章节描述",
+        "textSlotCount": 3,
+        "imageSlotCount": 0,
+        "replaceableSlotCount": 3,
+        "score": 0.49
+      },
+      {
+        "slideIndex": 9,
+        "role": "content_text",
+        "title": "添加章节 标题",
+        "textSlotCount": 3,
+        "imageSlotCount": 0,
+        "replaceableSlotCount": 3,
+        "score": 0.49
+      },
+      {
+        "slideIndex": 10,
+        "role": "content_text",
+        "title": "添加 章节 标题",
+        "textSlotCount": 3,
+        "imageSlotCount": 0,
+        "replaceableSlotCount": 3,
+        "score": 0.49
+      },
+      {
+        "slideIndex": 11,
+        "role": "content_image",
+        "title": "添加正文 内容添加 正文内容，添加正文 内容添加 正文内容，添加正文 内容添加 正文内容，添加正文 内容 添加正文内容 。",
+        "textSlotCount": 7,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 9,
+        "score": 1
+      },
+      {
+        "slideIndex": 12,
+        "role": "content_image",
+        "title": "输入图片 名称输入图片 名称",
+        "textSlotCount": 14,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 16,
+        "score": 1
+      },
+      {
+        "slideIndex": 13,
+        "role": "content_image",
+        "title": "关键词",
+        "textSlotCount": 9,
+        "imageSlotCount": 3,
+        "replaceableSlotCount": 12,
+        "score": 1
+      },
+      {
+        "slideIndex": 14,
+        "role": "content_image",
+        "title": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "textSlotCount": 7,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 9,
+        "score": 1
+      },
+      {
+        "slideIndex": 15,
+        "role": "content_image",
+        "title": "时间",
+        "textSlotCount": 10,
+        "imageSlotCount": 4,
+        "replaceableSlotCount": 14,
+        "score": 1
+      },
+      {
+        "slideIndex": 16,
+        "role": "content_image",
+        "title": "添加正文内容添加正文内容，添加正文 内容添加 正文内容，添加正文 内容。 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。 添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "textSlotCount": 10,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 11,
+        "score": 1
+      },
+      {
+        "slideIndex": 17,
+        "role": "content_image",
+        "title": "添加正文内容添加正文 内容添加 正文 内容 添加正文 内容",
+        "textSlotCount": 5,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 6,
+        "score": 0.77
+      },
+      {
+        "slideIndex": 18,
+        "role": "content_image",
+        "title": "100%",
+        "textSlotCount": 16,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 18,
+        "score": 1
+      },
+      {
+        "slideIndex": 19,
+        "role": "content_image",
+        "title": "01. 添加 小标题 ：",
+        "textSlotCount": 7,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 9,
+        "score": 1
+      },
+      {
+        "slideIndex": 20,
+        "role": "content_image",
+        "title": "添加标题文字（图文排版）",
+        "textSlotCount": 9,
+        "imageSlotCount": 5,
+        "replaceableSlotCount": 14,
+        "score": 1
+      },
+      {
+        "slideIndex": 21,
+        "role": "content_image",
+        "title": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文内容。",
+        "textSlotCount": 5,
+        "imageSlotCount": 3,
+        "replaceableSlotCount": 8,
+        "score": 1
+      },
+      {
+        "slideIndex": 22,
+        "role": "content_image",
+        "title": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容添加正文 内容 ，添加正文内容添加正文内容 。",
+        "textSlotCount": 3,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 4,
+        "score": 0.61
+      },
+      {
+        "slideIndex": 23,
+        "role": "content_image",
+        "title": "添加正文内容添加正文内容，添加正文内容添加正文内容，添加正文内容。",
+        "textSlotCount": 9,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 10,
+        "score": 1
+      },
+      {
+        "slideIndex": 24,
+        "role": "content_image",
+        "title": "添加正文内容添加正文内容，添加正文内容添加正文 内容； 添加正文内容添加正文内容，添加正文内容添加正文 内容 。",
+        "textSlotCount": 13,
+        "imageSlotCount": 4,
+        "replaceableSlotCount": 17,
+        "score": 1
+      },
+      {
+        "slideIndex": 25,
+        "role": "content_image",
+        "title": "输入 标题",
+        "textSlotCount": 10,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 11,
+        "score": 1
+      },
+      {
+        "slideIndex": 26,
+        "role": "content_image",
+        "title": "添加小标题",
+        "textSlotCount": 10,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 11,
+        "score": 1
+      },
+      {
+        "slideIndex": 27,
+        "role": "closing",
+        "title": "添加标题描述添加标题描述添加标题描述",
+        "textSlotCount": 3,
+        "imageSlotCount": 1,
+        "replaceableSlotCount": 4,
+        "score": 0.61
+      },
+      {
+        "slideIndex": 28,
+        "role": "cover",
+        "title": "汇报人： XXX 日期： XX 年 XX 月",
+        "textSlotCount": 3,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 5,
+        "score": 0.73
+      },
+      {
+        "slideIndex": 29,
+        "role": "cover",
+        "title": "汇报人： XXX",
+        "textSlotCount": 3,
+        "imageSlotCount": 2,
+        "replaceableSlotCount": 5,
+        "score": 0.73
+      }
     ]
   }
 }

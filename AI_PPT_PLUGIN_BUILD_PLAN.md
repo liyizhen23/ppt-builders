@@ -883,6 +883,32 @@ frontend/
 - 已提供 `GET /api/templates/default`、`POST /api/templates/default` 和 `POST /api/templates/analyze`。
 - 不上传模板时默认使用清华模板；用户可通过插件按钮保存新的默认模板。
 
+### 阶段 2b：Template Profile
+
+目标：把原始模板解析结果整理成生成阶段可直接使用的能力层。
+
+任务：
+
+- 按页面角色建立 `roleIndex`。
+- 生成每类页面的 `recommendedSlides`。
+- 识别可替换文本槽位和图片槽位。
+- 提取标题、正文、注释等 `styleTokens`。
+- 生成每页 `slideSummaries`，供后续模板页匹配和替换使用。
+
+验收：
+
+- Profile 能告诉生成器某类内容优先使用哪些模板页。
+- Profile 能告诉生成器哪些 shape 可以替换标题、正文、注释和图片。
+- Profile 能提供字体、字号、颜色和主题色板。
+
+当前实现状态：
+
+- `template-profile.json` 已包含 `capabilities.roleIndex`。
+- 已生成 `capabilities.recommendedSlides`。
+- 已识别 `capabilities.replaceableSlots`，当前清华模板为 256 个槽位。
+- 已生成 `capabilities.styleTokens`，包括 title、subtitle、body、caption、palette 和 fonts。
+- 已生成 `capabilities.slideSummaries`，供后续第 7 步模板页替换使用。
+
 ### 阶段 3：报告解析和 evidence index
 
 目标：生成和修改内容均可追踪来源。

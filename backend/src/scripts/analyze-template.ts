@@ -31,7 +31,12 @@ console.log(
       roles: profile.slides.reduce<Record<string, number>>((acc, slide) => {
         acc[slide.role] = (acc[slide.role] ?? 0) + 1;
         return acc;
-      }, {})
+      }, {}),
+      capabilities: {
+        replaceableSlots: profile.capabilities.replaceableSlots.length,
+        recommendedSlides: profile.capabilities.recommendedSlides,
+        styleTokens: profile.capabilities.styleTokens
+      }
     },
     null,
     2

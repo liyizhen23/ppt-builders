@@ -1,5 +1,6 @@
 import JSZip from "jszip";
 import { XMLParser } from "fast-xml-parser";
+import { buildTemplateCapabilities, TemplateCapabilities } from "./templateCapabilities.js";
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -30,6 +31,7 @@ export interface TemplateProfile {
     fonts: string[];
     colors: string[];
   };
+  capabilities: TemplateCapabilities;
 }
 
 export interface TemplateSlideProfile {
@@ -132,7 +134,7 @@ export async function analyzePptxTemplate(input: {
   const media = await parseMedia(zip, mediaNames);
   const theme = await extractTheme(zip, names);
 
-  return {
+  const rawProfile = {
     templateId: input.templateId,
     sourceFileName: input.sourceFileName,
     generatedAt: new Date().toISOString(),
@@ -148,6 +150,11 @@ export async function analyzePptxTemplate(input: {
     masters,
     media,
     theme
+  };
+
+  return {
+    ...rawProfile,
+    capabilities: buildTemplateCapabilities(rawProfile)
   };
 }
 

@@ -21,6 +21,18 @@ export interface DefaultTemplateResult {
     media: number;
   };
   roles: Record<string, number>;
+  capabilities?: {
+    replaceableSlots: number;
+    recommendedSlides: Record<string, number[]>;
+    styleTokens: {
+      title: unknown;
+      subtitle: unknown;
+      body: unknown;
+      caption: unknown;
+      palette: string[];
+      fonts: string[];
+    };
+  };
 }
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";

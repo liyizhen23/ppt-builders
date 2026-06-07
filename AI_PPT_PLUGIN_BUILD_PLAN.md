@@ -841,6 +841,13 @@ frontend/
 - 插件可以上传文件。
 - 可以插入后端返回的 PPTX slide。
 
+当前实现状态：
+
+- 前端任务窗格骨架已完成。
+- 后端 API 骨架已完成。
+- 后端已能生成一页测试 PPTX 并返回 `pptxBase64`。
+- 本地开发服务器使用 Office Add-in dev certificate 提供 HTTPS。
+
 ### 阶段 2：清华模板解析
 
 目标：解析模板页、母版、版式、图片和样式。

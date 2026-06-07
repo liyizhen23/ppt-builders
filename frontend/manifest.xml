@@ -5,13 +5,13 @@
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
   xsi:type="TaskPaneApp">
   <Id>2f6a01f1-4573-4ef7-bdf8-0e9b46a6c601</Id>
-  <Version>0.1.0.0</Version>
+  <Version>1.0.0.0</Version>
   <ProviderName>AI PPT Builder</ProviderName>
   <DefaultLocale>zh-CN</DefaultLocale>
   <DisplayName DefaultValue="AI PPT Builder" />
   <Description DefaultValue="AI-assisted PowerPoint generation and editing task pane." />
-  <IconUrl DefaultValue="https://localhost:5173/assets/icon-32.svg" />
-  <HighResolutionIconUrl DefaultValue="https://localhost:5173/assets/icon-64.svg" />
+  <IconUrl DefaultValue="https://localhost:5173/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://localhost:5173/assets/icon-64.png" />
   <SupportUrl DefaultValue="https://localhost:5173" />
   <AppDomains>
     <AppDomain>https://localhost:5173</AppDomain>
@@ -65,22 +65,22 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://localhost:5173/assets/icon-16.svg" />
-        <bt:Image id="Icon.32x32" DefaultValue="https://localhost:5173/assets/icon-32.svg" />
-        <bt:Image id="Icon.80x80" DefaultValue="https://localhost:5173/assets/icon-80.svg" />
+        <bt:Image id="Icon.16x16" DefaultValue="https://localhost:5173/assets/icon-16.png" />
+        <bt:Image id="Icon.32x32" DefaultValue="https://localhost:5173/assets/icon-32.png" />
+        <bt:Image id="Icon.80x80" DefaultValue="https://localhost:5173/assets/icon-80.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:5173/index.html" />
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://localhost:5173" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="AI PPT Builder 已加载" />
+        <bt:String id="GetStarted.Title" DefaultValue="AI PPT Builder loaded" />
         <bt:String id="CommandsGroup.Label" DefaultValue="AI PPT" />
         <bt:String id="TaskpaneButton.Label" DefaultValue="AI PPT Builder" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="GetStarted.Description" DefaultValue="打开任务窗格，上传报告和模板并生成 PPT。" />
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="打开 AI PPT Builder 任务窗格。" />
+        <bt:String id="GetStarted.Description" DefaultValue="Open the task pane to upload a report and template, then generate PPT slides." />
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Open the AI PPT Builder task pane." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

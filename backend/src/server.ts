@@ -359,6 +359,7 @@ app.post("/api/decks/generate", async (request, reply) => {
     instruction: received.instruction,
     templateProfile,
     evidenceIndex: currentReport.evidenceIndex,
+    reportSourcePath: currentReport.sourcePath,
     templateSourcePath: template.sourcePath,
     templateBuffer: template.buffer.length > 0 ? template.buffer : undefined
   });

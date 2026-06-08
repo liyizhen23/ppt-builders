@@ -1,6 +1,7 @@
-import { copyFile, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
+import JSZip from "jszip";
 import { listAssets } from "../assets/assetLibraryStore.js";
 import type { EvidenceBlock, EvidenceIndex } from "../reports/reportParser.js";
 import type { TemplateProfile, TemplateSlideRole } from "../templates/templateProfile.js";
@@ -11,7 +12,8 @@ export const officeCliGenerationRules = [
   "Only use report evidence and explicit user instructions; do not invent claims.",
   "Strictly preserve the uploaded template page layouts by cloning template slides with officeCLI.",
   "Replace only content slots inferred from the template; protect logos, school emblems, page numbers, footers, and decorative shapes.",
-  "Prefer replacing template content pictures with uploaded image assets when a safe image slot is available.",
+  "Prefer replacing template content pictures with report-extracted images first, then uploaded image assets, when a safe image slot is available.",
+  "Treat text inside editable PowerPoint shapes as text slots; replace safe shape text while preserving the shape geometry.",
   "Keep local partial-edit features on their existing editing path."
 ] as const;
 
@@ -21,6 +23,7 @@ export interface OfficeCliPptGenerationInput {
   templateFileName: string;
   evidenceIndex: EvidenceIndex;
   templateProfile: TemplateProfile;
+  reportSourcePath?: string;
   templateSourcePath?: string;
   templateBuffer?: Buffer;
 }
@@ -68,7 +71,12 @@ export interface OfficeCliSlideSpec {
   preferredTemplateRole: TemplateSlideRole;
 }
 
-type ImageAsset = Awaited<ReturnType<typeof listAssets>>[number];
+interface ReplacementImage {
+  sourceFileName: string;
+  notes: string;
+  path: string;
+  priority: number;
+}
 
 export async function generatePptWithOfficeCli(input: OfficeCliPptGenerationInput): Promise<OfficeCliPptGenerationResult> {
   const deckSpec = buildOfficeCliDeckSpec(input);
@@ -84,7 +92,7 @@ export async function generatePptWithOfficeCli(input: OfficeCliPptGenerationInpu
       throw new Error("officeCLI 生成缺少模板源文件。");
     }
 
-    const imageAssets = await listAssets("image");
+    const imageAssets = await collectReplacementImages(input.reportSourcePath, workDir);
     const renderedSlides = [];
     for (const slideSpec of deckSpec.slides) {
       const selectedSlideIndex = chooseTemplateSlide(input.templateProfile, slideSpec);
@@ -205,7 +213,7 @@ async function replaceTemplateSlots(input: {
   profile: TemplateProfile;
   selectedSlideIndex: number;
   slideSpec: OfficeCliSlideSpec;
-  imageAssets: ImageAsset[];
+  imageAssets: ReplacementImage[];
 }) {
   const allSlots = input.profile.capabilities.replaceableSlots.filter((slot) => slot.slideIndex === input.selectedSlideIndex);
   const safeSlots = allSlots.filter((slot) => !isProtectedSlot(input.profile, slot));
@@ -236,8 +244,7 @@ async function replaceTemplateSlots(input: {
     .sort((a, b) => b.confidence - a.confidence)[0];
   const imageAsset = chooseImageAsset(input.imageAssets, input.slideSpec, input.generatedSlideIndex);
   if (imageSlot && imageAsset) {
-    const imagePath = resolve(process.cwd(), "..", "asset-library", "files", imageAsset.storedFileName);
-    if (await setPictureSource(input.outputPath, input.generatedSlideIndex, imageSlot.shapeId, imagePath, imageAsset.sourceFileName)) {
+    if (await setPictureSource(input.outputPath, input.generatedSlideIndex, imageSlot.shapeId, imageAsset.path, imageAsset.sourceFileName)) {
       replacedSlots.push({ shapeId: imageSlot.shapeId, slotType: "image" });
     }
   }
@@ -341,7 +348,53 @@ function isProtectedPictureSlot(profile: TemplateProfile, slot: TemplateReplacea
   return (inTopRight || nearTopRight) && likelyLogoScale;
 }
 
-function chooseImageAsset(assets: ImageAsset[], slideSpec: OfficeCliSlideSpec, slideIndex: number) {
+async function collectReplacementImages(reportSourcePath: string | undefined, workDir: string): Promise<ReplacementImage[]> {
+  const reportImages = reportSourcePath ? await extractReportImages(reportSourcePath, workDir) : [];
+  const libraryAssets = await listAssets("image");
+  const libraryImages = libraryAssets.map((asset): ReplacementImage => ({
+    sourceFileName: asset.sourceFileName,
+    notes: asset.notes,
+    path: resolve(process.cwd(), "..", "asset-library", "files", asset.storedFileName),
+    priority: 1
+  }));
+
+  return [...reportImages, ...libraryImages];
+}
+
+async function extractReportImages(reportSourcePath: string, workDir: string): Promise<ReplacementImage[]> {
+  if (!/\.docx$/i.test(reportSourcePath)) {
+    return [];
+  }
+
+  try {
+    const zip = await JSZip.loadAsync(await readFile(reportSourcePath));
+    const mediaFiles = Object.values(zip.files)
+      .filter((file) => !file.dir && /^word\/media\/.+\.(png|jpe?g|gif|bmp|webp|svg)$/i.test(file.name))
+      .sort((a, b) => a.name.localeCompare(b.name, "en"));
+
+    const imageDir = join(workDir, "report-images");
+    await mkdir(imageDir, { recursive: true });
+
+    const images: ReplacementImage[] = [];
+    for (let index = 0; index < mediaFiles.length; index += 1) {
+      const file = mediaFiles[index];
+      const extension = file.name.match(/\.[^.]+$/)?.[0] ?? ".png";
+      const outputPath = join(imageDir, `report-image-${index + 1}${extension}`);
+      await writeFile(outputPath, await file.async("nodebuffer"));
+      images.push({
+        sourceFileName: file.name.split("/").pop() ?? `report-image-${index + 1}${extension}`,
+        notes: "extracted from report document",
+        path: outputPath,
+        priority: 2
+      });
+    }
+    return images;
+  } catch {
+    return [];
+  }
+}
+
+function chooseImageAsset(assets: ReplacementImage[], slideSpec: OfficeCliSlideSpec, slideIndex: number) {
   if (assets.length === 0) {
     return null;
   }
@@ -350,7 +403,7 @@ function chooseImageAsset(assets: ImageAsset[], slideSpec: OfficeCliSlideSpec, s
     const text = `${asset.sourceFileName} ${asset.notes}`.toLowerCase();
     return {
       asset,
-      score: terms.filter((term) => text.includes(term)).length,
+      score: terms.filter((term) => text.includes(term)).length + asset.priority,
       index
     };
   });

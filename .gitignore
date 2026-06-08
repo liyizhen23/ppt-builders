@@ -9,6 +9,7 @@ dist/
 *.log
 
 templates/default/
+reports/current/
 
 ~$*.pptx
 ~$*.docx

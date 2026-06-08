@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { EvidenceIndex, findRelevantEvidence } from "../reports/reportParser.js";
 import type { TemplateProfile, TemplateSlideRole } from "../templates/templateProfile.js";
 
 export const visualSpecSchema = z.object({
@@ -79,13 +80,17 @@ export interface BuildDeckPlanInput {
   templateFileName: string;
   instruction: string;
   templateProfile: TemplateProfile;
+  evidenceIndex?: EvidenceIndex;
 }
 
 export function buildSingleSlideDeckPlan(input: BuildDeckPlanInput): DeckPlan {
   const preferredRole = choosePreferredRole(input.instruction, input.templateProfile);
   const preferredSlideIndex = input.templateProfile.capabilities.recommendedSlides[preferredRole][0];
   const title = normalizeTitle(input.instruction);
-  const evidenceId = `report:${input.reportFileName}:placeholder`;
+  const relevantEvidence = input.evidenceIndex ? findRelevantEvidence(input.evidenceIndex, input.instruction, 3) : [];
+  const fallbackEvidenceId = `report:${input.reportFileName}:placeholder`;
+  const evidenceIds = relevantEvidence.length > 0 ? relevantEvidence.map((block) => block.evidenceId) : [fallbackEvidenceId];
+  const bodyBlocks = relevantEvidence.length > 0 ? evidenceToBlocks(relevantEvidence) : fallbackBlocks(input, fallbackEvidenceId);
 
   const candidate = {
     deckId: `deck_${Date.now()}`,
@@ -105,23 +110,9 @@ export function buildSingleSlideDeckPlan(input: BuildDeckPlanInput): DeckPlan {
           {
             type: "title",
             text: title,
-            sourceEvidenceId: evidenceId
+            sourceEvidenceId: evidenceIds[0]
           },
-          {
-            type: "body",
-            text: `报告文件：${input.reportFileName}`,
-            sourceEvidenceId: evidenceId
-          },
-          {
-            type: "body",
-            text: `生成要求：${input.instruction.trim() || "未提供具体生成要求"}`,
-            sourceEvidenceId: evidenceId
-          },
-          {
-            type: "body",
-            text: "已根据 DeckPlan schema 和 Template Profile 选择模板页并填充槽位。",
-            sourceEvidenceId: evidenceId
-          }
+          ...bodyBlocks
         ],
         visual: inferVisual(input.instruction),
         templateIntent: {
@@ -129,7 +120,7 @@ export function buildSingleSlideDeckPlan(input: BuildDeckPlanInput): DeckPlan {
           preferredSlideIndex,
           requiredSlots: inferRequiredSlots(input.instruction)
         },
-        sourceEvidenceIds: [evidenceId]
+        sourceEvidenceIds: evidenceIds
       }
     ],
     constraints: {
@@ -155,6 +146,39 @@ export function buildSingleSlideDeckPlan(input: BuildDeckPlanInput): DeckPlan {
   }
 
   return parsed.data;
+}
+
+function evidenceToBlocks(evidence: ReturnType<typeof findRelevantEvidence>) {
+  return evidence.map((block) => ({
+    type: "body" as const,
+    text: compactEvidenceText(block.text),
+    sourceEvidenceId: block.evidenceId
+  }));
+}
+
+function fallbackBlocks(input: BuildDeckPlanInput, evidenceId: string) {
+  return [
+    {
+      type: "body" as const,
+      text: `报告文件：${input.reportFileName}`,
+      sourceEvidenceId: evidenceId
+    },
+    {
+      type: "body" as const,
+      text: `生成要求：${input.instruction.trim() || "未提供具体生成要求"}`,
+      sourceEvidenceId: evidenceId
+    },
+    {
+      type: "body" as const,
+      text: "已根据 DeckPlan schema 和 Template Profile 选择模板页并填充槽位。",
+      sourceEvidenceId: evidenceId
+    }
+  ];
+}
+
+function compactEvidenceText(text: string) {
+  const cleaned = text.replace(/\s+/g, " ").trim();
+  return cleaned.length > 90 ? `${cleaned.slice(0, 90)}...` : cleaned;
 }
 
 export function validateDeckPlan(input: unknown) {

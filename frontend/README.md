@@ -39,6 +39,8 @@ The task pane posts report/template files to:
 POST /api/decks/generate
 ```
 
+The report file is required only for the first generation in a session. Once uploaded, the backend saves it as the current report and future generate/plan calls can omit `report`.
+
 The template file is optional. If the user does not choose one, the backend uses the saved default template, falling back to the bundled Tsinghua template.
 
 The task pane can save a selected template as the future default through:

@@ -4,7 +4,7 @@ Fastify API service for the AI PPT Builder plugin.
 
 ## Current Phase
 
-This service now covers the phase 2 API skeleton, phase 3 PPTX smoke-test loop, phase 5 template parsing script/API, phase 6 template profile capabilities, phase 7 minimal template-slot replacement, and phase 8 DeckPlan schema. It accepts report/template uploads, validates the request shape, builds a schema-validated DeckPlan, generates a one-slide PPTX deck using template profile slots, returns it as Base64, and can analyze PPTX templates into reusable generation profiles.
+This service now covers the phase 2 API skeleton, phase 3 PPTX smoke-test loop, phase 5 template parsing script/API, phase 6 template profile capabilities, phase 7 minimal template-slot replacement, phase 8 DeckPlan schema, and phase 9 report persistence plus Evidence Index. It accepts report/template uploads, persists the current report, builds a schema-validated DeckPlan from evidence, generates a one-slide PPTX deck using template profile slots, returns it as Base64, and can analyze PPTX templates into reusable generation profiles.
 
 ## Technology
 
@@ -84,11 +84,32 @@ Planning endpoint:
 POST /api/decks/plan
 ```
 
+Current report endpoints:
+
+```text
+GET  /api/reports/current
+POST /api/reports/current
+```
+
 Multipart fields:
 
-- `report`: source report file.
+- `report`: optional source report file. Required only when no current report is saved. If supplied, it becomes the current report.
 - `template`: optional PPTX template file. If omitted, the backend uses the saved default template, falling back to the bundled Tsinghua template.
 - `instruction`: optional generation instruction.
+
+Supported report parsing:
+
+- DOCX via OOXML `word/document.xml`
+- UTF-8 text-like files by paragraph splitting
+
+Runtime report storage:
+
+```text
+reports/current/
+  source.docx
+  report-meta.json
+  evidence-index.json
+```
 
 Response:
 

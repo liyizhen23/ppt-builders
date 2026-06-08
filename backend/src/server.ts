@@ -7,6 +7,11 @@ import { getPublicAiSettings } from "./config/aiConfig.js";
 import { buildSingleSlideDeckPlan } from "./deckPlan/deckPlanSchema.js";
 import { renderTemplateReplacementDeck } from "./rendering/templateSlideRenderer.js";
 import {
+  getCurrentReport,
+  saveCurrentReport,
+  summarizeCurrentReport
+} from "./reports/currentReportStore.js";
+import {
   analyzeTemplateBuffer,
   getDefaultTemplate,
   saveDefaultTemplate
@@ -52,6 +57,26 @@ app.get("/api/settings/ai", async () => {
 app.get("/api/templates/default", async () => {
   const record = await getDefaultTemplate();
   return summarizeDefaultTemplate(record);
+});
+
+app.get("/api/reports/current", async () => {
+  return summarizeCurrentReport(await getCurrentReport());
+});
+
+app.post("/api/reports/current", async (request, reply) => {
+  const received = await readGenerationRequest(request);
+  if (!received.report) {
+    return reply.code(400).send({
+      error: "report file is required"
+    });
+  }
+
+  const currentReport = await saveCurrentReport({
+    fileName: received.report.fileName,
+    buffer: received.report.buffer
+  });
+
+  return summarizeCurrentReport(currentReport);
 });
 
 app.post("/api/templates/default", async (request, reply) => {
@@ -120,26 +145,29 @@ app.post("/api/templates/analyze", async (request, reply) => {
 
 app.post("/api/decks/plan", async (request, reply) => {
   const received = await readGenerationRequest(request);
+  const currentReport = await resolveReport(received.report);
 
-  if (!received.report) {
+  if (!currentReport) {
     return reply.code(400).send({
-      error: "report file is required"
+      error: "report file is required when no current report is saved"
     });
   }
 
   const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
   const deckPlan = buildSingleSlideDeckPlan({
-    reportFileName: received.report.fileName,
+    reportFileName: currentReport.sourceFileName,
     templateFileName: template.fileName,
     instruction: received.instruction,
-    templateProfile
+    templateProfile,
+    evidenceIndex: currentReport.evidenceIndex
   });
 
   return {
     deckPlan,
     received: {
-      report: toUploadedFileSummary(received.report),
+      report: summarizeCurrentReport(currentReport),
       template: toUploadedFileSummary(template),
+      currentReportUsed: !received.report,
       defaultTemplateUsed
     }
   };
@@ -147,24 +175,26 @@ app.post("/api/decks/plan", async (request, reply) => {
 
 app.post("/api/decks/generate", async (request, reply) => {
   const received = await readGenerationRequest(request);
+  const currentReport = await resolveReport(received.report);
 
-  if (!received.report) {
+  if (!currentReport) {
     return reply.code(400).send({
-      error: "report file is required"
+      error: "report file is required when no current report is saved"
     });
   }
 
   const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
   const deckPlan = buildSingleSlideDeckPlan({
-    reportFileName: received.report.fileName,
+    reportFileName: currentReport.sourceFileName,
     templateFileName: template.fileName,
     instruction: received.instruction,
-    templateProfile
+    templateProfile,
+    evidenceIndex: currentReport.evidenceIndex
   });
 
   const rendered = await renderTemplateReplacementDeck({
     profile: templateProfile,
-    reportFileName: received.report.fileName,
+    reportFileName: currentReport.sourceFileName,
     templateFileName: template.fileName,
     instruction: received.instruction,
     slideSpec: deckPlan.slides[0]
@@ -176,8 +206,9 @@ app.post("/api/decks/generate", async (request, reply) => {
     summary: `Generated a one-slide template replacement deck using template slide ${rendered.selectedSlideIndex}.`,
     qa: "Template replacement smoke test only: report parsing, copied template backgrounds, and content QA are not implemented yet.",
     received: {
-      report: toUploadedFileSummary(received.report),
+      report: summarizeCurrentReport(currentReport),
       template: toUploadedFileSummary(template),
+      currentReportUsed: !received.report,
       defaultTemplateUsed
     },
     deckPlan,
@@ -268,6 +299,17 @@ async function resolveTemplate(uploadedTemplate: UploadedFile | null) {
     templateProfile: defaultTemplate.profile,
     defaultTemplateUsed: true
   };
+}
+
+async function resolveReport(uploadedReport: UploadedFile | null) {
+  if (uploadedReport) {
+    return saveCurrentReport({
+      fileName: uploadedReport.fileName,
+      buffer: uploadedReport.buffer
+    });
+  }
+
+  return getCurrentReport();
 }
 
 function toUploadedFileSummary(file: UploadedFile): UploadedFileSummary {

@@ -7,12 +7,14 @@ import {
   saveDefaultTemplate
 } from "./api/decks";
 import { AiSettingsResult, getAiSettings } from "./api/settings";
+import { CurrentReportResult, getCurrentReport } from "./api/reports";
 import { insertSlidesFromBase64, isPowerPointHost } from "./office/powerpoint";
 
 type Status = "idle" | "generating" | "ready" | "inserting" | "inserted" | "saving" | "error";
 
 export function App() {
   const [reportFile, setReportFile] = useState<File | null>(null);
+  const [currentReport, setCurrentReport] = useState<CurrentReportResult | null>(null);
   const [templateFile, setTemplateFile] = useState<File | null>(null);
   const [defaultTemplate, setDefaultTemplate] = useState<DefaultTemplateResult | null>(null);
   const [aiSettings, setAiSettings] = useState<AiSettingsResult | null>(null);
@@ -31,18 +33,24 @@ export function App() {
     getAiSettings()
       .then((settings) => setAiSettings(settings))
       .catch(() => setAiSettings(null));
+    getCurrentReport()
+      .then((report) => setCurrentReport(report))
+      .catch(() => setCurrentReport(null));
   }, []);
 
-  const canGenerate = useMemo(() => reportFile !== null && status !== "generating", [reportFile, status]);
+  const canGenerate = useMemo(
+    () => (reportFile !== null || currentReport?.configured === true) && status !== "generating",
+    [currentReport, reportFile, status]
+  );
   const canSaveDefault = templateFile !== null && status !== "saving";
   const canInsert = Boolean(result?.pptxBase64) && status !== "inserting";
 
   const handleGenerate = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!reportFile) {
+    if (!reportFile && !currentReport?.configured) {
       setStatus("error");
-      setMessage("请先选择报告文件。");
+      setMessage("请先选择报告文件。首次上传后，后续可复用当前报告。");
       return;
     }
 
@@ -57,6 +65,8 @@ export function App() {
         instruction
       });
       setResult(generated);
+      const refreshedReport = await getCurrentReport();
+      setCurrentReport(refreshedReport);
       setStatus("ready");
       setMessage(generated.summary || "后端已返回 PPTX Base64，可以插入 PowerPoint。");
     } catch (error) {
@@ -134,12 +144,27 @@ export function App() {
       <form className="panel" onSubmit={handleGenerate}>
         <FileField
           id="report"
-          label="报告文件"
-          hint="PDF、DOCX、Markdown 或文本材料"
+          label="报告文件（首次必选，之后可复用）"
+          hint={
+            currentReport?.configured
+              ? `不选择则复用当前报告：${currentReport.sourceFileName}`
+              : "PDF、DOCX、Markdown 或文本材料"
+          }
           accept=".pdf,.docx,.md,.markdown,.txt"
           file={reportFile}
           onChange={setReportFile}
         />
+
+        {currentReport?.configured ? (
+          <div className="templateSummary">
+            <strong>当前报告</strong>
+            <span>{currentReport.sourceFileName}</span>
+            <small>
+              {currentReport.evidenceBlocks} evidence blocks / {currentReport.stats?.paragraphs ?? 0} paragraphs /{" "}
+              {currentReport.stats?.tables ?? 0} tables
+            </small>
+          </div>
+        ) : null}
 
         <FileField
           id="template"

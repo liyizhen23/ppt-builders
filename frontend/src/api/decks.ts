@@ -1,5 +1,5 @@
 export interface GenerateDeckInput {
-  reportFile: File;
+  reportFile: File | null;
   templateFile: File | null;
   instruction: string;
 }
@@ -61,7 +61,9 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
 
 export async function generateDeck(input: GenerateDeckInput): Promise<GenerateDeckResult> {
   const formData = new FormData();
-  formData.append("report", input.reportFile);
+  if (input.reportFile) {
+    formData.append("report", input.reportFile);
+  }
   if (input.templateFile) {
     formData.append("template", input.templateFile);
   }

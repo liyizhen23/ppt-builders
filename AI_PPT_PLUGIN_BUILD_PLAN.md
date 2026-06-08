@@ -976,6 +976,15 @@ frontend/
 - 每个 slide idea 都有来源。
 - 没有来源的事实不能进入最终 PPT。
 
+当前实现状态：
+
+- 已新增当前报告存储：首次上传报告后保存到 `reports/current/`。
+- 后续 `/api/decks/plan` 和 `/api/decks/generate` 可以不再上传报告，自动复用当前报告。
+- 已实现 DOCX OOXML 解析，读取 `word/document.xml` 中的段落和表格文本。
+- 已生成 `evidence-index.json`，包含 evidence id、文本、类型、顺序和关键词。
+- DeckPlan 已使用 Evidence Index 选择相关 evidence，并将 `sourceEvidenceIds` 写入 `SlideSpec`。
+- 当前 evidence 匹配仍是关键词检索，尚未接 AI 语义检索或引用校验。
+
 ### 阶段 4：DeckPlan 和模板页生成
 
 目标：基于报告和模板生成完整 PPT。

@@ -16,7 +16,7 @@ import { buildImageSelectionPlan, buildSelectedImageEditPlan } from "./edits/ima
 import { renderReflowSlide } from "./rendering/reflowSlideRenderer.js";
 import { buildSelectedTextEditPlan } from "./edits/textEditPlanner.js";
 import { autofixPageQa, checkPageQa } from "./qa/qaValidator.js";
-import { renderTemplateReplacementDeckPlan } from "./rendering/templateSlideRenderer.js";
+import { renderOfficeCliDeck } from "./rendering/officeCliDeckRenderer.js";
 import {
   getCurrentReport,
   saveCurrentReport,
@@ -363,22 +363,20 @@ app.post("/api/decks/generate", async (request, reply) => {
     evidenceIndex: currentReport.evidenceIndex
   });
 
-  const rendered = await renderTemplateReplacementDeckPlan({
+  const rendered = await renderOfficeCliDeck({
+    deckPlan,
     profile: templateProfile,
     reportFileName: currentReport.sourceFileName,
     templateFileName: template.fileName,
-    instruction: received.instruction,
-    slideSpec: deckPlan.slides[0],
-    slideSpecs: deckPlan.slides
+    templateSourcePath: template.sourcePath,
+    templateBuffer: template.buffer.length > 0 ? template.buffer : undefined
   });
 
   return reply.send({
     deckId: `deck_${Date.now()}`,
     pptxBase64: rendered.pptxBase64,
-    summary: `Generated a ${deckPlan.slides.length}-slide deck from report evidence using template replacement.`,
-    qa: deckPlan.validation.warnings.length > 0
-      ? deckPlan.validation.warnings.join(" ")
-      : "Generated from parsed report evidence. Template styling is approximated; original PPTX slide backgrounds are not copied yet.",
+    summary: `Generated a ${deckPlan.slides.length}-slide deck with embedded officeCLI template-page cloning.`,
+    qa: [deckPlan.validation.warnings.join(" "), rendered.qa].filter(Boolean).join("\n"),
     received: {
       report: summarizeCurrentReport(currentReport),
       template: toUploadedFileSummary(template),
@@ -414,6 +412,7 @@ interface UploadedFileSummary {
 
 interface UploadedFile extends UploadedFileSummary {
   buffer: Buffer;
+  sourcePath?: string;
 }
 
 async function readGenerationRequest(request: FastifyRequest) {
@@ -469,7 +468,8 @@ async function resolveTemplate(uploadedTemplate: UploadedFile | null) {
       fileName: defaultTemplate.sourceFileName,
       mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
       size: defaultTemplate.profile.media.reduce((sum, media) => sum + media.size, 0),
-      buffer: Buffer.alloc(0)
+      buffer: Buffer.alloc(0),
+      sourcePath: defaultTemplate.sourcePath
     },
     templateProfile: defaultTemplate.profile,
     defaultTemplateUsed: true

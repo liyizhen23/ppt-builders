@@ -66,10 +66,24 @@ export function App() {
 
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("选择工作模式。完整生成需要报告；局部编辑不需要上传报告。");
+  const [generationProgress, setGenerationProgress] = useState(0);
 
   useEffect(() => {
     refreshInitialData();
   }, []);
+
+  useEffect(() => {
+    if (status !== "generating") {
+      return;
+    }
+
+    setGenerationProgress(8);
+    const timer = window.setInterval(() => {
+      setGenerationProgress((current) => Math.min(current + Math.max(1, Math.round((92 - current) * 0.12)), 92));
+    }, 700);
+
+    return () => window.clearInterval(timer);
+  }, [status]);
 
   const imageAssets = assets.filter((asset) => asset.kind === "image");
   const canGenerate = useMemo(
@@ -126,15 +140,18 @@ export function App() {
 
     setStatus("generating");
     setMessage(templateFile ? "正在使用上传模板生成 PPT。" : "正在使用默认模板生成 PPT。");
+    setGenerationProgress(0);
     setResult(null);
 
     try {
       const generated = await generateDeck({ reportFile, templateFile, instruction });
       setResult(generated);
       setCurrentReport(await getCurrentReport());
+      setGenerationProgress(100);
       setStatus("ready");
       setMessage(generated.summary || "后端已返回 PPTX Base64，可以插入 PowerPoint。");
     } catch (error) {
+      setGenerationProgress(0);
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "生成失败。");
     }
@@ -543,6 +560,8 @@ export function App() {
           instruction={instruction}
           result={result}
           message={message}
+          status={status}
+          generationProgress={generationProgress}
           canGenerate={canGenerate}
           canSaveDefault={canSaveDefault}
           canInsert={canInsert}
@@ -621,6 +640,8 @@ function GeneratePanel(props: {
   instruction: string;
   result: GenerateDeckResult | null;
   message: string;
+  status: Status;
+  generationProgress: number;
   canGenerate: boolean;
   canSaveDefault: boolean;
   canInsert: boolean;
@@ -704,8 +725,16 @@ function GeneratePanel(props: {
         </label>
 
         <button className="primaryButton" type="submit" disabled={!props.canGenerate}>
-          生成 PPT
+          {props.status === "generating" ? "正在生成 PPT" : "生成 PPT"}
         </button>
+        {props.status === "generating" || props.generationProgress > 0 ? (
+          <div className="progressBlock" aria-live="polite">
+            <div className="progressTrack" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={props.generationProgress}>
+              <div className="progressFill" style={{ width: `${props.generationProgress}%` }} />
+            </div>
+            <span>{props.generationProgress >= 100 ? "生成完成" : `正在生成 ${props.generationProgress}%`}</span>
+          </div>
+        ) : null}
       </form>
 
       <ResultPanel result={props.result} message={props.message} canInsert={props.canInsert} onInsert={props.onInsert} />

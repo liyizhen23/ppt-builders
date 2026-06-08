@@ -312,6 +312,33 @@ h2 {
   line-height: 1.47;
 }
 
+.progressBlock {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.progressTrack {
+  position: relative;
+  overflow: hidden;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--divider-soft);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--action-blue);
+  transition: width 360ms ease;
+}
+
+.progressBlock span {
+  color: var(--ink-secondary);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
 .qaBox {
   margin: 12px 0;
   padding: 14px;

@@ -826,6 +826,16 @@ frontend/
     styles.css
 ```
 
+前端视觉规范：
+
+- 插件任务窗格采用 Apple-inspired utility surface，而不是后台管理系统风格。
+- 单一交互色为 Action Blue `#0066cc`，不引入第二品牌色。
+- 使用 system / SF Pro 风格字体栈，按钮和主要操作使用 pill 形态。
+- 页面背景使用浅灰 `#f5f5f7`，内容面板使用白色和 1px hairline。
+- 不使用装饰渐变，不给按钮、文字或普通卡片加阴影。
+- 仅保留必要状态信息，UI chrome 后退，让报告、模板、生成状态成为主内容。
+- 根据当前工程约束，实际 CSS 不使用负 letter-spacing。
+
 构建流程：
 
 1. 创建 PowerPoint Add-in manifest，声明任务窗格入口和 HTTPS 开发地址。

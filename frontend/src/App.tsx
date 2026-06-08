@@ -203,7 +203,7 @@ export function App() {
         </label>
 
         <button className="primaryButton" type="submit" disabled={!canGenerate}>
-          生成测试 PPT
+          生成 PPT
         </button>
       </form>
 

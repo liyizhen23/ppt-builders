@@ -8,7 +8,20 @@ PowerPoint Office Add-in task pane for the AI PPT Builder plugin.
 - React for task pane UI.
 - TypeScript for typed API and Office integration boundaries.
 - Vite for local development and production builds.
-- Lightweight custom CSS for the first milestone; Fluent UI can be introduced after the interaction surface grows.
+- Lightweight Apple-inspired custom CSS for the first milestones; Fluent UI can be introduced only if the control surface outgrows this system.
+
+## Interface Direction
+
+The task pane follows an Apple-inspired utility surface:
+
+- Single interactive accent: Action Blue `#0066cc`.
+- System/SF-style font stack with 17px body rhythm where space allows.
+- White utility panels on `#f5f5f7` parchment canvas.
+- Pill-shaped primary and secondary actions.
+- Hairline borders instead of chrome shadows.
+- No decorative gradients, no card/button shadows, no second accent color.
+- Focus and active states are quiet: blue focus outline and `scale(0.96)` press feedback.
+- Runtime status stays compact so report/template controls remain the primary surface.
 
 ## Local Development
 

@@ -10,6 +10,7 @@ dist/
 
 templates/default/
 reports/current/
+asset-library/
 
 ~$*.pptx
 ~$*.docx

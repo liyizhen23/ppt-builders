@@ -3,8 +3,19 @@ import type { FastifyRequest } from "fastify";
 import cors from "@fastify/cors";
 import multipart from "@fastify/multipart";
 import { z } from "zod";
+import {
+  deleteAsset,
+  listAssets,
+  readAssetBase64,
+  saveAsset,
+  type AssetKind
+} from "./assets/assetLibraryStore.js";
 import { getPublicAiSettings } from "./config/aiConfig.js";
 import { buildSingleSlideDeckPlan } from "./deckPlan/deckPlanSchema.js";
+import { buildImageSelectionPlan, buildSelectedImageEditPlan } from "./edits/imageEditPlanner.js";
+import { renderReflowSlide } from "./rendering/reflowSlideRenderer.js";
+import { buildSelectedTextEditPlan } from "./edits/textEditPlanner.js";
+import { autofixPageQa, checkPageQa } from "./qa/qaValidator.js";
 import { renderTemplateReplacementDeck } from "./rendering/templateSlideRenderer.js";
 import {
   getCurrentReport,
@@ -31,14 +42,14 @@ const app = Fastify({
 
 await app.register(cors, {
   origin: [env.FRONTEND_ORIGIN, "http://localhost:5173"],
-  methods: ["GET", "POST"]
+  methods: ["GET", "POST", "DELETE"]
 });
 
 await app.register(multipart, {
   limits: {
     fileSize: 80 * 1024 * 1024,
-    files: 2,
-    fields: 4
+    files: 50,
+    fields: 8
   }
 });
 
@@ -141,6 +152,166 @@ app.post("/api/templates/analyze", async (request, reply) => {
   return {
     profile
   };
+});
+
+app.get("/api/assets", async (request) => {
+  const query = z
+    .object({
+      kind: z.enum(["image", "table"]).optional()
+    })
+    .parse(request.query);
+
+  return {
+    assets: await listAssets(query.kind)
+  };
+});
+
+app.post("/api/assets", async (request, reply) => {
+  const parts = request.parts();
+  let kind: AssetKind = "image";
+  let notes = "";
+  const saved = [];
+
+  for await (const part of parts) {
+    if (part.type === "file") {
+      const buffer = await part.toBuffer();
+      saved.push(
+        await saveAsset({
+          kind,
+          sourceFileName: part.filename,
+          mimeType: part.mimetype,
+          buffer,
+          notes
+        })
+      );
+    } else if (part.fieldname === "kind") {
+      const value = String(part.value ?? "image");
+      kind = value === "table" ? "table" : "image";
+    } else if (part.fieldname === "notes") {
+      notes = String(part.value ?? "");
+    }
+  }
+
+  if (saved.length === 0) {
+    return reply.code(400).send({
+      error: "at least one asset file is required"
+    });
+  }
+
+  return {
+    assets: saved
+  };
+});
+
+app.get("/api/assets/:assetId/base64", async (request, reply) => {
+  const params = z.object({ assetId: z.string() }).parse(request.params);
+  const result = await readAssetBase64(params.assetId);
+  if (!result) {
+    return reply.code(404).send({
+      error: "asset not found"
+    });
+  }
+
+  return result;
+});
+
+app.delete("/api/assets/:assetId", async (request, reply) => {
+  const params = z.object({ assetId: z.string() }).parse(request.params);
+  const deleted = await deleteAsset(params.assetId);
+  if (!deleted) {
+    return reply.code(404).send({
+      error: "asset not found"
+    });
+  }
+
+  return {
+    ok: true
+  };
+});
+
+app.post("/api/edits/selection/text", async (request) => {
+  const body = z
+    .object({
+      instruction: z.string().default(""),
+      selectedText: z.string().default(""),
+      context: z.string().optional()
+    })
+    .parse(request.body);
+
+  return {
+    editPlan: await buildSelectedTextEditPlan(body)
+  };
+});
+
+app.post("/api/edits/selection/image", async (request) => {
+  const body = z
+    .object({
+      instruction: z.string().default(""),
+      imageFileName: z.string().optional(),
+      imageMimeType: z.string().optional()
+    })
+    .parse(request.body);
+
+  return {
+    editPlan: buildSelectedImageEditPlan(body)
+  };
+});
+
+app.post("/api/edits/selection/image/select", async (request) => {
+  const body = z
+    .object({
+      instruction: z.string().default(""),
+      pageText: z.string().default(""),
+      candidates: z
+        .array(
+          z.object({
+            id: z.string(),
+            fileName: z.string(),
+            mimeType: z.string().optional(),
+            notes: z.string().optional()
+          })
+        )
+        .default([])
+    })
+    .parse(request.body);
+
+  return {
+    editPlan: buildImageSelectionPlan(body)
+  };
+});
+
+app.post("/api/edits/slide/reflow", async (request) => {
+  const body = z
+    .object({
+      instruction: z.string().default(""),
+      pageText: z.string().default(""),
+      selectedImageFileName: z.string().nullable().optional()
+    })
+    .parse(request.body);
+
+  return renderReflowSlide(body);
+});
+
+app.post("/api/qa/check", async (request) => {
+  const body = z
+    .object({
+      pageText: z.string().default(""),
+      instruction: z.string().optional()
+    })
+    .parse(request.body);
+
+  return checkPageQa(body);
+});
+
+app.post("/api/qa/autofix", async (request) => {
+  const body = z
+    .object({
+      pageText: z.string().default(""),
+      instruction: z.string().optional()
+    })
+    .parse(request.body);
+
+  return autofixPageQa(body);
 });
 
 app.post("/api/decks/plan", async (request, reply) => {

@@ -127,6 +127,81 @@ h2 {
   background: var(--canvas);
 }
 
+.modeSwitch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin: 12px 12px 0;
+  padding: 4px;
+  border: 1px solid var(--hairline);
+  border-radius: 9999px;
+  background: var(--canvas);
+}
+
+.modeSwitch button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 9999px;
+  color: var(--ink-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.modeSwitch button.active {
+  color: #ffffff;
+  background: var(--action-blue);
+}
+
+.miniSwitch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  border: 1px solid var(--hairline);
+  border-radius: 9999px;
+  background: var(--pearl);
+}
+
+.miniSwitch button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 9999px;
+  color: var(--ink-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.miniSwitch button.active {
+  color: var(--action-blue);
+  background: var(--canvas);
+}
+
+.triSwitch {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  border: 1px solid var(--hairline);
+  border-radius: 9999px;
+  background: var(--pearl);
+}
+
+.triSwitch button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 9999px;
+  color: var(--ink-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.triSwitch button.active {
+  color: var(--action-blue);
+  background: var(--canvas);
+}
+
 .compactPanel {
   padding: 14px 18px;
 }
@@ -286,6 +361,64 @@ h2 {
 }
 
 .templateSummary small {
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.chatHeader h2 {
+  margin-bottom: 0;
+}
+
+.smallButton {
+  width: auto;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.readButton {
+  margin-bottom: 17px;
+}
+
+.buttonStack {
+  display: grid;
+  gap: 10px;
+}
+
+.proposal {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 17px;
+}
+
+.proposal strong {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.proposal textarea {
+  width: 100%;
+  min-height: 132px;
+  padding: 14px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  color: var(--ink);
+  background: var(--pearl);
+  line-height: 1.47;
+  resize: vertical;
+}
+
+.proposal small {
+  color: var(--ink-secondary);
   font-size: 12px;
   line-height: 1.3;
 }

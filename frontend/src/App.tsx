@@ -25,6 +25,7 @@ import {
   isPowerPointHost,
   readSelectedText,
   replaceSelectedImage,
+  replaceSelectedShapeTexts,
   replaceSelectedText
 } from "./office/powerpoint";
 
@@ -50,6 +51,7 @@ export function App() {
 
   const [pageText, setPageText] = useState("");
   const [imageInstruction, setImageInstruction] = useState("");
+  const [shapeTextReplacements, setShapeTextReplacements] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageBase64, setImageBase64] = useState("");
   const [imagePlan, setImagePlan] = useState<ImageEditPlan | null>(null);
@@ -80,6 +82,7 @@ export function App() {
   const canApplyTextEdit = proposalText.trim().length > 0 && status !== "editing";
   const canPlanImageEdit = imageInstruction.trim().length > 0 && status !== "editing";
   const canApplyImageEdit = Boolean(imagePlan && imageBase64 && imageFile) && status !== "editing";
+  const canApplyShapeTexts = shapeTextReplacements.trim().length > 0 && status !== "editing";
   const canPlanImageSelection =
     imageAssets.length > 0 && (pageText.trim().length > 0 || imageInstruction.trim().length > 0) && status !== "editing";
   const canApplyImageSelection = Boolean(imageSelectionPlan?.selectedImageId) && status !== "editing";
@@ -363,6 +366,36 @@ export function App() {
     }
   };
 
+  const handleApplyShapeTexts = async () => {
+    if (!shapeTextReplacements.trim()) {
+      setStatus("error");
+      setMessage("请先填写要写入形状的小标题，每行一个。");
+      return;
+    }
+
+    if (!isPowerPointHost()) {
+      setStatus("error");
+      setMessage("当前不在 PowerPoint Add-in 环境中，无法修改形状文字。");
+      return;
+    }
+
+    setStatus("editing");
+    setMessage("正在修改当前选中形状中的文字。");
+
+    try {
+      const appliedCount = await replaceSelectedShapeTexts(shapeTextReplacements.split(/\r?\n/));
+      setStatus(appliedCount > 0 ? "inserted" : "error");
+      setMessage(
+        appliedCount > 0
+          ? `已修改 ${appliedCount} 个选中形状的文字。`
+          : "未找到可写入文字的选中形状。请选中圆中的文字形状或扇区形状后再试。"
+      );
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : "修改形状文字失败。");
+    }
+  };
+
   const handleReflow = async () => {
     setStatus("editing");
     setMessage("正在生成当前页替代页。");
@@ -528,6 +561,7 @@ export function App() {
           editPlan={editPlan}
           proposalText={proposalText}
           imageInstruction={imageInstruction}
+          shapeTextReplacements={shapeTextReplacements}
           pageText={pageText}
           imageFile={imageFile}
           imageAssets={imageAssets}
@@ -543,6 +577,7 @@ export function App() {
           canApplyTextEdit={canApplyTextEdit}
           canPlanImageEdit={canPlanImageEdit}
           canApplyImageEdit={canApplyImageEdit}
+          canApplyShapeTexts={canApplyShapeTexts}
           canPlanImageSelection={canPlanImageSelection}
           canApplyImageSelection={canApplyImageSelection}
           canReflow={canReflow}
@@ -553,6 +588,7 @@ export function App() {
           onEditInstructionChange={setEditInstruction}
           onProposalTextChange={setProposalText}
           onImageInstructionChange={setImageInstruction}
+          onShapeTextReplacementsChange={setShapeTextReplacements}
           onPageTextChange={setPageText}
           onImageFileChange={handleImageFileChange}
           onAssetUploadFilesChange={setAssetUploadFiles}
@@ -563,6 +599,7 @@ export function App() {
           onApplyTextEdit={handleApplyTextEdit}
           onPlanImageEdit={handlePlanImageEdit}
           onApplyImageEdit={handleApplyImageEdit}
+          onApplyShapeTexts={handleApplyShapeTexts}
           onPlanImageSelection={handlePlanImageSelection}
           onApplyImageSelection={handleApplyImageSelection}
           onSlideInstructionChange={setSlideInstruction}
@@ -683,6 +720,7 @@ function EditPanel(props: {
   editPlan: TextEditPlan | null;
   proposalText: string;
   imageInstruction: string;
+  shapeTextReplacements: string;
   pageText: string;
   imageFile: File | null;
   imageAssets: AssetRecord[];
@@ -698,6 +736,7 @@ function EditPanel(props: {
   canApplyTextEdit: boolean;
   canPlanImageEdit: boolean;
   canApplyImageEdit: boolean;
+  canApplyShapeTexts: boolean;
   canPlanImageSelection: boolean;
   canApplyImageSelection: boolean;
   canReflow: boolean;
@@ -708,6 +747,7 @@ function EditPanel(props: {
   onEditInstructionChange: (instruction: string) => void;
   onProposalTextChange: (text: string) => void;
   onImageInstructionChange: (instruction: string) => void;
+  onShapeTextReplacementsChange: (text: string) => void;
   onPageTextChange: (text: string) => void;
   onImageFileChange: (file: File | null) => void;
   onAssetUploadFilesChange: (files: File[]) => void;
@@ -718,6 +758,7 @@ function EditPanel(props: {
   onApplyTextEdit: () => void;
   onPlanImageEdit: () => void;
   onApplyImageEdit: () => void;
+  onApplyShapeTexts: () => void;
   onPlanImageSelection: () => void;
   onApplyImageSelection: () => void;
   onSlideInstructionChange: (instruction: string) => void;
@@ -760,21 +801,24 @@ function EditPanel(props: {
         {props.editMode === "image" ? (
           <ImageEditControls
             imageInstruction={props.imageInstruction}
+            shapeTextReplacements={props.shapeTextReplacements}
             pageText={props.pageText}
             imageFile={props.imageFile}
             imageAssets={props.imageAssets}
             assetUploadFiles={props.assetUploadFiles}
             assetNotes={props.assetNotes}
             canPlanImageEdit={props.canPlanImageEdit}
+            canApplyShapeTexts={props.canApplyShapeTexts}
             canPlanImageSelection={props.canPlanImageSelection}
             onImageInstructionChange={props.onImageInstructionChange}
+            onShapeTextReplacementsChange={props.onShapeTextReplacementsChange}
             onPageTextChange={props.onPageTextChange}
             onImageFileChange={props.onImageFileChange}
             onAssetUploadFilesChange={props.onAssetUploadFilesChange}
             onAssetNotesChange={props.onAssetNotesChange}
             onUploadAssets={props.onUploadAssets}
-            onReadSelection={props.onReadSelection}
             onPlanImageEdit={props.onPlanImageEdit}
+            onApplyShapeTexts={props.onApplyShapeTexts}
             onPlanImageSelection={props.onPlanImageSelection}
           />
         ) : null}
@@ -977,37 +1021,37 @@ function TextEditControls(props: {
 
 function ImageEditControls(props: {
   imageInstruction: string;
+  shapeTextReplacements: string;
   pageText: string;
   imageFile: File | null;
   imageAssets: AssetRecord[];
   assetUploadFiles: File[];
   assetNotes: string;
   canPlanImageEdit: boolean;
+  canApplyShapeTexts: boolean;
   canPlanImageSelection: boolean;
   onImageInstructionChange: (instruction: string) => void;
+  onShapeTextReplacementsChange: (text: string) => void;
   onPageTextChange: (text: string) => void;
   onImageFileChange: (file: File | null) => void;
   onAssetUploadFilesChange: (files: File[]) => void;
   onAssetNotesChange: (notes: string) => void;
   onUploadAssets: () => void;
-  onReadSelection: () => void;
   onPlanImageEdit: () => void;
+  onApplyShapeTexts: () => void;
   onPlanImageSelection: () => void;
 }) {
   return (
     <>
       <label className="field">
-        <span>当前页内容或选中文本</span>
+        <span>当前页背景信息</span>
         <textarea
           value={props.pageText}
           onChange={(event) => props.onPageTextChange(event.target.value)}
-          placeholder="可点击读取选区，或粘贴当前页标题、要点和说明。AI 会据此从素材库中选图。"
+          placeholder="粘贴当前页标题、要点和说明。AI 会据此从素材库中选图。"
           rows={4}
         />
       </label>
-      <button className="secondaryButton smallButton readButton" type="button" onClick={props.onReadSelection}>
-        读取选区作为页面内容
-      </button>
 
       <section className="templateSummary">
         <strong>本地素材库</strong>
@@ -1053,9 +1097,23 @@ function ImageEditControls(props: {
           rows={4}
         />
       </label>
+
+      <label className="field">
+        <span>形状中文字（每行一个）</span>
+        <textarea
+          value={props.shapeTextReplacements}
+          onChange={(event) => props.onShapeTextReplacementsChange(event.target.value)}
+          placeholder={"例如：\n静态供给\n体验表达\n动态行为"}
+          rows={3}
+        />
+        <small>用于圆形、扇区、流程框等 PowerPoint 形状。请先选中这些形状，再按行写入对应小标题。</small>
+      </label>
       <div className="buttonStack">
         <button className="primaryButton" type="button" onClick={props.onPlanImageEdit} disabled={!props.canPlanImageEdit}>
           生成指定图片方案
+        </button>
+        <button className="secondaryButton" type="button" onClick={props.onApplyShapeTexts} disabled={!props.canApplyShapeTexts}>
+          应用到选中形状文字
         </button>
         <button
           className="primaryButton"

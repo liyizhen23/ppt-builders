@@ -94,6 +94,8 @@ export async function adjustSelectedTextBoxLayout(suggestion: TextLayoutSuggesti
 }
 
 export async function replaceSelectedImage(imageBase64: string) {
+  await assertSelectedImageTargetAllowed();
+
   return new Promise<void>((resolve, reject) => {
     Office.context.document.setSelectedDataAsync(
       imageBase64,
@@ -110,4 +112,80 @@ export async function replaceSelectedImage(imageBase64: string) {
       }
     );
   });
+}
+
+export async function replaceSelectedShapeTexts(replacements: string[]) {
+  const nextTexts = replacements.map((text) => text.trim()).filter(Boolean);
+  if (nextTexts.length === 0) {
+    return 0;
+  }
+
+  return PowerPoint.run(async (context) => {
+    const shapes = context.presentation.getSelectedShapes();
+    shapes.load("items");
+    await context.sync();
+
+    let replacementIndex = 0;
+
+    for (const shape of shapes.items) {
+      if (replacementIndex >= nextTexts.length) {
+        break;
+      }
+
+      const textFrame = shape.getTextFrameOrNullObject();
+      textFrame.load("isNullObject");
+      await context.sync();
+
+      if (textFrame.isNullObject) {
+        continue;
+      }
+
+      textFrame.textRange.text = nextTexts[replacementIndex];
+      replacementIndex += 1;
+    }
+
+    await context.sync();
+    return replacementIndex;
+  });
+}
+
+async function assertSelectedImageTargetAllowed() {
+  await PowerPoint.run(async (context) => {
+    const shapes = context.presentation.getSelectedShapes();
+    shapes.load("items");
+    await context.sync();
+
+    if (shapes.items.length === 0) {
+      throw new Error("请先选中正文区域内要替换的图片或图片占位框。");
+    }
+
+    for (const shape of shapes.items) {
+      shape.load("left,top,width,height,name");
+    }
+    await context.sync();
+
+    const protectedShape = shapes.items.find((shape) => isLikelyHeaderLogo(shape));
+    if (protectedShape) {
+      throw new Error(
+        `当前选区位于右上角页眉/校徽保护区域（${protectedShape.name || "未命名形状"}），已阻止图片替换。请选中正文中的图片占位框后再应用。`
+      );
+    }
+  });
+}
+
+function isLikelyHeaderLogo(shape: PowerPoint.Shape) {
+  const left = numberOrZero(shape.left);
+  const top = numberOrZero(shape.top);
+  const width = numberOrZero(shape.width);
+  const height = numberOrZero(shape.height);
+  const name = String(shape.name ?? "").toLowerCase();
+
+  const nameLooksProtected = /logo|校徽|tsinghua|清华/.test(name);
+  const inTopRightHeader = top <= 70 && left >= 560 && width <= 180 && height <= 90;
+
+  return nameLooksProtected || inTopRightHeader;
+}
+
+function numberOrZero(value: number | undefined) {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0;
 }

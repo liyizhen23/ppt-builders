@@ -4,7 +4,7 @@ Fastify API service for the AI PPT Builder plugin.
 
 ## Current Phase
 
-This service now covers the phase 2 API skeleton, phase 3 PPTX smoke-test loop, phase 5 template parsing script/API, and phase 6 template profile capabilities. It accepts report/template uploads, validates the request shape, generates a one-slide PPTX smoke-test deck, returns it as Base64, and can analyze PPTX templates into reusable generation profiles.
+This service now covers the phase 2 API skeleton, phase 3 PPTX smoke-test loop, phase 5 template parsing script/API, phase 6 template profile capabilities, and phase 7 minimal template-slot replacement. It accepts report/template uploads, validates the request shape, generates a one-slide PPTX deck using template profile slots, returns it as Base64, and can analyze PPTX templates into reusable generation profiles.
 
 ## Technology
 
@@ -90,8 +90,18 @@ Response:
 {
   "deckId": "deck_...",
   "pptxBase64": "base64-encoded-pptx",
-  "summary": "Generated a one-slide PPTX smoke test deck.",
-  "qa": "Smoke test only: report parsing, template page replacement, and content QA are not implemented yet."
+  "summary": "Generated a one-slide template replacement deck using template slide 7.",
+  "qa": "Template replacement smoke test only: report parsing, copied template backgrounds, and content QA are not implemented yet.",
+  "templateReplacement": {
+    "selectedSlideIndex": 7,
+    "selectedRole": "content_text",
+    "replacedSlots": [
+      {
+        "shapeId": "12",
+        "slotType": "title"
+      }
+    ]
+  }
 }
 ```
 

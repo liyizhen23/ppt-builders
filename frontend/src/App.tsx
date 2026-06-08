@@ -193,6 +193,16 @@ export function App() {
           </div>
         ) : null}
 
+        {result?.templateReplacement ? (
+          <div className="templateSummary">
+            <strong>模板替换</strong>
+            <span>
+              使用第 {result.templateReplacement.selectedSlideIndex} 页（{result.templateReplacement.selectedRole}）
+            </span>
+            <small>已替换 {result.templateReplacement.replacedSlots.length} 个槽位</small>
+          </div>
+        ) : null}
+
         <button className="secondaryButton" type="button" onClick={handleInsert} disabled={!canInsert}>
           插入到 PowerPoint
         </button>

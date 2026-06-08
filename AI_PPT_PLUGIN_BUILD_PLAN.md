@@ -909,6 +909,31 @@ frontend/
 - 已生成 `capabilities.styleTokens`，包括 title、subtitle、body、caption、palette 和 fonts。
 - 已生成 `capabilities.slideSummaries`，供后续第 7 步模板页替换使用。
 
+### 阶段 2c：模板页替换生成
+
+目标：使用 Template Profile 的推荐页面和可替换槽位生成一页模板风格 PPT。
+
+任务：
+
+- 从 `recommendedSlides` 中选择适合的模板页。
+- 从 `replaceableSlots` 中选择 title、body 和 image 槽位。
+- 将生成标题、正文要点和图片占位写入对应 bbox。
+- 使用 `styleTokens` 继承模板字体、字号和颜色。
+- 返回 `templateReplacement` 元数据，说明使用了哪一页、替换了哪些槽位。
+
+验收：
+
+- 生成结果不再是普通 smoke test 页面，而是基于模板页槽位布局。
+- 不上传模板时使用默认清华模板的 profile。
+- 上传新模板时即时分析该模板并使用其 profile 生成。
+
+当前实现状态：
+
+- `/api/decks/generate` 已切换为模板槽位替换渲染。
+- 当前清华模板默认选择第 7 页 `content_text` 作为正文页候选。
+- 已能替换标题和正文槽位，并返回 `templateReplacement`。
+- 当前仍未复制模板页原始背景和装饰，后续需要在真正模板页渲染阶段补齐。
+
 ### 阶段 3：报告解析和 evidence index
 
 目标：生成和修改内容均可追踪来源。

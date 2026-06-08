@@ -9,6 +9,14 @@ export interface GenerateDeckResult {
   pptxBase64: string;
   summary?: string;
   qa?: string;
+  templateReplacement?: {
+    selectedSlideIndex: number;
+    selectedRole: string;
+    replacedSlots: Array<{
+      shapeId: string;
+      slotType: string;
+    }>;
+  };
 }
 
 export interface DefaultTemplateResult {
@@ -65,7 +73,8 @@ export async function generateDeck(input: GenerateDeckInput): Promise<GenerateDe
     deckId: result.deckId,
     pptxBase64: result.pptxBase64,
     summary: result.summary,
-    qa: result.qa
+    qa: result.qa,
+    templateReplacement: result.templateReplacement
   };
 }
 

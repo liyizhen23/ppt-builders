@@ -18,6 +18,19 @@ export interface TextEditPlan {
   clarificationQuestion: string | null;
   qa: string;
   model: string | null;
+  layoutSuggestion: TextLayoutSuggestion;
+}
+
+export interface TextLayoutSuggestion {
+  strategy: "keep" | "expand_height" | "shift_down" | "shrink_font" | "reflow_slide";
+  reason: string;
+  estimatedOriginalChars: number;
+  estimatedReplacementChars: number;
+  relativeLengthChange: number;
+  suggestedDeltaY: number;
+  suggestedHeightScale: number;
+  suggestedFontScale: number;
+  applyMode: "advisory" | "requires_shape_api" | "use_reflow";
 }
 
 export async function buildSelectedTextEditPlan(input: TextEditRequest): Promise<TextEditPlan> {
@@ -144,8 +157,89 @@ function buildPlan(
     needsConfirmation: true,
     clarificationQuestion: result.clarificationQuestion,
     qa: result.qa,
-    model: result.model
+    model: result.model,
+    layoutSuggestion: buildTextLayoutSuggestion(input.selectedText, result.replacementText)
   };
+}
+
+function buildTextLayoutSuggestion(originalText: string, replacementText: string): TextLayoutSuggestion {
+  const originalChars = measureSlideText(originalText);
+  const replacementChars = measureSlideText(replacementText);
+  const relativeLengthChange = round(replacementChars / Math.max(originalChars, 1), 2);
+  const originalLines = countLines(originalText);
+  const replacementLines = countLines(replacementText);
+  const addedLines = replacementLines - originalLines;
+
+  if (relativeLengthChange <= 1.15 && addedLines <= 1) {
+    return {
+      strategy: "keep",
+      reason: "替换文字与原文字长度接近，通常可以保持当前文本框位置和尺寸。",
+      estimatedOriginalChars: originalChars,
+      estimatedReplacementChars: replacementChars,
+      relativeLengthChange,
+      suggestedDeltaY: 0,
+      suggestedHeightScale: 1,
+      suggestedFontScale: 1,
+      applyMode: "advisory"
+    };
+  }
+
+  if (relativeLengthChange <= 1.6 && addedLines <= 2) {
+    return {
+      strategy: "expand_height",
+      reason: "替换文字略长，建议保留当前位置，优先增高文本框以避免溢出。",
+      estimatedOriginalChars: originalChars,
+      estimatedReplacementChars: replacementChars,
+      relativeLengthChange,
+      suggestedDeltaY: 0.05,
+      suggestedHeightScale: clamp(round(relativeLengthChange, 2), 1.15, 1.45),
+      suggestedFontScale: 1,
+      applyMode: "requires_shape_api"
+    };
+  }
+
+  if (relativeLengthChange <= 2.2 && addedLines <= 4) {
+    return {
+      strategy: "shift_down",
+      reason: "替换文字明显变长，建议将文本框略微下移并增高，避免挤压页面上方内容。",
+      estimatedOriginalChars: originalChars,
+      estimatedReplacementChars: replacementChars,
+      relativeLengthChange,
+      suggestedDeltaY: 0.18,
+      suggestedHeightScale: clamp(round(relativeLengthChange * 0.82, 2), 1.25, 1.75),
+      suggestedFontScale: 0.96,
+      applyMode: "requires_shape_api"
+    };
+  }
+
+  return {
+    strategy: "reflow_slide",
+    reason: "替换文字过长，不适合只改当前文本框，建议使用当前页重排生成替代页。",
+    estimatedOriginalChars: originalChars,
+    estimatedReplacementChars: replacementChars,
+    relativeLengthChange,
+    suggestedDeltaY: 0.28,
+    suggestedHeightScale: 1.8,
+    suggestedFontScale: 0.9,
+    applyMode: "use_reflow"
+  };
+}
+
+function measureSlideText(text: string) {
+  return text.replace(/\s+/g, "").length;
+}
+
+function countLines(text: string) {
+  return text.split(/\r?\n/).filter((line) => line.trim().length > 0).length;
+}
+
+function round(value: number, digits: number) {
+  const factor = 10 ** digits;
+  return Math.round(value * factor) / factor;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
 }
 
 function fallbackRewrite(text: string, instruction: string) {

@@ -20,6 +20,7 @@ import { autofixPageQa, checkPageQa, QaCheckResult } from "./api/qa";
 import { reflowCurrentSlide, ReflowSlideResult } from "./api/reflow";
 import { AiSettingsResult, getAiSettings } from "./api/settings";
 import {
+  adjustSelectedTextBoxLayout,
   insertSlidesFromBase64,
   isPowerPointHost,
   readSelectedText,
@@ -226,9 +227,19 @@ export function App() {
 
     try {
       await replaceSelectedText(proposalText);
+      const layoutAdjusted =
+        editPlan?.layoutSuggestion.strategy && editPlan.layoutSuggestion.strategy !== "keep"
+          ? await adjustSelectedTextBoxLayout(editPlan.layoutSuggestion).catch(() => false)
+          : false;
       setSelectedText(proposalText);
       setStatus("inserted");
-      setMessage("已应用到当前选中文本。");
+      setMessage(
+        layoutAdjusted
+          ? "已替换文字，并按排版建议调整了当前文本框。"
+          : editPlan?.layoutSuggestion.strategy && editPlan.layoutSuggestion.strategy !== "keep"
+            ? "已替换文字。该修改可能影响文本框排版，请按排版建议手动调整，或使用当前页重排生成替代页。"
+          : "已应用到当前选中文本。"
+      );
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "应用文本修改失败。");
@@ -796,6 +807,7 @@ function EditPanel(props: {
               {props.editPlan.model ? `模型：${props.editPlan.model}。` : ""}
               {props.editPlan.qa}
             </small>
+            <TextLayoutSuggestionCard plan={props.editPlan} />
           </div>
         ) : null}
 
@@ -876,6 +888,51 @@ function EditPanel(props: {
         ) : null}
       </section>
     </>
+  );
+}
+
+function TextLayoutSuggestionCard(props: { plan: TextEditPlan }) {
+  const suggestion = props.plan.layoutSuggestion;
+  const strategyLabel: Record<TextEditPlan["layoutSuggestion"]["strategy"], string> = {
+    keep: "保持当前文本框",
+    expand_height: "增高文本框",
+    shift_down: "下移并增高",
+    shrink_font: "缩小字号",
+    reflow_slide: "生成替代页"
+  };
+  const applyModeLabel: Record<TextEditPlan["layoutSuggestion"]["applyMode"], string> = {
+    advisory: "可直接应用文字",
+    requires_shape_api: "需要文本框位置/尺寸调整",
+    use_reflow: "建议使用当前页重排"
+  };
+
+  return (
+    <div className="layoutSuggestion">
+      <strong>排版建议：{strategyLabel[suggestion.strategy]}</strong>
+      <p>{suggestion.reason}</p>
+      <dl>
+        <div>
+          <dt>长度变化</dt>
+          <dd>
+            {suggestion.estimatedOriginalChars} → {suggestion.estimatedReplacementChars} 字，约 {suggestion.relativeLengthChange}x
+          </dd>
+        </div>
+        <div>
+          <dt>建议调整</dt>
+          <dd>
+            下移 {suggestion.suggestedDeltaY.toFixed(2)}，高度 {suggestion.suggestedHeightScale.toFixed(2)}x，字号{" "}
+            {suggestion.suggestedFontScale.toFixed(2)}x
+          </dd>
+        </div>
+        <div>
+          <dt>应用方式</dt>
+          <dd>{applyModeLabel[suggestion.applyMode]}</dd>
+        </div>
+      </dl>
+      {suggestion.applyMode !== "advisory" ? (
+        <small>应用时会尝试自动移动/缩放当前选中文本框；如果 PowerPoint 选区不支持 shape 调整，请按建议手动调整，或使用当前页重排生成替代页。</small>
+      ) : null}
+    </div>
   );
 }
 

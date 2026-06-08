@@ -10,6 +10,19 @@ export interface TextEditPlan {
   clarificationQuestion: string | null;
   qa: string;
   model: string | null;
+  layoutSuggestion: TextLayoutSuggestion;
+}
+
+export interface TextLayoutSuggestion {
+  strategy: "keep" | "expand_height" | "shift_down" | "shrink_font" | "reflow_slide";
+  reason: string;
+  estimatedOriginalChars: number;
+  estimatedReplacementChars: number;
+  relativeLengthChange: number;
+  suggestedDeltaY: number;
+  suggestedHeightScale: number;
+  suggestedFontScale: number;
+  applyMode: "advisory" | "requires_shape_api" | "use_reflow";
 }
 
 export interface ImageEditPlan {

@@ -14,7 +14,7 @@ AI PPT Builder is a local PowerPoint Office Add-in prototype for generating and 
 - Local report reuse after the first upload.
 - Local asset library for images and tables under `asset-library/`.
 - Local editing modes:
-  - selected text rewrite
+  - selected text rewrite with text-box layout adjustment suggestions and best-effort selected-shape resizing
   - selected image replacement
   - AI image selection from saved local assets
   - current-slide reflow into a replacement slide

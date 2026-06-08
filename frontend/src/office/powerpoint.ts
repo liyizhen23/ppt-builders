@@ -1,3 +1,5 @@
+import type { TextLayoutSuggestion } from "../api/edits";
+
 export function isPowerPointHost() {
   return Boolean(window.Office && Office.context?.host === Office.HostType.PowerPoint);
 }
@@ -41,6 +43,53 @@ export async function replaceSelectedText(text: string) {
         reject(new Error(result.error.message));
       }
     );
+  });
+}
+
+export async function adjustSelectedTextBoxLayout(suggestion: TextLayoutSuggestion) {
+  if (suggestion.strategy === "keep") {
+    return false;
+  }
+
+  return PowerPoint.run(async (context) => {
+    const shapes = context.presentation.getSelectedShapes();
+    shapes.load("items");
+    await context.sync();
+
+    const shape = shapes.items[0];
+    if (!shape) {
+      return false;
+    }
+
+    shape.load("top,height");
+    const textFrame = shape.getTextFrameOrNullObject();
+    textFrame.load("isNullObject,wordWrap");
+    const font = textFrame.textRange.font;
+    font.load("size");
+    await context.sync();
+
+    if (textFrame.isNullObject) {
+      return false;
+    }
+
+    const deltaPoints = suggestion.suggestedDeltaY * 72;
+    const heightScale = Math.max(suggestion.suggestedHeightScale, 1);
+
+    if (deltaPoints > 0) {
+      shape.top += deltaPoints;
+    }
+
+    if (heightScale > 1) {
+      shape.height = Math.max(shape.height * heightScale, shape.height + 8);
+    }
+
+    if (typeof font.size === "number" && suggestion.suggestedFontScale < 1) {
+      font.size = Math.max(8, Math.round(font.size * suggestion.suggestedFontScale * 10) / 10);
+    }
+
+    textFrame.wordWrap = true;
+    await context.sync();
+    return true;
   });
 }
 

@@ -11,12 +11,11 @@ import {
   type AssetKind
 } from "./assets/assetLibraryStore.js";
 import { getPublicAiSettings } from "./config/aiConfig.js";
-import { buildReportDeckPlan } from "./deckPlan/deckPlanSchema.js";
 import { buildImageSelectionPlan, buildSelectedImageEditPlan } from "./edits/imageEditPlanner.js";
 import { renderReflowSlide } from "./rendering/reflowSlideRenderer.js";
 import { buildSelectedTextEditPlan } from "./edits/textEditPlanner.js";
 import { autofixPageQa, checkPageQa } from "./qa/qaValidator.js";
-import { renderOfficeCliDeck } from "./rendering/officeCliDeckRenderer.js";
+import { buildOfficeCliDeckSpec, generatePptWithOfficeCli } from "./generation/officeCliPptGenerator.js";
 import {
   getCurrentReport,
   saveCurrentReport,
@@ -324,17 +323,15 @@ app.post("/api/decks/plan", async (request, reply) => {
     });
   }
 
-  const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
-  const deckPlan = buildReportDeckPlan({
+  const { template, defaultTemplateUsed } = await resolveTemplate(received.template);
+  const deckSpec = buildOfficeCliDeckSpec({
     reportFileName: currentReport.sourceFileName,
-    templateFileName: template.fileName,
     instruction: received.instruction,
-    templateProfile,
     evidenceIndex: currentReport.evidenceIndex
   });
 
   return {
-    deckPlan,
+    deckSpec,
     received: {
       report: summarizeCurrentReport(currentReport),
       template: toUploadedFileSummary(template),
@@ -355,41 +352,30 @@ app.post("/api/decks/generate", async (request, reply) => {
   }
 
   const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
-  const deckPlan = buildReportDeckPlan({
-    reportFileName: currentReport.sourceFileName,
+
+  const rendered = await generatePptWithOfficeCli({
     templateFileName: template.fileName,
+    reportFileName: currentReport.sourceFileName,
     instruction: received.instruction,
     templateProfile,
-    evidenceIndex: currentReport.evidenceIndex
-  });
-
-  const rendered = await renderOfficeCliDeck({
-    deckPlan,
-    profile: templateProfile,
-    reportFileName: currentReport.sourceFileName,
-    templateFileName: template.fileName,
+    evidenceIndex: currentReport.evidenceIndex,
     templateSourcePath: template.sourcePath,
     templateBuffer: template.buffer.length > 0 ? template.buffer : undefined
   });
 
   return reply.send({
-    deckId: `deck_${Date.now()}`,
+    deckId: rendered.deckId,
     pptxBase64: rendered.pptxBase64,
-    summary: `Generated a ${deckPlan.slides.length}-slide deck with embedded officeCLI template-page cloning.`,
-    qa: [deckPlan.validation.warnings.join(" "), rendered.qa].filter(Boolean).join("\n"),
+    summary: rendered.summary,
+    qa: rendered.qa,
     received: {
       report: summarizeCurrentReport(currentReport),
       template: toUploadedFileSummary(template),
       currentReportUsed: !received.report,
       defaultTemplateUsed
     },
-    deckPlan,
-    templateReplacement: {
-      selectedSlideIndex: rendered.slides[0]?.selectedSlideIndex ?? 0,
-      selectedRole: rendered.slides[0]?.selectedRole ?? "unknown",
-      replacedSlots: rendered.slides.flatMap((slide) => slide.replacedSlots),
-      slides: rendered.slides
-    }
+    deckSpec: rendered.deckSpec,
+    templateReplacement: rendered.templateReplacement
   });
 });
 

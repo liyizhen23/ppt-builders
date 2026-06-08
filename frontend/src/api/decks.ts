@@ -9,19 +9,18 @@ export interface GenerateDeckResult {
   pptxBase64: string;
   summary?: string;
   qa?: string;
-  deckPlan?: {
+  deckSpec?: {
     deckId: string;
-    version: string;
     title: string;
+    generationEngine: "officecli";
+    generationRules: string[];
     slides: Array<{
       slideId: string;
-      role: string;
+      kind: string;
       title: string;
+      bullets: string[];
     }>;
-    validation: {
-      schemaValid: boolean;
-      warnings: string[];
-    };
+    sourceEvidenceIds: string[];
   };
   templateReplacement?: {
     selectedSlideIndex: number;
@@ -99,7 +98,7 @@ export async function generateDeck(input: GenerateDeckInput): Promise<GenerateDe
     pptxBase64: result.pptxBase64,
     summary: result.summary,
     qa: result.qa,
-    deckPlan: result.deckPlan,
+    deckSpec: result.deckSpec,
     templateReplacement: result.templateReplacement
   };
 }

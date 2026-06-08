@@ -1233,13 +1233,12 @@ function ResultPanel(props: {
           <small>已替换 {props.result.templateReplacement.replacedSlots.length} 个槽位</small>
         </div>
       ) : null}
-      {props.result?.deckPlan ? (
+      {props.result?.deckSpec ? (
         <div className="templateSummary">
-          <strong>DeckPlan</strong>
-          <span>{props.result.deckPlan.title}</span>
+          <strong>officeCLI 生成计划</strong>
+          <span>{props.result.deckSpec.title}</span>
           <small>
-            {props.result.deckPlan.slides.length} slide / schema{" "}
-            {props.result.deckPlan.validation.schemaValid ? "valid" : "invalid"}
+            {props.result.deckSpec.slides.length} slide / {props.result.deckSpec.sourceEvidenceIds.length} evidence
           </small>
         </div>
       ) : null}

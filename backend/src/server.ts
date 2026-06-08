@@ -1,8 +1,10 @@
 import Fastify from "fastify";
+import type { FastifyRequest } from "fastify";
 import cors from "@fastify/cors";
 import multipart from "@fastify/multipart";
 import { z } from "zod";
 import { getPublicAiSettings } from "./config/aiConfig.js";
+import { buildSingleSlideDeckPlan } from "./deckPlan/deckPlanSchema.js";
 import { renderTemplateReplacementDeck } from "./rendering/templateSlideRenderer.js";
 import {
   analyzeTemplateBuffer,
@@ -116,7 +118,99 @@ app.post("/api/templates/analyze", async (request, reply) => {
   };
 });
 
+app.post("/api/decks/plan", async (request, reply) => {
+  const received = await readGenerationRequest(request);
+
+  if (!received.report) {
+    return reply.code(400).send({
+      error: "report file is required"
+    });
+  }
+
+  const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
+  const deckPlan = buildSingleSlideDeckPlan({
+    reportFileName: received.report.fileName,
+    templateFileName: template.fileName,
+    instruction: received.instruction,
+    templateProfile
+  });
+
+  return {
+    deckPlan,
+    received: {
+      report: toUploadedFileSummary(received.report),
+      template: toUploadedFileSummary(template),
+      defaultTemplateUsed
+    }
+  };
+});
+
 app.post("/api/decks/generate", async (request, reply) => {
+  const received = await readGenerationRequest(request);
+
+  if (!received.report) {
+    return reply.code(400).send({
+      error: "report file is required"
+    });
+  }
+
+  const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
+  const deckPlan = buildSingleSlideDeckPlan({
+    reportFileName: received.report.fileName,
+    templateFileName: template.fileName,
+    instruction: received.instruction,
+    templateProfile
+  });
+
+  const rendered = await renderTemplateReplacementDeck({
+    profile: templateProfile,
+    reportFileName: received.report.fileName,
+    templateFileName: template.fileName,
+    instruction: received.instruction,
+    slideSpec: deckPlan.slides[0]
+  });
+
+  return reply.send({
+    deckId: `deck_${Date.now()}`,
+    pptxBase64: rendered.pptxBase64,
+    summary: `Generated a one-slide template replacement deck using template slide ${rendered.selectedSlideIndex}.`,
+    qa: "Template replacement smoke test only: report parsing, copied template backgrounds, and content QA are not implemented yet.",
+    received: {
+      report: toUploadedFileSummary(received.report),
+      template: toUploadedFileSummary(template),
+      defaultTemplateUsed
+    },
+    deckPlan,
+    templateReplacement: {
+      selectedSlideIndex: rendered.selectedSlideIndex,
+      selectedRole: rendered.selectedRole,
+      replacedSlots: rendered.replacedSlots
+    }
+  });
+});
+
+try {
+  await app.listen({
+    host: env.HOST,
+    port: env.PORT
+  });
+} catch (error) {
+  app.log.error(error);
+  process.exit(1);
+}
+
+interface UploadedFileSummary {
+  fieldName: string;
+  fileName: string;
+  mimeType: string;
+  size: number;
+}
+
+interface UploadedFile extends UploadedFileSummary {
+  buffer: Buffer;
+}
+
+async function readGenerationRequest(request: FastifyRequest) {
   const parts = request.parts();
   const received = {
     report: null as UploadedFile | null,
@@ -147,71 +241,33 @@ app.post("/api/decks/generate", async (request, reply) => {
     }
   }
 
-  if (!received.report) {
-    return reply.code(400).send({
-      error: "report file is required"
-    });
+  return received;
+}
+
+async function resolveTemplate(uploadedTemplate: UploadedFile | null) {
+  if (uploadedTemplate) {
+    return {
+      template: uploadedTemplate,
+      templateProfile: await analyzeTemplateBuffer({
+        fileName: uploadedTemplate.fileName,
+        buffer: uploadedTemplate.buffer
+      }),
+      defaultTemplateUsed: false
+    };
   }
 
-  const defaultTemplate = received.template ? null : await getDefaultTemplate();
-  const templateProfile = received.template
-    ? await analyzeTemplateBuffer({
-        fileName: received.template.fileName,
-        buffer: received.template.buffer
-      })
-    : defaultTemplate!.profile;
-  const template = received.template ?? {
-    fieldName: "template",
-    fileName: defaultTemplate!.sourceFileName,
-    mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    size: defaultTemplate!.profile.media.reduce((sum, media) => sum + media.size, 0),
-    buffer: Buffer.alloc(0)
-  };
-
-  const rendered = await renderTemplateReplacementDeck({
-    profile: templateProfile,
-    reportFileName: received.report.fileName,
-    templateFileName: template.fileName,
-    instruction: received.instruction
-  });
-
-  return reply.send({
-    deckId: `deck_${Date.now()}`,
-    pptxBase64: rendered.pptxBase64,
-    summary: `Generated a one-slide template replacement deck using template slide ${rendered.selectedSlideIndex}.`,
-    qa: "Template replacement smoke test only: report parsing, copied template backgrounds, and content QA are not implemented yet.",
-    received: {
-      report: toUploadedFileSummary(received.report),
-      template: toUploadedFileSummary(template),
-      defaultTemplateUsed: !received.template
+  const defaultTemplate = await getDefaultTemplate();
+  return {
+    template: {
+      fieldName: "template",
+      fileName: defaultTemplate.sourceFileName,
+      mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      size: defaultTemplate.profile.media.reduce((sum, media) => sum + media.size, 0),
+      buffer: Buffer.alloc(0)
     },
-    templateReplacement: {
-      selectedSlideIndex: rendered.selectedSlideIndex,
-      selectedRole: rendered.selectedRole,
-      replacedSlots: rendered.replacedSlots
-    }
-  });
-});
-
-try {
-  await app.listen({
-    host: env.HOST,
-    port: env.PORT
-  });
-} catch (error) {
-  app.log.error(error);
-  process.exit(1);
-}
-
-interface UploadedFileSummary {
-  fieldName: string;
-  fileName: string;
-  mimeType: string;
-  size: number;
-}
-
-interface UploadedFile extends UploadedFileSummary {
-  buffer: Buffer;
+    templateProfile: defaultTemplate.profile,
+    defaultTemplateUsed: true
+  };
 }
 
 function toUploadedFileSummary(file: UploadedFile): UploadedFileSummary {

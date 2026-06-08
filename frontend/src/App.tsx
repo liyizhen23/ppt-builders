@@ -203,6 +203,17 @@ export function App() {
           </div>
         ) : null}
 
+        {result?.deckPlan ? (
+          <div className="templateSummary">
+            <strong>DeckPlan</strong>
+            <span>{result.deckPlan.title}</span>
+            <small>
+              {result.deckPlan.slides.length} slide / schema{" "}
+              {result.deckPlan.validation.schemaValid ? "valid" : "invalid"}
+            </small>
+          </div>
+        ) : null}
+
         <button className="secondaryButton" type="button" onClick={handleInsert} disabled={!canInsert}>
           插入到 PowerPoint
         </button>

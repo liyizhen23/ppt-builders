@@ -1,4 +1,5 @@
 import { createRequire } from "node:module";
+import type { SlideSpec } from "../deckPlan/deckPlanSchema.js";
 import type { TemplateProfile } from "../templates/templateProfile.js";
 import type { TemplateReplaceableSlot } from "../templates/templateCapabilities.js";
 
@@ -15,6 +16,7 @@ export interface TemplateReplacementInput {
   reportFileName: string;
   templateFileName: string;
   instruction: string;
+  slideSpec?: SlideSpec;
 }
 
 export interface TemplateReplacementResult {
@@ -28,7 +30,7 @@ export interface TemplateReplacementResult {
 }
 
 export async function renderTemplateReplacementDeck(input: TemplateReplacementInput): Promise<TemplateReplacementResult> {
-  const selectedSlideIndex = chooseTemplateSlide(input.profile);
+  const selectedSlideIndex = chooseTemplateSlide(input.profile, input.slideSpec);
   const selectedSlide = input.profile.slides.find((slide) => slide.index === selectedSlideIndex) ?? input.profile.slides[0];
   const selectedSlots = input.profile.capabilities.replaceableSlots.filter((slot) => slot.slideIndex === selectedSlide.index);
   const titleSlot = selectSlot(selectedSlots, "title");
@@ -52,7 +54,7 @@ export async function renderTemplateReplacementDeck(input: TemplateReplacementIn
   applyTemplateInspiredBackground(slide, input.profile);
 
   const replacedSlots: TemplateReplacementResult["replacedSlots"] = [];
-  const title = normalizeInstructionTitle(input.instruction);
+  const title = input.slideSpec?.title ?? normalizeInstructionTitle(input.instruction);
   const bullets = buildBodyBullets(input);
 
   if (titleSlot?.bbox) {
@@ -111,7 +113,16 @@ export async function renderTemplateReplacementDeck(input: TemplateReplacementIn
   };
 }
 
-function chooseTemplateSlide(profile: TemplateProfile) {
+function chooseTemplateSlide(profile: TemplateProfile, slideSpec?: SlideSpec) {
+  if (slideSpec?.templateIntent.preferredSlideIndex) {
+    return slideSpec.templateIntent.preferredSlideIndex;
+  }
+  if (slideSpec?.templateIntent.preferredRole) {
+    const preferredForRole = profile.capabilities.recommendedSlides[slideSpec.templateIntent.preferredRole][0];
+    if (preferredForRole) {
+      return preferredForRole;
+    }
+  }
   const preferred =
     profile.capabilities.recommendedSlides.content_text[0] ??
     profile.capabilities.recommendedSlides.content_image[0] ??
@@ -205,6 +216,13 @@ function addFooter(slide: any, profile: TemplateProfile, selectedSlideIndex: num
 }
 
 function buildBodyBullets(input: TemplateReplacementInput) {
+  if (input.slideSpec) {
+    const bodyBlocks = input.slideSpec.blocks.filter((block) => block.type === "body" || block.type === "callout");
+    if (bodyBlocks.length > 0) {
+      return bodyBlocks.map((block) => block.text);
+    }
+  }
+
   return [
     `报告文件：${input.reportFileName}`,
     `生成要求：${input.instruction.trim() || "未提供具体生成要求"}`,

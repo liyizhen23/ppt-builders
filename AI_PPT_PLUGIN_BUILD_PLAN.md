@@ -934,6 +934,32 @@ frontend/
 - 已能替换标题和正文槽位，并返回 `templateReplacement`。
 - 当前仍未复制模板页原始背景和装饰，后续需要在真正模板页渲染阶段补齐。
 
+### 阶段 2d：DeckPlan schema
+
+目标：在报告解析/AI 规划和 PPT 渲染之间建立稳定中间层。
+
+任务：
+
+- 定义 `DeckPlan`、`SlideSpec`、`SlideBlock`、`VisualSpec`。
+- 使用 schema validation 检查计划结构。
+- 将用户指令、报告文件、模板信息转换为单页 DeckPlan。
+- 让生成接口先产出 DeckPlan，再由模板渲染器消费 `SlideSpec`。
+- 提供只规划不渲染的 `/api/decks/plan` 接口。
+
+验收：
+
+- `/api/decks/plan` 返回 schema valid 的 DeckPlan。
+- `/api/decks/generate` 返回 `deckPlan` 和 `templateReplacement`。
+- 模板页选择来自 `SlideSpec.templateIntent`，而不是渲染器内部临时决定。
+
+当前实现状态：
+
+- 已新增 Zod 版 `DeckPlan` schema。
+- 已实现单页 `buildSingleSlideDeckPlan`。
+- 已新增 `/api/decks/plan`。
+- `/api/decks/generate` 已先构建 DeckPlan，再渲染第一张 `SlideSpec`。
+- 当前 DeckPlan 仍是基于文件名和用户指令的占位规划，尚未接报告正文解析和 evidence index。
+
 ### 阶段 3：报告解析和 evidence index
 
 目标：生成和修改内容均可追踪来源。

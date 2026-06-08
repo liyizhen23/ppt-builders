@@ -54,7 +54,9 @@ Expected JSON response:
   "deckId": "optional-id",
   "pptxBase64": "base64-encoded-pptx",
   "summary": "optional generation summary",
-  "qa": "optional QA summary"
+  "qa": "optional QA summary",
+  "deckPlan": "schema-validated planning object",
+  "templateReplacement": "selected template slide and replaced slots"
 }
 ```
 

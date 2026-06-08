@@ -30,6 +30,15 @@ export interface GenerateDeckResult {
       shapeId: string;
       slotType: string;
     }>;
+    slides?: Array<{
+      slideId: string;
+      selectedSlideIndex: number;
+      selectedRole: string;
+      replacedSlots: Array<{
+        shapeId: string;
+        slotType: string;
+      }>;
+    }>;
   };
 }
 

@@ -148,6 +148,79 @@ export function buildSingleSlideDeckPlan(input: BuildDeckPlanInput): DeckPlan {
   return parsed.data;
 }
 
+export function buildReportDeckPlan(input: BuildDeckPlanInput): DeckPlan {
+  const contentRole = choosePreferredRole(input.instruction, input.templateProfile);
+  const evidence = input.evidenceIndex ? findRelevantEvidence(input.evidenceIndex, input.instruction, 18) : [];
+  const title = normalizeTitle(input.instruction);
+  const warnings: string[] = [];
+
+  if (!input.evidenceIndex || input.evidenceIndex.blocks.length === 0) {
+    warnings.push("No report evidence was available; generated a fallback single-slide deck.");
+    return buildSingleSlideDeckPlan(input);
+  }
+
+  const contentSlides = chunkEvidence(evidence.length > 0 ? evidence : input.evidenceIndex.blocks.slice(0, 18), 3)
+    .slice(0, 5)
+    .map((chunk, index) => {
+      const slideTitle = index === 0 ? title : deriveSlideTitle(chunk[0]?.text, index + 1);
+      const evidenceIds = chunk.map((block) => block.evidenceId);
+      return {
+        slideId: `slide_${index + 1}`,
+        role: contentRole,
+        title: slideTitle,
+        blocks: [
+          {
+            type: "title" as const,
+            text: slideTitle,
+            sourceEvidenceId: evidenceIds[0]
+          },
+          ...evidenceToBlocks(chunk)
+        ],
+        visual: inferVisual(input.instruction),
+        templateIntent: {
+          preferredRole: contentRole,
+          preferredSlideIndex: pickRecommendedSlide(input.templateProfile, contentRole, index),
+          requiredSlots: inferRequiredSlots(input.instruction)
+        },
+        sourceEvidenceIds: evidenceIds
+      };
+    });
+
+  const candidate = {
+    deckId: `deck_${Date.now()}`,
+    version: "0.1",
+    title,
+    source: {
+      reportFileName: input.reportFileName,
+      templateFileName: input.templateFileName,
+      instruction: input.instruction
+    },
+    slides: contentSlides,
+    constraints: {
+      maxSlides: contentSlides.length,
+      language: "zh-CN",
+      requireEvidence: true
+    },
+    validation: {
+      schemaValid: true,
+      warnings
+    }
+  };
+
+  const parsed = deckPlanSchema.safeParse(candidate);
+  if (!parsed.success) {
+    return deckPlanSchema.parse({
+      ...candidate,
+      validation: {
+        schemaValid: false,
+        warnings: parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+      }
+    });
+  }
+
+  return parsed.data;
+}
+
 function evidenceToBlocks(evidence: ReturnType<typeof findRelevantEvidence>) {
   return evidence.map((block) => ({
     type: "body" as const,
@@ -179,6 +252,30 @@ function fallbackBlocks(input: BuildDeckPlanInput, evidenceId: string) {
 function compactEvidenceText(text: string) {
   const cleaned = text.replace(/\s+/g, " ").trim();
   return cleaned.length > 90 ? `${cleaned.slice(0, 90)}...` : cleaned;
+}
+
+function chunkEvidence<T>(items: T[], size: number) {
+  const chunks: T[][] = [];
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+  return chunks;
+}
+
+function deriveSlideTitle(text: string | undefined, slideNumber: number) {
+  const cleaned = (text ?? "").replace(/\s+/g, " ").trim();
+  if (!cleaned) {
+    return `Report insight ${slideNumber}`;
+  }
+  return cleaned.length > 28 ? `${cleaned.slice(0, 28)}...` : cleaned;
+}
+
+function pickRecommendedSlide(profile: TemplateProfile, role: TemplateSlideRole, offset: number) {
+  const slides = profile.capabilities.recommendedSlides[role];
+  if (slides.length === 0) {
+    return undefined;
+  }
+  return slides[offset % slides.length];
 }
 
 export function validateDeckPlan(input: unknown) {

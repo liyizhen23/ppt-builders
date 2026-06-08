@@ -11,12 +11,12 @@ import {
   type AssetKind
 } from "./assets/assetLibraryStore.js";
 import { getPublicAiSettings } from "./config/aiConfig.js";
-import { buildSingleSlideDeckPlan } from "./deckPlan/deckPlanSchema.js";
+import { buildReportDeckPlan } from "./deckPlan/deckPlanSchema.js";
 import { buildImageSelectionPlan, buildSelectedImageEditPlan } from "./edits/imageEditPlanner.js";
 import { renderReflowSlide } from "./rendering/reflowSlideRenderer.js";
 import { buildSelectedTextEditPlan } from "./edits/textEditPlanner.js";
 import { autofixPageQa, checkPageQa } from "./qa/qaValidator.js";
-import { renderTemplateReplacementDeck } from "./rendering/templateSlideRenderer.js";
+import { renderTemplateReplacementDeckPlan } from "./rendering/templateSlideRenderer.js";
 import {
   getCurrentReport,
   saveCurrentReport,
@@ -325,7 +325,7 @@ app.post("/api/decks/plan", async (request, reply) => {
   }
 
   const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
-  const deckPlan = buildSingleSlideDeckPlan({
+  const deckPlan = buildReportDeckPlan({
     reportFileName: currentReport.sourceFileName,
     templateFileName: template.fileName,
     instruction: received.instruction,
@@ -355,7 +355,7 @@ app.post("/api/decks/generate", async (request, reply) => {
   }
 
   const { template, templateProfile, defaultTemplateUsed } = await resolveTemplate(received.template);
-  const deckPlan = buildSingleSlideDeckPlan({
+  const deckPlan = buildReportDeckPlan({
     reportFileName: currentReport.sourceFileName,
     templateFileName: template.fileName,
     instruction: received.instruction,
@@ -363,19 +363,22 @@ app.post("/api/decks/generate", async (request, reply) => {
     evidenceIndex: currentReport.evidenceIndex
   });
 
-  const rendered = await renderTemplateReplacementDeck({
+  const rendered = await renderTemplateReplacementDeckPlan({
     profile: templateProfile,
     reportFileName: currentReport.sourceFileName,
     templateFileName: template.fileName,
     instruction: received.instruction,
-    slideSpec: deckPlan.slides[0]
+    slideSpec: deckPlan.slides[0],
+    slideSpecs: deckPlan.slides
   });
 
   return reply.send({
     deckId: `deck_${Date.now()}`,
     pptxBase64: rendered.pptxBase64,
-    summary: `Generated a one-slide template replacement deck using template slide ${rendered.selectedSlideIndex}.`,
-    qa: "Template replacement smoke test only: report parsing, copied template backgrounds, and content QA are not implemented yet.",
+    summary: `Generated a ${deckPlan.slides.length}-slide deck from report evidence using template replacement.`,
+    qa: deckPlan.validation.warnings.length > 0
+      ? deckPlan.validation.warnings.join(" ")
+      : "Generated from parsed report evidence. Template styling is approximated; original PPTX slide backgrounds are not copied yet.",
     received: {
       report: summarizeCurrentReport(currentReport),
       template: toUploadedFileSummary(template),
@@ -384,9 +387,10 @@ app.post("/api/decks/generate", async (request, reply) => {
     },
     deckPlan,
     templateReplacement: {
-      selectedSlideIndex: rendered.selectedSlideIndex,
-      selectedRole: rendered.selectedRole,
-      replacedSlots: rendered.replacedSlots
+      selectedSlideIndex: rendered.slides[0]?.selectedSlideIndex ?? 0,
+      selectedRole: rendered.slides[0]?.selectedRole ?? "unknown",
+      replacedSlots: rendered.slides.flatMap((slide) => slide.replacedSlots),
+      slides: rendered.slides
     }
   });
 });

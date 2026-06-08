@@ -29,18 +29,49 @@ export interface TemplateReplacementResult {
   }>;
 }
 
-export async function renderTemplateReplacementDeck(input: TemplateReplacementInput): Promise<TemplateReplacementResult> {
-  const selectedSlideIndex = chooseTemplateSlide(input.profile, input.slideSpec);
-  const selectedSlide = input.profile.slides.find((slide) => slide.index === selectedSlideIndex) ?? input.profile.slides[0];
-  const selectedSlots = input.profile.capabilities.replaceableSlots.filter((slot) => slot.slideIndex === selectedSlide.index);
-  const titleSlot = selectSlot(selectedSlots, "title");
-  const bodySlots = selectedSlots.filter((slot) => slot.slotType === "body").slice(0, 3);
-  const imageSlot = selectSlot(selectedSlots, "image");
+export interface TemplateDeckReplacementResult {
+  pptxBase64: string;
+  slides: Array<{
+    slideId: string;
+    selectedSlideIndex: number;
+    selectedRole: string;
+    replacedSlots: TemplateReplacementResult["replacedSlots"];
+  }>;
+}
 
+export async function renderTemplateReplacementDeck(input: TemplateReplacementInput): Promise<TemplateReplacementResult> {
+  const pptx = createPptx(input);
+  const rendered = addTemplateReplacementSlide(pptx, input, input.slideSpec);
+  const output = await pptx.write({ outputType: "base64" });
+  return {
+    pptxBase64: String(output),
+    selectedSlideIndex: rendered.selectedSlideIndex,
+    selectedRole: rendered.selectedRole,
+    replacedSlots: rendered.replacedSlots
+  };
+}
+
+export async function renderTemplateReplacementDeckPlan(input: TemplateReplacementInput & {
+  slideSpecs: SlideSpec[];
+}): Promise<TemplateDeckReplacementResult> {
+  const pptx = createPptx(input);
+  const slides = input.slideSpecs.map((slideSpec) => ({
+    slideId: slideSpec.slideId,
+    ...addTemplateReplacementSlide(pptx, input, slideSpec)
+  }));
+  const output = await pptx.write({ outputType: "base64" });
+
+  return {
+    pptxBase64: String(output),
+    slides
+  };
+}
+
+function createPptx(input: TemplateReplacementInput) {
   const pptx = new PptxGenerator();
   pptx.layout = "LAYOUT_WIDE";
   pptx.author = "AI PPT Builder";
-  pptx.subject = "Template replacement smoke test";
+  pptx.subject = "Template replacement deck";
   pptx.title = "Template Replacement";
   pptx.company = "ppt-builders";
   pptx.lang = "zh-CN";
@@ -49,13 +80,27 @@ export async function renderTemplateReplacementDeck(input: TemplateReplacementIn
     bodyFontFace: input.profile.capabilities.styleTokens.body?.fontFace ?? "Microsoft YaHei",
     lang: "zh-CN"
   };
+  return pptx;
+}
+
+function addTemplateReplacementSlide(
+  pptx: any,
+  input: TemplateReplacementInput,
+  slideSpec: SlideSpec | undefined
+): Omit<TemplateReplacementResult, "pptxBase64"> {
+  const selectedSlideIndex = chooseTemplateSlide(input.profile, slideSpec);
+  const selectedSlide = input.profile.slides.find((slide) => slide.index === selectedSlideIndex) ?? input.profile.slides[0];
+  const selectedSlots = input.profile.capabilities.replaceableSlots.filter((slot) => slot.slideIndex === selectedSlide.index);
+  const titleSlot = selectSlot(selectedSlots, "title");
+  const bodySlots = selectedSlots.filter((slot) => slot.slotType === "body").slice(0, 3);
+  const imageSlot = selectSlot(selectedSlots, "image");
 
   const slide = pptx.addSlide();
   applyTemplateInspiredBackground(slide, input.profile);
 
   const replacedSlots: TemplateReplacementResult["replacedSlots"] = [];
-  const title = input.slideSpec?.title ?? normalizeInstructionTitle(input.instruction);
-  const bullets = buildBodyBullets(input);
+  const title = slideSpec?.title ?? normalizeInstructionTitle(input.instruction);
+  const bullets = buildBodyBullets({ ...input, slideSpec });
 
   if (titleSlot?.bbox) {
     addTextInSlot(slide, input.profile, titleSlot, title, "title");
@@ -104,9 +149,7 @@ export async function renderTemplateReplacementDeck(input: TemplateReplacementIn
 
   addFooter(slide, input.profile, selectedSlide.index, input.templateFileName);
 
-  const output = await pptx.write({ outputType: "base64" });
   return {
-    pptxBase64: String(output),
     selectedSlideIndex: selectedSlide.index,
     selectedRole: selectedSlide.role,
     replacedSlots

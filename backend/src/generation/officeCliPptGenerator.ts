@@ -1,15 +1,17 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
-import { join } from "node:path";
+import { copyFile, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
+import { listAssets } from "../assets/assetLibraryStore.js";
 import type { EvidenceBlock, EvidenceIndex } from "../reports/reportParser.js";
 import type { TemplateProfile, TemplateSlideRole } from "../templates/templateProfile.js";
+import type { TemplateReplaceableSlot } from "../templates/templateCapabilities.js";
 import { runOfficeCli } from "../rendering/officeCliRuntime.js";
 
 export const officeCliGenerationRules = [
   "Only use report evidence and explicit user instructions; do not invent claims.",
-  "Use officeCLI as the native deck builder for overall PPT generation.",
-  "Build slides from blank pages with explicit officeCLI shapes, text, notes, positions, fonts, and colors.",
-  "Use the uploaded template only as visual inspiration for colors and fonts; do not clone template slides.",
+  "Strictly preserve the uploaded template page layouts by cloning template slides with officeCLI.",
+  "Replace only content slots inferred from the template; protect logos, school emblems, page numbers, footers, and decorative shapes.",
+  "Prefer replacing template content pictures with uploaded image assets when a safe image slot is available.",
   "Keep local partial-edit features on their existing editing path."
 ] as const;
 
@@ -66,57 +68,58 @@ export interface OfficeCliSlideSpec {
   preferredTemplateRole: TemplateSlideRole;
 }
 
-interface NativeTheme {
-  primary: string;
-  secondary: string;
-  accent: string;
-  background: string;
-  panel: string;
-  text: string;
-  muted: string;
-  titleFont: string;
-  bodyFont: string;
-}
-
-interface NativeShape {
-  text?: string;
-  x: string;
-  y: string;
-  width: string;
-  height: string;
-  preset?: "rect" | "roundRect" | "ellipse" | "triangle" | "diamond" | "rightArrow";
-  fill?: string;
-  line?: string;
-  lineWidth?: string;
-  lineDash?: string;
-  color?: string;
-  size?: string;
-  bold?: boolean;
-  font?: string;
-  align?: "left" | "center" | "right";
-  valign?: "top" | "middle" | "bottom";
-  margin?: string;
-  opacity?: number;
-  shadow?: string;
-  name?: string;
-}
+type ImageAsset = Awaited<ReturnType<typeof listAssets>>[number];
 
 export async function generatePptWithOfficeCli(input: OfficeCliPptGenerationInput): Promise<OfficeCliPptGenerationResult> {
   const deckSpec = buildOfficeCliDeckSpec(input);
-  const theme = buildNativeTheme(input.templateProfile);
-  const workDir = await mkdtemp(join(tmpdir(), "ppt-builders-officecli-native-"));
+  const workDir = await mkdtemp(join(tmpdir(), "ppt-builders-officecli-template-"));
   const outputPath = join(workDir, "generated.pptx");
 
   try {
-    await runOfficeCli(["create", outputPath], { cwd: workDir });
+    if (input.templateSourcePath) {
+      await copyFile(input.templateSourcePath, outputPath);
+    } else if (input.templateBuffer) {
+      await writeFile(outputPath, input.templateBuffer);
+    } else {
+      throw new Error("officeCLI 生成缺少模板源文件。");
+    }
 
-    for (let index = 0; index < deckSpec.slides.length; index += 1) {
-      await renderNativeSlide({
+    const imageAssets = await listAssets("image");
+    const renderedSlides = [];
+    for (const slideSpec of deckSpec.slides) {
+      const selectedSlideIndex = chooseTemplateSlide(input.templateProfile, slideSpec);
+      const selectedSlide = input.templateProfile.slides.find((slide) => slide.index === selectedSlideIndex);
+      await runOfficeCli(["add", outputPath, "/", "--from", `/slide[${selectedSlideIndex}]`], { cwd: workDir });
+      renderedSlides.push({
+        slideSpec,
+        selectedSlideIndex,
+        selectedRole: selectedSlide?.role ?? "unknown"
+      });
+    }
+
+    for (let slideIndex = input.templateProfile.counts.slides; slideIndex >= 1; slideIndex -= 1) {
+      await runOfficeCli(["remove", outputPath, `/slide[${slideIndex}]`], { cwd: workDir });
+    }
+
+    const slideResults = [];
+    for (let index = 0; index < renderedSlides.length; index += 1) {
+      const generatedSlideIndex = index + 1;
+      const rendered = renderedSlides[index];
+      const replacedSlots = await replaceTemplateSlots({
         outputPath,
-        slideNumber: index + 1,
-        slideSpec: deckSpec.slides[index],
-        slideCount: deckSpec.slides.length,
-        theme
+        generatedSlideIndex,
+        profile: input.templateProfile,
+        selectedSlideIndex: rendered.selectedSlideIndex,
+        slideSpec: rendered.slideSpec,
+        imageAssets
+      });
+
+      await addNotes(outputPath, generatedSlideIndex, buildSpeakerNotes(rendered.slideSpec));
+      slideResults.push({
+        slideId: rendered.slideSpec.slideId,
+        selectedSlideIndex: rendered.selectedSlideIndex,
+        selectedRole: rendered.selectedRole,
+        replacedSlots
       });
     }
 
@@ -127,19 +130,14 @@ export async function generatePptWithOfficeCli(input: OfficeCliPptGenerationInpu
     return {
       deckId: deckSpec.deckId,
       pptxBase64,
-      summary: `Generated a ${deckSpec.slides.length}-slide deck with the officeCLI-native deck builder.`,
+      summary: `Generated a ${deckSpec.slides.length}-slide deck by cloning template layouts with officeCLI and replacing safe content slots.`,
       qa,
       deckSpec,
       templateReplacement: {
-        selectedSlideIndex: 0,
-        selectedRole: "officecli-native",
-        replacedSlots: [],
-        slides: deckSpec.slides.map((slide) => ({
-          slideId: slide.slideId,
-          selectedSlideIndex: 0,
-          selectedRole: "officecli-native",
-          replacedSlots: []
-        }))
+        selectedSlideIndex: slideResults[0]?.selectedSlideIndex ?? 0,
+        selectedRole: slideResults[0]?.selectedRole ?? "unknown",
+        replacedSlots: slideResults.flatMap((slide) => slide.replacedSlots),
+        slides: slideResults
       }
     };
   } finally {
@@ -201,584 +199,168 @@ export function buildOfficeCliDeckSpec(input: {
   };
 }
 
-async function renderNativeSlide(input: {
+async function replaceTemplateSlots(input: {
   outputPath: string;
-  slideNumber: number;
+  generatedSlideIndex: number;
+  profile: TemplateProfile;
+  selectedSlideIndex: number;
   slideSpec: OfficeCliSlideSpec;
-  slideCount: number;
-  theme: NativeTheme;
+  imageAssets: ImageAsset[];
 }) {
-  const background = input.slideSpec.kind === "cover" ? input.theme.primary : input.theme.background;
-  await addSlide(input.outputPath, background);
+  const allSlots = input.profile.capabilities.replaceableSlots.filter((slot) => slot.slideIndex === input.selectedSlideIndex);
+  const safeSlots = allSlots.filter((slot) => !isProtectedSlot(input.profile, slot));
+  const replacedSlots: Array<{ shapeId: string; slotType: string }> = [];
 
-  if (input.slideSpec.kind === "cover") {
-    await renderCoverSlide(input);
-  } else if (input.slideSpec.kind === "agenda") {
-    await renderAgendaSlide(input);
-  } else if (input.slideSpec.kind === "summary") {
-    await renderSummarySlide(input);
-  } else {
-    await renderContentSlide(input);
+  const titleSlot = selectSlot(safeSlots, "title") ?? selectSlot(safeSlots, "subtitle");
+  if (titleSlot && (await setShapeText(input.outputPath, input.generatedSlideIndex, titleSlot.shapeId, input.slideSpec.title))) {
+    replacedSlots.push({ shapeId: titleSlot.shapeId, slotType: titleSlot.slotType });
   }
 
-  await renderFooter(input.outputPath, input.slideNumber, input.slideSpec, input.slideCount, input.theme);
-  await addNotes(input.outputPath, input.slideNumber, buildSpeakerNotes(input.slideSpec));
+  const bodySlots = safeSlots
+    .filter((slot) => slot.slotType === "body" || slot.slotType === "caption" || slot.slotType === "subtitle")
+    .filter((slot) => slot.shapeId !== titleSlot?.shapeId)
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, Math.max(1, Math.min(input.slideSpec.bullets.length, 4)));
+  const bodyTexts = input.slideSpec.kind === "agenda" ? input.slideSpec.bullets : normalizeBullets(input.slideSpec.bullets, bodySlots.length || 1);
+
+  for (let index = 0; index < bodySlots.length; index += 1) {
+    const slot = bodySlots[index];
+    const text = bodyTexts[index] ?? bodyTexts[bodyTexts.length - 1];
+    if (text && (await setShapeText(input.outputPath, input.generatedSlideIndex, slot.shapeId, text))) {
+      replacedSlots.push({ shapeId: slot.shapeId, slotType: slot.slotType });
+    }
+  }
+
+  const imageSlot = safeSlots
+    .filter((slot) => slot.slotType === "image")
+    .sort((a, b) => b.confidence - a.confidence)[0];
+  const imageAsset = chooseImageAsset(input.imageAssets, input.slideSpec, input.generatedSlideIndex);
+  if (imageSlot && imageAsset) {
+    const imagePath = resolve(process.cwd(), "..", "asset-library", "files", imageAsset.storedFileName);
+    if (await setPictureSource(input.outputPath, input.generatedSlideIndex, imageSlot.shapeId, imagePath, imageAsset.sourceFileName)) {
+      replacedSlots.push({ shapeId: imageSlot.shapeId, slotType: "image" });
+    }
+  }
+
+  return replacedSlots;
 }
 
-async function renderCoverSlide(input: {
-  outputPath: string;
-  slideNumber: number;
-  slideSpec: OfficeCliSlideSpec;
-  slideCount: number;
-  theme: NativeTheme;
-}) {
-  const { outputPath, slideNumber, slideSpec, theme } = input;
-  await addShape(outputPath, slideNumber, {
-    x: "0in",
-    y: "0in",
-    width: "13.333in",
-    height: "7.5in",
-    preset: "rect",
-    fill: theme.primary,
-    line: "none",
-    name: "cover_background"
-  });
-  await addShape(outputPath, slideNumber, {
-    x: "8.7in",
-    y: "-0.15in",
-    width: "4.9in",
-    height: "7.8in",
-    preset: "rect",
-    fill: theme.secondary,
-    line: "none",
-    opacity: 0.35,
-    name: "cover_accent_panel"
-  });
-  await addShape(outputPath, slideNumber, {
-    text: slideSpec.title,
-    x: "0.85in",
-    y: "1.85in",
-    width: "8.4in",
-    height: "1.3in",
-    fill: "none",
-    line: "none",
-    color: "FFFFFF",
-    size: "38pt",
-    bold: true,
-    font: theme.titleFont,
-    margin: "0.05in",
-    name: "cover_title"
-  });
-  await addShape(outputPath, slideNumber, {
-    text: slideSpec.bullets.join("\n"),
-    x: "0.9in",
-    y: "3.35in",
-    width: "6.6in",
-    height: "0.8in",
-    fill: "none",
-    line: "none",
-    color: "F4ECF7",
-    size: "17pt",
-    font: theme.bodyFont,
-    margin: "0.05in",
-    name: "cover_subtitle"
-  });
-  await addEvidenceTower(outputPath, slideNumber, theme, "9.05in", "1.45in", "3.2in", "4.65in");
-}
+async function setShapeText(outputPath: string, slideIndex: number, shapeId: string, text: string) {
+  if (!shapeId || !text.trim()) {
+    return false;
+  }
 
-async function renderAgendaSlide(input: {
-  outputPath: string;
-  slideNumber: number;
-  slideSpec: OfficeCliSlideSpec;
-  slideCount: number;
-  theme: NativeTheme;
-}) {
-  const { outputPath, slideNumber, slideSpec, theme } = input;
-  await renderTitle(outputPath, slideNumber, slideSpec.title, theme);
-  const bullets = slideSpec.bullets.length > 0 ? slideSpec.bullets : ["核心内容", "方法与证据", "结论启示"];
-  for (let index = 0; index < bullets.slice(0, 5).length; index += 1) {
-    const y = 1.55 + index * 0.95;
-    await addShape(outputPath, slideNumber, {
-      x: "0.9in",
-      y: `${y}in`,
-      width: "11.3in",
-      height: "0.68in",
-      preset: "roundRect",
-      fill: index % 2 === 0 ? "F8F5FA" : "F5F8FA",
-      line: "E8E1EA:0.8:solid",
-      shadow: "000000",
-      name: `agenda_card_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      text: String(index + 1).padStart(2, "0"),
-      x: "1.15in",
-      y: `${y + 0.12}in`,
-      width: "0.52in",
-      height: "0.42in",
-      preset: "ellipse",
-      fill: theme.primary,
-      line: "none",
-      color: "FFFFFF",
-      size: "13pt",
-      bold: true,
-      font: theme.bodyFont,
-      align: "center",
-      valign: "middle",
-      margin: "0.02in",
-      name: `agenda_number_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      text: bullets[index],
-      x: "1.9in",
-      y: `${y + 0.1}in`,
-      width: "9.7in",
-      height: "0.45in",
-      fill: "none",
-      line: "none",
-      color: theme.text,
-      size: "20pt",
-      bold: true,
-      font: theme.titleFont,
-      margin: "0.02in",
-      name: `agenda_text_${index + 1}`
-    });
+  try {
+    await runOfficeCli([
+      "set",
+      outputPath,
+      `/slide[${slideIndex}]/shape[@id=${shapeId}]`,
+      "--prop",
+      `text=${text}`,
+      "--prop",
+      "autoFit=normal"
+    ]);
+    return true;
+  } catch {
+    return false;
   }
 }
 
-async function renderContentSlide(input: {
-  outputPath: string;
-  slideNumber: number;
-  slideSpec: OfficeCliSlideSpec;
-  slideCount: number;
-  theme: NativeTheme;
-}) {
-  const { outputPath, slideNumber, slideSpec, theme } = input;
-  await renderTitle(outputPath, slideNumber, slideSpec.title, theme);
-  const bullets = normalizeBullets(slideSpec.bullets, 4);
-
-  for (let index = 0; index < bullets.length; index += 1) {
-    const y = 1.45 + index * 1.05;
-    await addShape(outputPath, slideNumber, {
-      x: "0.75in",
-      y: `${y}in`,
-      width: "5.45in",
-      height: "0.82in",
-      preset: "roundRect",
-      fill: "FFFFFF",
-      line: "E1E6EA:0.8:solid",
-      shadow: "000000",
-      name: `content_card_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      text: `${index + 1}`,
-      x: "0.98in",
-      y: `${y + 0.24}in`,
-      width: "0.34in",
-      height: "0.34in",
-      preset: "ellipse",
-      fill: index % 2 === 0 ? theme.secondary : theme.accent,
-      line: "none",
-      color: "FFFFFF",
-      size: "11pt",
-      bold: true,
-      font: theme.bodyFont,
-      align: "center",
-      valign: "middle",
-      margin: "0.01in",
-      name: `content_card_number_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      text: bullets[index],
-      x: "1.45in",
-      y: `${y + 0.16}in`,
-      width: "4.45in",
-      height: "0.5in",
-      fill: "none",
-      line: "none",
-      color: theme.text,
-      size: "14.5pt",
-      font: theme.bodyFont,
-      margin: "0.02in",
-      name: `content_card_text_${index + 1}`
-    });
+async function setPictureSource(outputPath: string, slideIndex: number, pictureId: string, imagePath: string, alt: string) {
+  if (!pictureId || !imagePath) {
+    return false;
   }
 
-  await renderEvidenceVisual(outputPath, slideNumber, slideSpec, theme);
-}
-
-async function renderSummarySlide(input: {
-  outputPath: string;
-  slideNumber: number;
-  slideSpec: OfficeCliSlideSpec;
-  slideCount: number;
-  theme: NativeTheme;
-}) {
-  const { outputPath, slideNumber, slideSpec, theme } = input;
-  await renderTitle(outputPath, slideNumber, slideSpec.title, theme);
-  const bullets = normalizeBullets(slideSpec.bullets, 3);
-  const fills = ["F6EFF8", "F0F7FA", "F7F5F0"];
-  for (let index = 0; index < bullets.length; index += 1) {
-    const x = 0.8 + index * 4.12;
-    await addShape(outputPath, slideNumber, {
-      x: `${x}in`,
-      y: "1.75in",
-      width: "3.55in",
-      height: "3.6in",
-      preset: "roundRect",
-      fill: fills[index % fills.length],
-      line: "DFD7E2:0.8:solid",
-      shadow: "000000",
-      name: `summary_card_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      text: `0${index + 1}`,
-      x: `${x + 0.3}in`,
-      y: "2.1in",
-      width: "0.7in",
-      height: "0.45in",
-      fill: "none",
-      line: "none",
-      color: theme.primary,
-      size: "24pt",
-      bold: true,
-      font: theme.titleFont,
-      name: `summary_index_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      text: bullets[index],
-      x: `${x + 0.35}in`,
-      y: "2.82in",
-      width: "2.85in",
-      height: "1.6in",
-      fill: "none",
-      line: "none",
-      color: theme.text,
-      size: "18pt",
-      bold: true,
-      font: theme.titleFont,
-      margin: "0.04in",
-      name: `summary_text_${index + 1}`
-    });
+  try {
+    await runOfficeCli([
+      "set",
+      outputPath,
+      `/slide[${slideIndex}]/picture[@id=${pictureId}]`,
+      "--prop",
+      `src=${imagePath}`,
+      "--prop",
+      `alt=${alt}`
+    ]);
+    return true;
+  } catch {
+    return false;
   }
 }
 
-async function renderTitle(outputPath: string, slideNumber: number, title: string, theme: NativeTheme) {
-  await addShape(outputPath, slideNumber, {
-    text: title,
-    x: "0.65in",
-    y: "0.35in",
-    width: "10.4in",
-    height: "0.55in",
-    fill: "none",
-    line: "none",
-    color: theme.primary,
-    size: "28pt",
-    bold: true,
-    font: theme.titleFont,
-    margin: "0.02in",
-    name: "slide_title"
-  });
-  await addShape(outputPath, slideNumber, {
-    x: "0.65in",
-    y: "0.98in",
-    width: "11.9in",
-    height: "0.03in",
-    preset: "rect",
-    fill: theme.primary,
-    line: "none",
-    name: "title_rule"
-  });
-}
-
-async function renderFooter(
-  outputPath: string,
-  slideNumber: number,
-  slideSpec: OfficeCliSlideSpec,
-  slideCount: number,
-  theme: NativeTheme
-) {
-  const color = slideSpec.kind === "cover" ? "F6EEF7" : theme.muted;
-  await addShape(outputPath, slideNumber, {
-    text: `officeCLI-native | ${slideNumber}/${slideCount}`,
-    x: "10.45in",
-    y: "7.05in",
-    width: "2.15in",
-    height: "0.22in",
-    fill: "none",
-    line: "none",
-    color,
-    size: "8.5pt",
-    font: theme.bodyFont,
-    align: "right",
-    margin: "0.01in",
-    name: "footer_page"
-  });
-}
-
-async function renderEvidenceVisual(outputPath: string, slideNumber: number, slideSpec: OfficeCliSlideSpec, theme: NativeTheme) {
-  await addShape(outputPath, slideNumber, {
-    x: "6.75in",
-    y: "1.35in",
-    width: "5.75in",
-    height: "4.85in",
-    preset: "roundRect",
-    fill: theme.panel,
-    line: "E0D9E5:0.8:solid",
-    name: "visual_panel"
-  });
-  await addShape(outputPath, slideNumber, {
-    text: "数据证据层级",
-    x: "7.25in",
-    y: "1.7in",
-    width: "4.7in",
-    height: "0.42in",
-    fill: "none",
-    line: "none",
-    color: theme.primary,
-    size: "19pt",
-    bold: true,
-    font: theme.titleFont,
-    align: "center",
-    name: "visual_title"
-  });
-
-  const labels = buildEvidenceLabels(slideSpec);
-  const colors = [theme.secondary, theme.primary, theme.accent];
-  for (let index = 0; index < labels.length; index += 1) {
-    const y = 2.45 + index * 0.9;
-    await addShape(outputPath, slideNumber, {
-      x: "7.55in",
-      y: `${y}in`,
-      width: "3.95in",
-      height: "0.58in",
-      preset: "roundRect",
-      fill: "FFFFFF",
-      line: `${colors[index % colors.length]}:1.2:solid`,
-      name: `visual_level_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      x: "7.75in",
-      y: `${y + 0.16}in`,
-      width: "0.25in",
-      height: "0.25in",
-      preset: "ellipse",
-      fill: colors[index % colors.length],
-      line: "none",
-      name: `visual_dot_${index + 1}`
-    });
-    await addShape(outputPath, slideNumber, {
-      text: labels[index],
-      x: "8.15in",
-      y: `${y + 0.1}in`,
-      width: "3.05in",
-      height: "0.34in",
-      fill: "none",
-      line: "none",
-      color: theme.text,
-      size: "13pt",
-      bold: true,
-      font: theme.bodyFont,
-      margin: "0.01in",
-      name: `visual_label_${index + 1}`
-    });
+function chooseTemplateSlide(profile: TemplateProfile, slideSpec: OfficeCliSlideSpec) {
+  const preferred = profile.capabilities.recommendedSlides[slideSpec.preferredTemplateRole][0];
+  if (preferred) {
+    return preferred;
   }
 
-  await addShape(outputPath, slideNumber, {
-    text: `${slideSpec.sourceEvidenceIds.length || 1}`,
-    x: "9.05in",
-    y: "5.1in",
-    width: "0.75in",
-    height: "0.52in",
-    preset: "ellipse",
-    fill: theme.primary,
-    line: "none",
-    color: "FFFFFF",
-    size: "21pt",
-    bold: true,
-    font: theme.titleFont,
-    align: "center",
-    valign: "middle",
-    margin: "0.01in",
-    name: "visual_evidence_count"
-  });
-  await addShape(outputPath, slideNumber, {
-    text: "条报告证据",
-    x: "9.85in",
-    y: "5.22in",
-    width: "1.4in",
-    height: "0.28in",
-    fill: "none",
-    line: "none",
-    color: theme.muted,
-    size: "11pt",
-    font: theme.bodyFont,
-    margin: "0.01in",
-    name: "visual_evidence_caption"
-  });
-}
-
-async function addEvidenceTower(
-  outputPath: string,
-  slideNumber: number,
-  theme: NativeTheme,
-  x: string,
-  y: string,
-  width: string,
-  height: string
-) {
-  await addShape(outputPath, slideNumber, {
-    x,
-    y,
-    width,
-    height,
-    preset: "roundRect",
-    fill: "FFFFFF",
-    line: "FFFFFF:0.5:solid",
-    opacity: 0.16,
-    name: "cover_visual_shell"
-  });
-  const rows = [
-    { label: "静态供给", fill: theme.secondary },
-    { label: "体验表达", fill: theme.accent },
-    { label: "动态行为", fill: "FFFFFF" }
-  ];
-  for (let index = 0; index < rows.length; index += 1) {
-    await addShape(outputPath, slideNumber, {
-      text: rows[index].label,
-      x: "9.55in",
-      y: `${2.05 + index * 1.05}in`,
-      width: "2.25in",
-      height: "0.62in",
-      preset: "roundRect",
-      fill: rows[index].fill,
-      line: "FFFFFF:0.8:solid",
-      color: index === 2 ? theme.primary : "FFFFFF",
-      size: "16pt",
-      bold: true,
-      font: theme.titleFont,
-      align: "center",
-      valign: "middle",
-      margin: "0.03in",
-      name: `cover_visual_level_${index + 1}`
-    });
+  if (slideSpec.kind === "content") {
+    return (
+      profile.capabilities.recommendedSlides.content_image[0] ??
+      profile.capabilities.recommendedSlides.content_text[0] ??
+      profile.capabilities.recommendedSlides.unknown[0] ??
+      profile.slides[0]?.index ??
+      1
+    );
   }
+
+  return profile.capabilities.recommendedSlides.content_text[0] ?? profile.slides[0]?.index ?? 1;
 }
 
-async function addSlide(outputPath: string, background: string) {
-  await runOfficeCli(["add", outputPath, "/", "--type", "slide", "--prop", "layout=blank", "--prop", `background=#${cleanHex(background)}`]);
+function selectSlot(slots: TemplateReplaceableSlot[], slotType: TemplateReplaceableSlot["slotType"]) {
+  return slots
+    .filter((slot) => slot.slotType === slotType)
+    .sort((a, b) => b.confidence - a.confidence)[0];
+}
+
+function isProtectedSlot(profile: TemplateProfile, slot: TemplateReplaceableSlot) {
+  const text = `${slot.shapeName ?? ""} ${slot.sampleText ?? ""}`.toLowerCase();
+  if (/logo|徽|校徽|清华|tsinghua|页码|page|footer|页脚|日期|date/.test(text)) {
+    return true;
+  }
+  if (slot.slotType === "image") {
+    return isProtectedPictureSlot(profile, slot);
+  }
+  if (!slot.bbox) {
+    return false;
+  }
+  const pageHeight = profile.pageSize.cy ?? 6858000;
+  return slot.bbox.y > pageHeight * 0.88 && slot.slotType !== "body";
+}
+
+function isProtectedPictureSlot(profile: TemplateProfile, slot: TemplateReplaceableSlot) {
+  if (!slot.bbox) {
+    return true;
+  }
+  const pageWidth = profile.pageSize.cx ?? 12192000;
+  const pageHeight = profile.pageSize.cy ?? 6858000;
+  const areaRatio = (slot.bbox.cx * slot.bbox.cy) / (pageWidth * pageHeight);
+  const rightEdge = slot.bbox.x + slot.bbox.cx;
+  const inTopRight = slot.bbox.x > pageWidth * 0.72 && slot.bbox.y < pageHeight * 0.18;
+  const nearTopRight = rightEdge > pageWidth * 0.82 && slot.bbox.y < pageHeight * 0.22;
+  const likelyLogoScale = areaRatio < 0.05;
+  return (inTopRight || nearTopRight) && likelyLogoScale;
+}
+
+function chooseImageAsset(assets: ImageAsset[], slideSpec: OfficeCliSlideSpec, slideIndex: number) {
+  if (assets.length === 0) {
+    return null;
+  }
+  const terms = tokenize(`${slideSpec.title} ${slideSpec.bullets.join(" ")}`);
+  const scored = assets.map((asset, index) => {
+    const text = `${asset.sourceFileName} ${asset.notes}`.toLowerCase();
+    return {
+      asset,
+      score: terms.filter((term) => text.includes(term)).length,
+      index
+    };
+  });
+  return scored.sort((a, b) => b.score - a.score || a.index - b.index)[(slideIndex - 1) % scored.length]?.asset ?? assets[0];
 }
 
 async function addNotes(outputPath: string, slideNumber: number, text: string) {
   await runOfficeCli(["add", outputPath, `/slide[${slideNumber}]`, "--type", "notes", "--prop", `text=${text}`]).catch(async () => {
     await runOfficeCli(["set", outputPath, `/slide[${slideNumber}]`, "--prop", `notes=${text}`]);
   });
-}
-
-async function addShape(outputPath: string, slideNumber: number, shape: NativeShape) {
-  const props = shapeToProps(shape);
-  const args = ["add", outputPath, `/slide[${slideNumber}]`, "--type", "shape"];
-  for (const prop of props) {
-    args.push("--prop", prop);
-  }
-  await runOfficeCli(args);
-}
-
-function shapeToProps(shape: NativeShape) {
-  const props = [
-    `x=${shape.x}`,
-    `y=${shape.y}`,
-    `width=${shape.width}`,
-    `height=${shape.height}`,
-    `preset=${shape.preset ?? "rect"}`,
-    `autoFit=normal`
-  ];
-
-  if (shape.text !== undefined) props.push(`text=${shape.text}`);
-  if (shape.fill) props.push(`fill=${shape.fill === "none" ? "none" : `#${cleanHex(shape.fill)}`}`);
-  if (shape.line) props.push(`line=${shape.line === "none" ? "none" : normalizeLine(shape.line)}`);
-  if (shape.lineWidth) props.push(`lineWidth=${shape.lineWidth}`);
-  if (shape.lineDash) props.push(`lineDash=${shape.lineDash}`);
-  if (shape.color) props.push(`color=${shape.color === "none" ? "none" : `#${cleanHex(shape.color)}`}`);
-  if (shape.size) props.push(`size=${shape.size}`);
-  if (shape.bold !== undefined) props.push(`bold=${shape.bold}`);
-  if (shape.font) {
-    props.push(`font=${shape.font}`, `font.ea=${shape.font}`, `font.latin=${shape.font}`);
-  }
-  if (shape.align) props.push(`align=${shape.align}`);
-  if (shape.valign) props.push(`valign=${shape.valign}`);
-  if (shape.margin) props.push(`margin=${shape.margin}`);
-  if (shape.opacity !== undefined) props.push(`opacity=${shape.opacity}`);
-  if (shape.shadow) props.push(`shadow=#${cleanHex(shape.shadow)}`);
-  if (shape.name) props.push(`name=${shape.name}`);
-  return props;
-}
-
-function buildNativeTheme(profile: TemplateProfile): NativeTheme {
-  const colors = profile.theme.colors.map(cleanHex).filter(isHexColor);
-  const primary = chooseReadableAccent(colors, "6F1D7A");
-  const secondary = chooseDifferentColor(colors, primary, "62A8C8");
-  const accent = chooseDifferentColor(colors, primary, "9B2A92", [secondary]);
-  const fonts = profile.theme.fonts.filter(Boolean);
-  const cjkFont = fonts.find((font) => /yahei|hei|song|noto|source han|等线|黑体|宋体/i.test(font));
-
-  return {
-    primary,
-    secondary,
-    accent,
-    background: "FBFAFC",
-    panel: "F6F1F7",
-    text: "202124",
-    muted: "6B6470",
-    titleFont: cjkFont ?? fonts[0] ?? "Microsoft YaHei",
-    bodyFont: cjkFont ?? fonts[1] ?? fonts[0] ?? "Microsoft YaHei"
-  };
-}
-
-function chooseReadableAccent(colors: string[], fallback: string) {
-  return colors.find((color) => isReadableAccent(color)) ?? fallback;
-}
-
-function chooseDifferentColor(colors: string[], primary: string, fallback: string, excluded: string[] = []) {
-  return (
-    colors.find(
-      (color) => isReadableAccent(color) && colorDistance(color, primary) > 90 && excluded.every((item) => colorDistance(color, item) > 65)
-    ) ?? fallback
-  );
-}
-
-function isReadableAccent(color: string) {
-  const [r, g, b] = hexToRgb(color);
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const saturation = max - min;
-  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return saturation > 35 && luminance > 40 && luminance < 210;
-}
-
-function colorDistance(a: string, b: string) {
-  const [ar, ag, ab] = hexToRgb(a);
-  const [br, bg, bb] = hexToRgb(b);
-  return Math.sqrt((ar - br) ** 2 + (ag - bg) ** 2 + (ab - bb) ** 2);
-}
-
-function hexToRgb(color: string) {
-  const hex = cleanHex(color);
-  return [Number.parseInt(hex.slice(0, 2), 16), Number.parseInt(hex.slice(2, 4), 16), Number.parseInt(hex.slice(4, 6), 16)];
-}
-
-function normalizeLine(value: string) {
-  const parts = value.split(":");
-  if (parts.length === 0) return value;
-  parts[0] = `#${cleanHex(parts[0])}`;
-  return parts.join(":");
-}
-
-function cleanHex(value: string) {
-  return value.replace(/^#/, "").toUpperCase();
-}
-
-function isHexColor(value: string) {
-  return /^[0-9A-F]{6}$/.test(value);
 }
 
 function buildContentSections(evidence: EvidenceBlock[]) {
@@ -935,12 +517,20 @@ function tokenize(text: string) {
 
 async function collectOfficeCliQa(outputPath: string, workDir: string) {
   const messages: string[] = [];
+  const suppressedMessages: string[] = [];
 
   try {
     const issues = await runOfficeCli(["view", outputPath, "issues", "--limit", "12"], { cwd: workDir, timeoutMs: 60_000 });
-    const issueText = `${issues.stdout}${issues.stderr}`.trim();
-    if (issueText) {
-      messages.push(issueText);
+    const filtered = filterOfficeCliOutput(`${issues.stdout}${issues.stderr}`, [
+      /Picture ".+" is missing alt text \(accessibility issue\)/i,
+      /^Found \d+ issue\(s\):$/i,
+      /^Format Issues \(\d+\):$/i
+    ]);
+    if (filtered.visible) {
+      messages.push(filtered.visible);
+    }
+    if (filtered.suppressedCount > 0) {
+      suppressedMessages.push(`已隐藏 ${filtered.suppressedCount} 条模板图片 alt text 可访问性提示。`);
     }
   } catch (error) {
     messages.push(error instanceof Error ? error.message : "officeCLI issues check failed.");
@@ -950,8 +540,52 @@ async function collectOfficeCliQa(outputPath: string, workDir: string) {
     await runOfficeCli(["validate", outputPath], { cwd: workDir, timeoutMs: 60_000 });
     messages.push("officeCLI validate passed.");
   } catch (error) {
-    messages.push(error instanceof Error ? `officeCLI validate reported issues: ${error.message}` : "officeCLI validate reported issues.");
+    const rawMessage = error instanceof Error ? error.message : "officeCLI validate reported issues.";
+    const filtered = filterOfficeCliOutput(rawMessage, [
+      /The 'mod' attribute is not declared\./i,
+      /Path: \/p:sldLayout\[1\]\/p:extLst\[1\]/i,
+      /Part: \/ppt\/slideLayouts\/slideLayout\d+\.xml/i,
+      /^Found \d+ validation error\(s\):$/i
+    ]);
+    if (filtered.visible) {
+      messages.push(`officeCLI validate reported issues: ${filtered.visible}`);
+    }
+    if (filtered.suppressedCount > 0) {
+      suppressedMessages.push(`已隐藏 ${filtered.suppressedCount} 条模板 slideLayout 扩展属性 schema 提示。`);
+    }
   }
 
-  return messages.filter(Boolean).join("\n").trim() || "officeCLI native generation completed.";
+  const visible = messages.filter(Boolean).join("\n").trim();
+  const suppressed = suppressedMessages.join(" ");
+  if (visible) {
+    return [visible, suppressed].filter(Boolean).join("\n");
+  }
+  return suppressed ? `officeCLI 生成完成。${suppressed}` : "officeCLI 生成完成，未发现阻断性 QA 问题。";
+}
+
+function filterOfficeCliOutput(output: string, suppressPatterns: RegExp[]) {
+  let suppressedCount = 0;
+  const visibleLines = output
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => {
+      if (!line) {
+        return false;
+      }
+      if (/^Command failed:/i.test(line)) {
+        suppressedCount += 1;
+        return false;
+      }
+      const suppressed = suppressPatterns.some((pattern) => pattern.test(line));
+      if (suppressed) {
+        suppressedCount += 1;
+        return false;
+      }
+      return true;
+    });
+
+  return {
+    visible: visibleLines.join("\n"),
+    suppressedCount
+  };
 }
